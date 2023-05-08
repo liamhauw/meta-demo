@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.25)
 project(luka_engine)
 
 # **********************************************************
@@ -6,11 +6,11 @@ project(luka_engine)
 # **********************************************************
 add_library(platform STATIC)
 target_compile_features(platform PUBLIC cxx_std_20)
-target_include_directories(platform PUBLIC include ${VULKAN_INCLUDE_DIRS})
+target_include_directories(platform PUBLIC include)
 target_sources(platform 
   PRIVATE
   src/platform/platform.cc)
-target_link_libraries(platform PUBLIC ${VULKAN_LIBRARIES})
+target_link_libraries(platform PUBLIC Vulkan::Vulkan Vulkan::glslang Vulkan::shaderc_combined glfw glm::glm)
 add_library(luka_engine::platform ALIAS platform)
 
 # **********************************************************
@@ -48,8 +48,6 @@ target_sources(function
 target_link_libraries(function
   PUBLIC
   luka_engine::resource
-  PRIVATE
-  glfw
 )
 add_library(luka_engine::function ALIAS function)
 
