@@ -18,6 +18,7 @@
 #include <GLFW/glfw3.h>
 
 #include "luka/core/math.h"
+#include "luka/resource/resource.h"
 
 namespace luka {
 class Rendering {
@@ -32,22 +33,26 @@ class Rendering {
   void MakeSurface();
   void MakePhysicalDevice();
   void MakeDevice();
+  void MakeQueue();
+  void MakeSyncObjects();
   void MakeCommandPool();
   void MakeCommandBuffer();
-  void MakeQueue();
   void MakeSwapchain();
   void MakeDepthImage();
-  void MakeUniformBuffer();
-  void MakeDescriptorSetLayout();
-  void MakePipelineLayout();
   void MakeRenderPass();
-  void MakeShaderModule();
   void MakeFramebuffer();
-  void MakeVertexBuffer();
+
+  void MakeShaderModule();
+  void MakeDescriptorSetLayout();
   void MakeDescriptorPool();
   void MakeDescriptorSet();
+  void MakePipelineLayout();
+  void MakePipelineCache();
+  void MakePipeline();
+
+  void MakeVertexBuffer();
+  void MakeUniformBuffer();
   void UpdateDescriptorSets();
-  void MakeGraphicsPipeline();
 
   vk::SurfaceFormatKHR PickSurfaceFormat();
 
@@ -56,6 +61,8 @@ class Rendering {
 
   vk::raii::ShaderModule MakeShaderModule(vk::ShaderStageFlagBits shader_stage,
                                           const std::string& shader_text);
+
+  static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 
   static VKAPI_ATTR VkBool32 VKAPI_CALL DebugUtilsMessengerCallback(
       VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
@@ -116,45 +123,40 @@ class Rendering {
   };
 
  private:
+  const size_t kFrameInFlight{2};
+  const uint32_t kWidth{1280};
+  const uint32_t kHeight{720};
+  
+  bool framebuffer_resized_{false};
+  // uint32_t current_frame_{0};
+
   vk::raii::Instance instance_{nullptr};
-
   SurfaceData surface_data_;
-
   vk::raii::PhysicalDevice physical_device_{nullptr};
   std::pair<uint32_t, uint32_t> gp_queue_family_index_;
-
   vk::raii::Device device_{nullptr};
-
-  vk::raii::CommandPool command_pool_{nullptr};
-
-  vk::raii::CommandBuffer command_buffer_{nullptr};
-
   vk::raii::Queue graphics_queue_{nullptr};
   vk::raii::Queue present_queue_{nullptr};
-
+  // std::vector<vk::raii::Fence> fence_;
+  // std::vector<vk::raii::Semaphore> image_available_semaphores_;
+  // std::vector<vk::raii::Semaphore> render_finished_semaphores_;
+  vk::raii::CommandPool command_pool_{nullptr};
+  vk::raii::CommandBuffer command_buffer_{nullptr};
   SwapchainData swapchain_data_;
-
   ImageData depth_image_data_;
-
-  BufferData uniform_buffer_data_;
-
-  vk::raii::DescriptorSetLayout descriptor_set_layout_{nullptr};
-
-  vk::raii::PipelineLayout pipeline_layout_{nullptr};
-
   vk::raii::RenderPass render_pass_{nullptr};
+  std::vector<vk::raii::Framebuffer> framebuffers_;
 
   vk::raii::ShaderModule vertex_shader_module_{nullptr};
   vk::raii::ShaderModule fragment_shader_module_{nullptr};
-
-  std::vector<vk::raii::Framebuffer> framebuffers_;
+  vk::raii::DescriptorSetLayout descriptor_set_layout_{nullptr};
+  vk::raii::DescriptorPool descriptor_pool_{nullptr};
+  vk::raii::DescriptorSet descriptor_set_{nullptr};
+  vk::raii::PipelineLayout pipeline_layout_{nullptr};
+  vk::raii::PipelineCache pipeline_cache_{nullptr};
+  vk::raii::Pipeline graphics_pipeline_{nullptr};
 
   BufferData vertex_buffer_data_;
-
-  vk::raii::DescriptorPool descriptor_pool_{nullptr};
-
-  vk::raii::DescriptorSet descriptor_set_{nullptr};
-
-  vk::raii::Pipeline graphics_pipeline_{nullptr};
+  BufferData uniform_buffer_data_;
 };
 };  // namespace luka

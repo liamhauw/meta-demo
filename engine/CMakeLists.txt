@@ -10,7 +10,17 @@ target_include_directories(platform PUBLIC include)
 target_sources(platform 
   PRIVATE
   src/platform/platform.cc)
-target_link_libraries(platform PUBLIC Vulkan::Vulkan Vulkan::glslang Vulkan::shaderc_combined glfw glm::glm)
+  
+target_link_libraries(platform PUBLIC 
+Vulkan::Vulkan 
+Vulkan::glslang 
+Vulkan::shaderc_combined 
+glfw::glfw 
+glm::glm 
+stb_image::stb_image
+tiny_obj_loader::tiny_obj_loader
+)
+
 add_library(luka_engine::platform ALIAS platform)
 
 # **********************************************************
