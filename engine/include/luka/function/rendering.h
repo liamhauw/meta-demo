@@ -3,12 +3,12 @@
 #include <glslang/Public/ResourceLimits.h>
 #include <glslang/SPIRV/GlslangToSpv.h>
 
-#include <numeric>
 #include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <iterator>
 #include <memory>
+#include <numeric>
 #include <string>
 #include <utility>
 #include <vector>
@@ -29,7 +29,6 @@ class Rendering {
 
  private:
   void MakeInstance();
-  void MakeDebugUtilsMessenger();
   void MakeSurface();
   void MakePhysicalDevice();
   void MakeDevice();
@@ -80,6 +79,17 @@ class Rendering {
   }
 
  private:
+  struct GlfwContext {
+    GlfwContext() {
+      glfwInit();
+      glfwSetErrorCallback([](int error, const char* msg) {
+        std::cout << "glfw: "
+                  << "(" << error << ") " << msg << std::endl;
+      });
+    }
+    ~GlfwContext() { glfwTerminate(); }
+  };
+
   struct SurfaceData {
     vk::raii::SurfaceKHR surface{nullptr};
     vk::Extent2D extent;

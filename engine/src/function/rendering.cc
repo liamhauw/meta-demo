@@ -171,10 +171,6 @@ const VertexPC kColoredCubeData[]{
 Rendering::Rendering() {
   MakeInstance();
 
-#ifndef NDEBUG
-  MakeDebugUtilsMessenger();
-#endif
-
   MakeSurface();
 
   MakePhysicalDevice();
@@ -280,48 +276,36 @@ void Rendering::Tick() {
 bool Rendering::ShouldClose() { return glfwWindowShouldClose(surface_data_.glfw_window); }
 
 void Rendering::MakeInstance() {
-  vk::raii::Context context_;
+  vk::raii::Context context;
 
-  vk::ApplicationInfo application_info{"luka", 1, "luka", 1, VK_API_VERSION_1_0};
+  vk::ApplicationInfo application_info{"luka", VK_MAKE_VERSION(1, 0, 0), "luka",
+                                       VK_MAKE_VERSION(1, 0, 0), VK_API_VERSION_1_0};
 
-  std::vector<const char*> layers;
-  std::vector<const char*> extensions;
+  std::vector<const char*> required_layers;
+  std::vector<const char*> required_extensions;
 
-  // glfw extensions
-  struct GlfwContext {
-    GlfwContext() {
-      glfwInit();
-      glfwSetErrorCallback([](int error, const char* msg) {
-        std::cerr << "glfw: "
-                  << "(" << error << ") " << msg << std::endl;
-      });
-    }
-    ~GlfwContext() { glfwTerminate(); }
-  };
   static auto glfw_context{GlfwContext{}};
-
   uint32_t glfw_extension_count{0};
   const char** glfw_extensions{glfwGetRequiredInstanceExtensions(&glfw_extension_count)};
-  extensions = {glfw_extensions, glfw_extensions + glfw_extension_count};
+  required_extensions = {glfw_extensions, glfw_extensions + glfw_extension_count};
 
-  // macos extensions
 #ifdef __APPLE__
-  extensions.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
-  extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+  required_extensions.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
+  required_extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
 #endif
 
 #ifndef NDEBUG
   const std::vector<vk::LayerProperties> layer_properties{
-      context_.enumerateInstanceLayerProperties()};
+      context.enumerateInstanceLayerProperties()};
   const std::vector<vk::ExtensionProperties> extension_properties{
-      context_.enumerateInstanceExtensionProperties()};
+      context.enumerateInstanceExtensionProperties()};
 #endif
 
   std::vector<const char*> enabled_layers;
   std::vector<const char*> enabled_extensions;
 
-  enabled_layers.reserve(layers.size());
-  for (const char* layer : layers) {
+  enabled_layers.reserve(required_layers.size());
+  for (const char* layer : required_layers) {
     assert(std::find_if(layer_properties.begin(), layer_properties.end(),
                         [layer](const vk::LayerProperties& lp) {
                           return (strcmp(layer, lp.layerName) == 0);
@@ -329,8 +313,8 @@ void Rendering::MakeInstance() {
     enabled_layers.push_back(layer);
   }
 
-  enabled_extensions.reserve(extensions.size());
-  for (const char* extension : extensions) {
+  enabled_extensions.reserve(required_extensions.size());
+  for (const char* extension : required_extensions) {
     assert(std::find_if(extension_properties.begin(), extension_properties.end(),
                         [extension](const vk::ExtensionProperties& ep) {
                           return (strcmp(extension, ep.extensionName) == 0);
@@ -339,7 +323,8 @@ void Rendering::MakeInstance() {
   }
 
 #ifndef NDEBUG
-  if (std::find(layers.begin(), layers.end(), "VK_LAYER_KHRONOS_validation") == layers.end() &&
+  if (std::find(required_layers.begin(), required_layers.end(), "VK_LAYER_KHRONOS_validation") ==
+          required_layers.end() &&
       std::find_if(layer_properties.begin(), layer_properties.end(),
                    [](const vk::LayerProperties& lp) {
                      return (strcmp("VK_LAYER_KHRONOS_validation", lp.layerName) == 0);
@@ -347,8 +332,8 @@ void Rendering::MakeInstance() {
     enabled_layers.push_back("VK_LAYER_KHRONOS_validation");
   }
 
-  if (std::find(extensions.begin(), extensions.end(), VK_EXT_DEBUG_UTILS_EXTENSION_NAME) ==
-          extensions.end() &&
+  if (std::find(required_extensions.begin(), required_extensions.end(),
+                VK_EXT_DEBUG_UTILS_EXTENSION_NAME) == required_extensions.end() &&
       std::find_if(extension_properties.begin(), extension_properties.end(),
                    [](vk::ExtensionProperties const& ep) {
                      return (strcmp(VK_EXT_DEBUG_UTILS_EXTENSION_NAME, ep.extensionName) == 0);
@@ -372,19 +357,17 @@ void Rendering::MakeInstance() {
       vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance |
       vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation};
 
-  vk::StructureChain<vk::InstanceCreateInfo, vk::DebugUtilsMessengerCreateInfoEXT>
-      instance_info_chain{
-          {flags, &application_info, enabled_layers, enabled_extensions},
-          {{}, message_severity_flags, message_type_flags, &DebugUtilsMessengerCallback}};
+  vk::StructureChain<vk::InstanceCreateInfo, vk::DebugUtilsMessengerCreateInfoEXT> info_chain{
+      {flags, &application_info, enabled_layers, enabled_extensions},
+      {{}, message_severity_flags, message_type_flags, &DebugUtilsMessengerCallback}};
 #else
-  vk::StructureChain<vk::InstanceCreateInfo> instance_info_chain{
+  vk::StructureChain<vk::InstanceCreateInfo> info_chain{
       {flags, &application_info, enabled_layers, enabled_extensions}};
 #endif
 
-  instance_ = vk::raii::Instance{context_, instance_info_chain.get<vk::InstanceCreateInfo>()};
-}
+  instance_ = vk::raii::Instance{context, info_chain.get<vk::InstanceCreateInfo>()};
 
-void Rendering::MakeDebugUtilsMessenger() {
+#ifndef NDEBUG
   vk::DebugUtilsMessengerCreateInfoEXT debug_utils_messenger_create_info{
       {},
       vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
@@ -396,6 +379,7 @@ void Rendering::MakeDebugUtilsMessenger() {
 
   vk::raii::DebugUtilsMessengerEXT debug_utils_messneger{instance_,
                                                          debug_utils_messenger_create_info};
+#endif
 }
 
 void Rendering::MakeSurface() {
@@ -413,18 +397,17 @@ void Rendering::MakeSurface() {
 }
 
 void Rendering::MakePhysicalDevice() {
-  physical_device_ = vk::raii::PhysicalDevices(instance_).front();
+  physical_device_ = vk::raii::PhysicalDevices{instance_}.front();
 
   std::vector<vk::QueueFamilyProperties> queue_family_properties{
       physical_device_.getQueueFamilyProperties()};
   assert(queue_family_properties.size() < std::numeric_limits<uint32_t>::max());
 
-  std::vector<vk::QueueFamilyProperties>::const_iterator graphics_queue_family_property =
+  std::vector<vk::QueueFamilyProperties>::const_iterator graphics_queue_family_property{
       std::find_if(queue_family_properties.begin(), queue_family_properties.end(),
                    [](vk::QueueFamilyProperties const& qfp) {
                      return qfp.queueFlags & vk::QueueFlagBits::eGraphics;
-                   });
-
+                   })};
   assert(graphics_queue_family_property != queue_family_properties.end());
   uint32_t graphics_queue_family_index{static_cast<uint32_t>(
       std::distance(queue_family_properties.cbegin(), graphics_queue_family_property))};
@@ -452,23 +435,24 @@ void Rendering::MakePhysicalDevice() {
     }
   }
 
-  throw std::runtime_error{"fail to find queues for both graphics and present"};
+  throw std::runtime_error{"fail to find queues for both graphics or present"};
 }
 
 void Rendering::MakeDevice() {
-  std::vector<const char*> extensions;
+  std::vector<const char*> required_extensions;
 
-  extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+  required_extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
 
 #ifdef __APPLE__
-  extensions.push_back("VK_KHR_portability_subset");
+  required_extensions.push_back("VK_KHR_portability_subset");
 #endif
 
   std::vector<const char*> enabled_extensions;
-  enabled_extensions.reserve(extensions.size());
-  for (const char* extension : extensions) {
+  enabled_extensions.reserve(required_extensions.size());
+  for (const char* extension : required_extensions) {
     enabled_extensions.push_back(extension);
   }
+
   float queue_priority{0.0f};
   vk::DeviceQueueCreateInfo device_queue_create_info{
       {}, gp_queue_family_index_.first, 1, &queue_priority};
@@ -768,7 +752,7 @@ void Rendering::MakeFramebuffer() {
     framebuffers_.push_back(vk::raii::Framebuffer{device_, framebuffer_create_info});
   }
 
-  int i =0;
+  int i = 0;
 }
 
 void Rendering::MakeVertexBuffer() {
