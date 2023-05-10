@@ -54,30 +54,34 @@ class Rendering {
   void MakeUniformBuffer();
   void UpdateDescriptorSets();
 
+  static void FramebufferSizeCallback(GLFWwindow* window, int width,
+                                      int height);
+
   vk::SurfaceFormatKHR PickSurfaceFormat();
 
-  vk::raii::DeviceMemory AllocateDeviceMemory(const vk::MemoryRequirements& memory_requirements,
-                                              vk::MemoryPropertyFlags memory_properties_flags);
+  vk::raii::DeviceMemory AllocateDeviceMemory(
+      const vk::MemoryRequirements& memory_requirements,
+      vk::MemoryPropertyFlags memory_properties_flags);
 
   vk::raii::ShaderModule MakeShaderModule(vk::ShaderStageFlagBits shader_stage,
                                           const std::string& shader_text);
 
-  static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
-
   static VKAPI_ATTR VkBool32 VKAPI_CALL DebugUtilsMessengerCallback(
       VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
       VkDebugUtilsMessageTypeFlagsEXT messageTypes,
-      VkDebugUtilsMessengerCallbackDataEXT const* pCallbackData, void* pUserData);
+      VkDebugUtilsMessengerCallbackDataEXT const* pCallbackData,
+      void* pUserData);
 
   template <typename T>
-  void CopyToDevice(const vk::raii::DeviceMemory& device_memory, const T* data, size_t count = 1,
-                    vk::DeviceSize stride = sizeof(T)) {
+  void CopyToDevice(const vk::raii::DeviceMemory& device_memory, const T* data,
+                    uint32_t count = 1, vk::DeviceSize stride = sizeof(T)) {
     assert(sizeof(T) <= stride);
-    uint8_t* device_data{static_cast<uint8_t*>(device_memory.mapMemory(0, count * stride))};
+    uint8_t* device_data{
+        static_cast<uint8_t*>(device_memory.mapMemory(0, count * stride))};
     if (stride == sizeof(T)) {
       memcpy(device_data, data, count * sizeof(T));
     } else {
-      for (size_t i = 0; i < count; i++) {
+      for (uint32_t i = 0; i < count; i++) {
         memcpy(device_data, &data[i], sizeof(T));
         device_data += stride;
       }
@@ -123,10 +127,10 @@ class Rendering {
   };
 
  private:
-  const size_t kFrameInFlight{2};
-  const uint32_t kWidth{1280};
-  const uint32_t kHeight{720};
-  
+  const uint32_t kFrameInFlight{2};
+  const uint32_t kWidth{800};
+  const uint32_t kHeight{600};
+
   bool framebuffer_resized_{false};
   // uint32_t current_frame_{0};
 
@@ -154,7 +158,7 @@ class Rendering {
   vk::raii::DescriptorSet descriptor_set_{nullptr};
   vk::raii::PipelineLayout pipeline_layout_{nullptr};
   vk::raii::PipelineCache pipeline_cache_{nullptr};
-  vk::raii::Pipeline graphics_pipeline_{nullptr};
+  vk::raii::Pipeline pipeline_{nullptr};
 
   BufferData vertex_buffer_data_;
   BufferData uniform_buffer_data_;
