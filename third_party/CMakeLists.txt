@@ -1,13 +1,10 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.24)
 project(luka_third_party)
 
 # **********************************************************
 # vulkan sdk
 # **********************************************************
-find_package(Vulkan
-  REQUIRED
-  COMPONENTS glslang shaderc_combined
-  GLOBAL)
+find_package(Vulkan REQUIRED GLOBAL)
 
 # **********************************************************
 # glfw
