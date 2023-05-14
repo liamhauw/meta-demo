@@ -36,14 +36,16 @@ Rendering::Rendering() {
   MakePipeline();
 }
 
-Rendering::~Rendering() {
-  device_.waitIdle();
-}
+Rendering::~Rendering() { device_.waitIdle(); }
 
 void Rendering::Tick() {
   glfwPollEvents();
 
-  device_.waitForFences(*(fence_[current_frame_]), VK_TRUE, UINT64_MAX);
+  vk::Result res{
+      device_.waitForFences(*(fence_[current_frame_]), VK_TRUE, UINT64_MAX)};
+  if (res != vk::Result::eSuccess) {
+    throw std::runtime_error{"fail to wait for fences"};
+  }
 
   vk::Result result;
   uint32_t image_index;
@@ -73,10 +75,11 @@ void Rendering::Tick() {
   ubo.view =
       glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f),
                   glm::vec3(0.0f, 0.0f, 1.0f));
-  ubo.proj = glm::perspective(
-      glm::radians(45.0f),
-      swapchain_data_.extent.width / (float)swapchain_data_.extent.height, 0.1f,
-      10.0f);
+  ubo.proj =
+      glm::perspective(glm::radians(45.0f),
+                       static_cast<float>(swapchain_data_.extent.width) /
+                           static_cast<float>(swapchain_data_.extent.height),
+                       0.1f, 10.0f);
   ubo.proj[1][1] *= -1;
   memcpy(uniform_buffer_mapped_[current_frame_], &ubo, sizeof(ubo));
 
@@ -404,8 +407,8 @@ void Rendering::MakeSyncObjects() {
     fence_.emplace_back(device_, fence_create_info);
     image_available_semaphores_.emplace_back(device_, semaphore_create_info);
     render_finished_semaphores_.emplace_back(device_, semaphore_create_info);
-  };
-};
+  }
+}
 
 void Rendering::MakeCommandPool() {
   command_pool_ =
@@ -610,7 +613,7 @@ void Rendering::MakeColorImage() {
                               color_image_data_.format,
                               {},
                               {vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1}}};
-};
+}
 
 void Rendering::MakeRenderPass() {
   std::vector<vk::AttachmentDescription> attachment_descriptions;
@@ -773,7 +776,7 @@ void Rendering::MakeDescriptorSet() {
         }};
 
     device_.updateDescriptorSets(descriptir_writes, nullptr);
-  };
+  }
 }
 
 void Rendering::MakePipelineLayout() {
@@ -971,7 +974,7 @@ void Rendering::MakeUniformBuffer() {
 
     uniform_buffer_mapped_[i] = static_cast<uint8_t*>(
         uniform_buffer_data_[i].device_memory.mapMemory(0, buffer_size));
-  };
+  }
 }
 
 // ------------------------------
@@ -1090,7 +1093,7 @@ void Rendering::CopyBuffer(const vk::raii::Buffer& src_buffer,
   command_buffer.copyBuffer(*src_buffer, *dst_buffer, buffer_copy);
 
   EndSingleTimeCommands(command_buffer);
-};
+}
 
 vk::raii::CommandBuffer Rendering::BeginSingleTimeCommands() {
   vk::CommandBufferAllocateInfo command_buffer_allocate_info{
@@ -1105,7 +1108,8 @@ vk::raii::CommandBuffer Rendering::BeginSingleTimeCommands() {
   command_buffer.begin(command_begin_info);
 
   return command_buffer;
-};
+}
+
 void Rendering::EndSingleTimeCommands(
     const vk::raii::CommandBuffer& command_buffer) {
   command_buffer.end();
@@ -1296,7 +1300,8 @@ void Rendering::MakeTextureImage() {
                    texture_image_data_.format,
                    {},
                    {vk::ImageAspectFlagBits::eColor, 0, mip_levels_, 0, 1}}};
-};
+}
+
 void Rendering::MakeTextureSampler() {
   vk::PhysicalDeviceProperties physical_device_properties{
       physical_device_.getProperties()};
@@ -1356,6 +1361,6 @@ void Rendering::RecreateSwapchin() {
   MakeColorImage();
   MakeDepthImage();
   MakeFramebuffer();
-};
+}
 
 }  // namespace luka

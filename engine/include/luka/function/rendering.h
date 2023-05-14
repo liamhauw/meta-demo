@@ -1,8 +1,5 @@
 #pragma once
 
-#include <glslang/Public/ResourceLimits.h>
-#include <glslang/SPIRV/GlslangToSpv.h>
-
 #include <algorithm>
 #include <cassert>
 #include <iostream>
@@ -29,7 +26,7 @@ class Rendering {
   ~Rendering();
 
   void Tick();
-  bool ShouldClose() const;
+  [[nodiscard]] bool ShouldClose() const;
 
  private:
   void MakeInstance();
@@ -62,7 +59,7 @@ class Rendering {
 
   void RecreateSwapchin();
 
-  std::pair<vk::Result, uint32_t> SwapchainNextImageWrapper(
+  static std::pair<vk::Result, uint32_t> SwapchainNextImageWrapper(
       const vk::raii::SwapchainKHR& swapchain, uint64_t timeout,
       vk::Semaphore semaphore, vk::Fence fence) {
     uint32_t image_index;
@@ -75,8 +72,8 @@ class Rendering {
     return std::make_pair(result, image_index);
   }
 
-  vk::Result QueuePresentWrapper(const vk::raii::Queue& queue,
-                                 const vk::PresentInfoKHR& present_info) {
+  static vk::Result QueuePresentWrapper(
+      const vk::raii::Queue& queue, const vk::PresentInfoKHR& present_info) {
     return static_cast<vk::Result>(queue.getDispatcher()->vkQueuePresentKHR(
         static_cast<VkQueue>(*queue),
         reinterpret_cast<const VkPresentInfoKHR*>(&present_info)));
@@ -198,4 +195,5 @@ class Rendering {
   vk::raii::PipelineCache pipeline_cache_{nullptr};
   vk::raii::Pipeline pipeline_{nullptr};
 };
-};  // namespace luka
+
+}  // namespace luka

@@ -3,7 +3,6 @@ cmake-build-debug
 cmake-build-release
 
 .vscode
-.idea
 .DS_Store
 
 generated

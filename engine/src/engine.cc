@@ -1,6 +1,5 @@
 #include "luka/engine.h"
 
-#include <iostream>
 #include <memory>
 
 namespace luka {
@@ -19,7 +18,5 @@ void Engine::Run() {
     function_->Tick();
   }
 }
-
-
 
 }  // namespace luka
