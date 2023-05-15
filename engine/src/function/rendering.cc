@@ -49,7 +49,7 @@ void Rendering::Tick() {
 
   vk::Result result;
   uint32_t image_index;
-  std::tie(result, image_index) = SwapchainNextImageWrapper(
+  std::tie(result, image_index) = AcquireNextImageWrapper(
       swapchain_data_.swapchain, UINT64_MAX,
       *image_available_semaphores_[current_frame_], nullptr);
 
@@ -691,211 +691,6 @@ void Rendering::MakeFramebuffer() {
   }
 }
 
-void Rendering::MakeShaderModule() {
-  vertex_shader_module_ = MakeShaderModule(
-      root_directory + "resource/shaders/generated/shader.vert.spirv");
-  fragment_shader_module_ = MakeShaderModule(
-      root_directory + "resource/shaders/generated/shader.frag.spirv");
-}
-
-void Rendering::MakeDescriptorSetLayout() {
-  std::vector<std::tuple<vk::DescriptorType, uint32_t, vk::ShaderStageFlags>>
-      bingding_data{{vk::DescriptorType::eUniformBuffer, 1,
-                     vk::ShaderStageFlagBits::eVertex},
-                    {vk::DescriptorType::eCombinedImageSampler, 1,
-                     vk::ShaderStageFlagBits::eFragment}};
-
-  std::vector<vk::DescriptorSetLayoutBinding> bindings(bingding_data.size());
-
-  for (uint32_t i = 0; i < bingding_data.size(); ++i) {
-    bindings[i] = vk::DescriptorSetLayoutBinding{
-        static_cast<uint32_t>(i), std::get<0>(bingding_data[i]),
-        std::get<1>(bingding_data[i]), std::get<2>(bingding_data[i])};
-  }
-
-  vk::DescriptorSetLayoutCreateInfo descriptor_set_layout_create_info{{},
-                                                                      bindings};
-
-  descriptor_set_layout_ =
-      vk::raii::DescriptorSetLayout{device_, descriptor_set_layout_create_info};
-}
-
-void Rendering::MakeDescriptorPool() {
-  std::vector<vk::DescriptorPoolSize> pool_sizes{
-      {vk::DescriptorType::eUniformBuffer,
-       static_cast<uint32_t>(kFramesInFlight)},
-      {vk::DescriptorType::eCombinedImageSampler,
-       static_cast<uint32_t>(kFramesInFlight)}};
-
-  uint32_t max_sets{std::accumulate(
-      pool_sizes.begin(), pool_sizes.end(), static_cast<uint32_t>(0),
-      [](uint32_t sum, const vk::DescriptorPoolSize& dps) {
-        return sum + dps.descriptorCount;
-      })};
-
-  vk::DescriptorPoolCreateInfo descriptor_pool_create_info{
-      vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet, max_sets,
-      pool_sizes};
-  descriptor_pool_ =
-      vk::raii::DescriptorPool{device_, descriptor_pool_create_info};
-}
-
-void Rendering::MakeDescriptorSet() {
-  std::vector<vk::DescriptorSetLayout> descriptor_set_layouts(
-      kFramesInFlight, *descriptor_set_layout_);
-
-  descriptor_sets_ = std::move(vk::raii::DescriptorSets{
-      device_, {*descriptor_pool_, descriptor_set_layouts}});
-
-  for (uint32_t i = 0; i < kFramesInFlight; ++i) {
-    vk::DescriptorBufferInfo buffer_info{*(uniform_buffer_data_[i].buffer), 0,
-                                         sizeof(UniformBufferObject)};
-
-    vk::DescriptorImageInfo image_info{*sampler_,
-                                       *(texture_image_data_.image_view),
-                                       vk::ImageLayout::eShaderReadOnlyOptimal};
-
-    std::array<vk::WriteDescriptorSet, 2> descriptir_writes{
-        vk::WriteDescriptorSet{
-            *(descriptor_sets_[i]),
-            0,
-            0,
-            1,
-            vk::DescriptorType::eUniformBuffer,
-            nullptr,
-            &buffer_info,
-        },
-        vk::WriteDescriptorSet{
-            *(descriptor_sets_[i]),
-            1,
-            0,
-            1,
-            vk::DescriptorType::eCombinedImageSampler,
-            &image_info,
-            nullptr,
-        }};
-
-    device_.updateDescriptorSets(descriptir_writes, nullptr);
-  }
-}
-
-void Rendering::MakePipelineLayout() {
-  pipeline_layout_ =
-      vk::raii::PipelineLayout{device_, {{}, *descriptor_set_layout_}};
-}
-
-void Rendering::MakePipelineCache() {
-  pipeline_cache_ = vk::raii::PipelineCache{device_, {}};
-}
-
-void Rendering::MakePipeline() {
-  std::vector<vk::PipelineShaderStageCreateInfo> shader_stage_create_infos{
-      {{},
-       vk::ShaderStageFlagBits::eVertex,
-       *vertex_shader_module_,
-       "main",
-       nullptr},
-      {{},
-       vk::ShaderStageFlagBits::eFragment,
-       *fragment_shader_module_,
-       "main",
-       nullptr}};
-
-  vk::PipelineVertexInputStateCreateInfo vertex_input_state_create_info;
-
-  uint32_t vertex_stride{static_cast<uint32_t>(sizeof(Vertex))};
-
-  vk::VertexInputBindingDescription vertex_input_binding_description{
-      0, vertex_stride, vk::VertexInputRate::eVertex};
-
-  std::vector<vk::VertexInputAttributeDescription>
-      vertex_input_attribute_descriptions;
-
-  std::vector<std::pair<vk::Format, uint32_t>>
-      vertex_input_attribute_format_offset{
-          {vk::Format::eR32G32B32Sfloat, offsetof(Vertex, pos)},
-          {vk::Format::eR32G32B32Sfloat, offsetof(Vertex, color)},
-          {vk::Format::eR32G32Sfloat, offsetof(Vertex, tex_coord)},
-      };
-
-  vertex_input_attribute_descriptions.reserve(
-      vertex_input_attribute_format_offset.size());
-
-  for (uint32_t i = 0; i < vertex_input_attribute_format_offset.size(); i++) {
-    vertex_input_attribute_descriptions.emplace_back(
-        i, 0, vertex_input_attribute_format_offset[i].first,
-        vertex_input_attribute_format_offset[i].second);
-  }
-  vertex_input_state_create_info.setVertexBindingDescriptions(
-      vertex_input_binding_description);
-  vertex_input_state_create_info.setVertexAttributeDescriptions(
-      vertex_input_attribute_descriptions);
-
-  vk::PipelineInputAssemblyStateCreateInfo InputAssemblyStateCreateInfo{
-      {}, vk::PrimitiveTopology::eTriangleList, VK_FALSE};
-
-  vk::PipelineViewportStateCreateInfo viewport_state_create_info{
-      {}, 1, nullptr, 1, nullptr};
-
-  vk::PipelineRasterizationStateCreateInfo rasterization_state_create_info{
-      {},
-      VK_FALSE,
-      VK_FALSE,
-      vk::PolygonMode::eFill,
-      vk::CullModeFlagBits::eBack,
-      vk::FrontFace::eClockwise,
-      VK_FALSE,
-      0.0f,
-      0.0f,
-      0.0f,
-      1.0f};
-
-  vk::PipelineMultisampleStateCreateInfo multisample_state_create_info{
-      {}, sample_count_};
-
-  vk::PipelineDepthStencilStateCreateInfo depth_stencil_state_create_info{
-      {}, VK_TRUE, VK_TRUE, vk::CompareOp::eLess, VK_FALSE, VK_FALSE,
-  };
-
-  vk::ColorComponentFlags color_component_flags{
-      vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG |
-      vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA};
-  vk::PipelineColorBlendAttachmentState color_blend_attachment_state{
-      VK_FALSE,          vk::BlendFactor::eZero, vk::BlendFactor::eZero,
-      vk::BlendOp::eAdd, vk::BlendFactor::eZero, vk::BlendFactor::eZero,
-      vk::BlendOp::eAdd, color_component_flags};
-
-  vk::PipelineColorBlendStateCreateInfo color_blend_state_create_info{
-      {},
-      VK_FALSE,
-      vk::LogicOp::eCopy,
-      color_blend_attachment_state,
-      {{0.0f, 0.0f, 0.0f, 0.0f}}};
-
-  std::array<vk::DynamicState, 2> dynamic_states{vk::DynamicState::eViewport,
-                                                 vk::DynamicState::eScissor};
-  vk::PipelineDynamicStateCreateInfo dynamic_state_create_info{{},
-                                                               dynamic_states};
-
-  vk::GraphicsPipelineCreateInfo graphics_pipeline_create_info{
-      {},
-      shader_stage_create_infos,
-      &vertex_input_state_create_info,
-      &InputAssemblyStateCreateInfo,
-      nullptr,
-      &viewport_state_create_info,
-      &rasterization_state_create_info,
-      &multisample_state_create_info,
-      &depth_stencil_state_create_info,
-      &color_blend_state_create_info,
-      &dynamic_state_create_info,
-      *pipeline_layout_,
-      *render_pass_};
-
-  pipeline_ = vk::raii::Pipeline{device_, pipeline_cache_,
-                                 graphics_pipeline_create_info};
-}
-
 void Rendering::MakeVertexBuffer() {
   LoadModel(root_directory + "resource/models/viking_room.obj", vertices_,
             indices_);
@@ -977,148 +772,6 @@ void Rendering::MakeUniformBuffer() {
   }
 }
 
-// ------------------------------
-VKAPI_ATTR VkBool32 VKAPI_CALL Rendering::DebugUtilsMessengerCallback(
-    VkDebugUtilsMessageSeverityFlagBitsEXT message_severity,
-    VkDebugUtilsMessageTypeFlagsEXT message_types,
-    VkDebugUtilsMessengerCallbackDataEXT const* pCallbackData,
-    void* /*pUserData*/) {
-#ifndef NDEBUG
-  if (pCallbackData->messageIdNumber == 648835635) {
-    // UNASSIGNED-khronos-Validation-debug-build-warning-message
-    return VK_FALSE;
-  }
-  if (pCallbackData->messageIdNumber == 767975156) {
-    // UNASSIGNED-BestPractices-vkCreateInstance-specialuse-extension
-    return VK_FALSE;
-  }
-#endif
-
-  std::cout << vk::to_string(
-                   static_cast<vk::DebugUtilsMessageSeverityFlagBitsEXT>(
-                       message_severity))
-            << ": "
-            << vk::to_string(static_cast<vk::DebugUtilsMessageTypeFlagsEXT>(
-                   message_types))
-            << ":\n";
-  std::cout << std::string("\t") << "message id name   = <"
-            << pCallbackData->pMessageIdName << ">\n";
-  std::cout << std::string("\t")
-            << "message id number = " << pCallbackData->messageIdNumber << "\n";
-  std::cout << std::string("\t") << "message         = <"
-            << pCallbackData->pMessage << ">\n";
-  if (0 < pCallbackData->queueLabelCount) {
-    std::cout << std::string("\t") << "queue labels:\n";
-    for (uint32_t i = 0; i < pCallbackData->queueLabelCount; i++) {
-      std::cout << std::string("\t\t") << "label_name = <"
-                << pCallbackData->pQueueLabels[i].pLabelName << ">\n";
-    }
-  }
-  if (0 < pCallbackData->cmdBufLabelCount) {
-    std::cout << std::string("\t") << "command buffer labels:\n";
-    for (uint32_t i = 0; i < pCallbackData->cmdBufLabelCount; i++) {
-      std::cout << std::string("\t\t") << "label name = <"
-                << pCallbackData->pCmdBufLabels[i].pLabelName << ">\n";
-    }
-  }
-  if (0 < pCallbackData->objectCount) {
-    std::cout << std::string("\t") << "objects:\n";
-    for (uint32_t i = 0; i < pCallbackData->objectCount; i++) {
-      std::cout << std::string("\t\t") << "object " << i << "\n";
-      std::cout << std::string("\t\t\t") << "object type   = "
-                << vk::to_string(static_cast<vk::ObjectType>(
-                       pCallbackData->pObjects[i].objectType))
-                << "\n";
-      std::cout << std::string("\t\t\t")
-                << "object handle = " << pCallbackData->pObjects[i].objectHandle
-                << "\n";
-      if (pCallbackData->pObjects[i].pObjectName) {
-        std::cout << std::string("\t\t\t") << "object name   = <"
-                  << pCallbackData->pObjects[i].pObjectName << ">\n";
-      }
-    }
-  }
-  return VK_TRUE;
-}
-
-void Rendering::FramebufferSizeCallback(GLFWwindow* window, int width,
-                                        int height) {
-  auto rendering{
-      reinterpret_cast<Rendering*>(glfwGetWindowUserPointer(window))};
-  rendering->framebuffer_resized_ = true;
-}
-
-vk::raii::DeviceMemory Rendering::AllocateDeviceMemory(
-    const vk::MemoryRequirements& memory_requirements,
-    vk::MemoryPropertyFlags memory_properties_flags) {
-  vk::PhysicalDeviceMemoryProperties memory_properties{
-      physical_device_.getMemoryProperties()};
-
-  uint32_t memory_type_bits{memory_requirements.memoryTypeBits};
-
-  uint32_t type_index{static_cast<uint32_t>(~0)};
-  for (uint32_t i = 0; i < memory_properties.memoryTypeCount; i++) {
-    if ((memory_type_bits & 1) &&
-        ((memory_properties.memoryTypes[i].propertyFlags &
-          memory_properties_flags) == memory_properties_flags)) {
-      type_index = i;
-      break;
-    }
-    memory_type_bits >>= 1;
-  }
-  assert(type_index != static_cast<uint32_t>(~0));
-
-  vk::MemoryAllocateInfo memory_allocate_info{memory_requirements.size,
-                                              type_index};
-
-  return vk::raii::DeviceMemory{device_, memory_allocate_info};
-}
-
-vk::raii::ShaderModule Rendering::MakeShaderModule(
-    const std::string& shader_file) {
-  std::vector<char> buffer{ReadFile(shader_file)};
-
-  vk::ShaderModuleCreateInfo shader_module_create_info{
-      {}, buffer.size(), reinterpret_cast<const uint32_t*>(buffer.data())};
-
-  return vk::raii::ShaderModule{device_, shader_module_create_info};
-}
-void Rendering::CopyBuffer(const vk::raii::Buffer& src_buffer,
-                           const vk::raii::Buffer& dst_buffer,
-                           vk::DeviceSize size) {
-  vk::raii::CommandBuffer command_buffer{BeginSingleTimeCommands()};
-
-  vk::BufferCopy buffer_copy{0, 0, size};
-
-  command_buffer.copyBuffer(*src_buffer, *dst_buffer, buffer_copy);
-
-  EndSingleTimeCommands(command_buffer);
-}
-
-vk::raii::CommandBuffer Rendering::BeginSingleTimeCommands() {
-  vk::CommandBufferAllocateInfo command_buffer_allocate_info{
-      *command_pool_, vk::CommandBufferLevel::ePrimary, 1};
-
-  vk::raii::CommandBuffer command_buffer = std::move(
-      vk::raii::CommandBuffers{device_, command_buffer_allocate_info}.front());
-
-  vk::CommandBufferBeginInfo command_begin_info{
-      vk::CommandBufferUsageFlagBits::eOneTimeSubmit};
-
-  command_buffer.begin(command_begin_info);
-
-  return command_buffer;
-}
-
-void Rendering::EndSingleTimeCommands(
-    const vk::raii::CommandBuffer& command_buffer) {
-  command_buffer.end();
-
-  vk::SubmitInfo submit_info{nullptr, nullptr, *command_buffer};
-  graphics_queue_.submit(submit_info, nullptr);
-
-  graphics_queue_.waitIdle();
-}
 void Rendering::MakeTextureImage() {
   // load texture
   int tex_width, tex_height, tex_channels;
@@ -1325,6 +978,213 @@ void Rendering::MakeTextureSampler() {
                    vk::BorderColor::eIntOpaqueBlack,
                    VK_FALSE}};
 }
+
+void Rendering::MakeShaderModule() {
+  vertex_shader_module_ = MakeShaderModule(
+      root_directory + "resource/shaders/generated/shader.vert.spirv");
+  fragment_shader_module_ = MakeShaderModule(
+      root_directory + "resource/shaders/generated/shader.frag.spirv");
+}
+
+void Rendering::MakeDescriptorSetLayout() {
+  std::vector<std::tuple<vk::DescriptorType, uint32_t, vk::ShaderStageFlags>>
+      bingding_data{{vk::DescriptorType::eUniformBuffer, 1,
+                     vk::ShaderStageFlagBits::eVertex},
+                    {vk::DescriptorType::eCombinedImageSampler, 1,
+                     vk::ShaderStageFlagBits::eFragment}};
+
+  std::vector<vk::DescriptorSetLayoutBinding> bindings(bingding_data.size());
+
+  for (uint32_t i = 0; i < bingding_data.size(); ++i) {
+    bindings[i] = vk::DescriptorSetLayoutBinding{
+        static_cast<uint32_t>(i), std::get<0>(bingding_data[i]),
+        std::get<1>(bingding_data[i]), std::get<2>(bingding_data[i])};
+  }
+
+  vk::DescriptorSetLayoutCreateInfo descriptor_set_layout_create_info{{},
+                                                                      bindings};
+
+  descriptor_set_layout_ =
+      vk::raii::DescriptorSetLayout{device_, descriptor_set_layout_create_info};
+}
+
+void Rendering::MakeDescriptorPool() {
+  std::vector<vk::DescriptorPoolSize> pool_sizes{
+      {vk::DescriptorType::eUniformBuffer,
+       static_cast<uint32_t>(kFramesInFlight)},
+      {vk::DescriptorType::eCombinedImageSampler,
+       static_cast<uint32_t>(kFramesInFlight)}};
+
+  uint32_t max_sets{std::accumulate(
+      pool_sizes.begin(), pool_sizes.end(), static_cast<uint32_t>(0),
+      [](uint32_t sum, const vk::DescriptorPoolSize& dps) {
+        return sum + dps.descriptorCount;
+      })};
+
+  vk::DescriptorPoolCreateInfo descriptor_pool_create_info{
+      vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet, max_sets,
+      pool_sizes};
+  descriptor_pool_ =
+      vk::raii::DescriptorPool{device_, descriptor_pool_create_info};
+}
+
+void Rendering::MakeDescriptorSet() {
+  std::vector<vk::DescriptorSetLayout> descriptor_set_layouts(
+      kFramesInFlight, *descriptor_set_layout_);
+
+  descriptor_sets_ = std::move(vk::raii::DescriptorSets{
+      device_, {*descriptor_pool_, descriptor_set_layouts}});
+
+  for (uint32_t i = 0; i < kFramesInFlight; ++i) {
+    vk::DescriptorBufferInfo buffer_info{*(uniform_buffer_data_[i].buffer), 0,
+                                         sizeof(UniformBufferObject)};
+
+    vk::DescriptorImageInfo image_info{*sampler_,
+                                       *(texture_image_data_.image_view),
+                                       vk::ImageLayout::eShaderReadOnlyOptimal};
+
+    std::array<vk::WriteDescriptorSet, 2> descriptir_writes{
+        vk::WriteDescriptorSet{
+            *(descriptor_sets_[i]),
+            0,
+            0,
+            1,
+            vk::DescriptorType::eUniformBuffer,
+            nullptr,
+            &buffer_info,
+        },
+        vk::WriteDescriptorSet{
+            *(descriptor_sets_[i]),
+            1,
+            0,
+            1,
+            vk::DescriptorType::eCombinedImageSampler,
+            &image_info,
+            nullptr,
+        }};
+
+    device_.updateDescriptorSets(descriptir_writes, nullptr);
+  }
+}
+
+void Rendering::MakePipelineLayout() {
+  pipeline_layout_ =
+      vk::raii::PipelineLayout{device_, {{}, *descriptor_set_layout_}};
+}
+
+void Rendering::MakePipelineCache() {
+  pipeline_cache_ = vk::raii::PipelineCache{device_, {}};
+}
+
+void Rendering::MakePipeline() {
+  std::vector<vk::PipelineShaderStageCreateInfo> shader_stage_create_infos{
+      {{},
+       vk::ShaderStageFlagBits::eVertex,
+       *vertex_shader_module_,
+       "main",
+       nullptr},
+      {{},
+       vk::ShaderStageFlagBits::eFragment,
+       *fragment_shader_module_,
+       "main",
+       nullptr}};
+
+  vk::PipelineVertexInputStateCreateInfo vertex_input_state_create_info;
+
+  uint32_t vertex_stride{static_cast<uint32_t>(sizeof(Vertex))};
+
+  vk::VertexInputBindingDescription vertex_input_binding_description{
+      0, vertex_stride, vk::VertexInputRate::eVertex};
+
+  std::vector<vk::VertexInputAttributeDescription>
+      vertex_input_attribute_descriptions;
+
+  std::vector<std::pair<vk::Format, uint32_t>>
+      vertex_input_attribute_format_offset{
+          {vk::Format::eR32G32B32Sfloat, offsetof(Vertex, pos)},
+          {vk::Format::eR32G32B32Sfloat, offsetof(Vertex, color)},
+          {vk::Format::eR32G32Sfloat, offsetof(Vertex, tex_coord)},
+      };
+
+  vertex_input_attribute_descriptions.reserve(
+      vertex_input_attribute_format_offset.size());
+
+  for (uint32_t i = 0; i < vertex_input_attribute_format_offset.size(); i++) {
+    vertex_input_attribute_descriptions.emplace_back(
+        i, 0, vertex_input_attribute_format_offset[i].first,
+        vertex_input_attribute_format_offset[i].second);
+  }
+  vertex_input_state_create_info.setVertexBindingDescriptions(
+      vertex_input_binding_description);
+  vertex_input_state_create_info.setVertexAttributeDescriptions(
+      vertex_input_attribute_descriptions);
+
+  vk::PipelineInputAssemblyStateCreateInfo InputAssemblyStateCreateInfo{
+      {}, vk::PrimitiveTopology::eTriangleList, VK_FALSE};
+
+  vk::PipelineViewportStateCreateInfo viewport_state_create_info{
+      {}, 1, nullptr, 1, nullptr};
+
+  vk::PipelineRasterizationStateCreateInfo rasterization_state_create_info{
+      {},
+      VK_FALSE,
+      VK_FALSE,
+      vk::PolygonMode::eFill,
+      vk::CullModeFlagBits::eBack,
+      vk::FrontFace::eClockwise,
+      VK_FALSE,
+      0.0f,
+      0.0f,
+      0.0f,
+      1.0f};
+
+  vk::PipelineMultisampleStateCreateInfo multisample_state_create_info{
+      {}, sample_count_};
+
+  vk::PipelineDepthStencilStateCreateInfo depth_stencil_state_create_info{
+      {}, VK_TRUE, VK_TRUE, vk::CompareOp::eLess, VK_FALSE, VK_FALSE,
+  };
+
+  vk::ColorComponentFlags color_component_flags{
+      vk::ColorComponentFlagBits::eR | vk::ColorComponentFlagBits::eG |
+      vk::ColorComponentFlagBits::eB | vk::ColorComponentFlagBits::eA};
+  vk::PipelineColorBlendAttachmentState color_blend_attachment_state{
+      VK_FALSE,          vk::BlendFactor::eZero, vk::BlendFactor::eZero,
+      vk::BlendOp::eAdd, vk::BlendFactor::eZero, vk::BlendFactor::eZero,
+      vk::BlendOp::eAdd, color_component_flags};
+
+  vk::PipelineColorBlendStateCreateInfo color_blend_state_create_info{
+      {},
+      VK_FALSE,
+      vk::LogicOp::eCopy,
+      color_blend_attachment_state,
+      {{0.0f, 0.0f, 0.0f, 0.0f}}};
+
+  std::array<vk::DynamicState, 2> dynamic_states{vk::DynamicState::eViewport,
+                                                 vk::DynamicState::eScissor};
+  vk::PipelineDynamicStateCreateInfo dynamic_state_create_info{{},
+                                                               dynamic_states};
+
+  vk::GraphicsPipelineCreateInfo graphics_pipeline_create_info{
+      {},
+      shader_stage_create_infos,
+      &vertex_input_state_create_info,
+      &InputAssemblyStateCreateInfo,
+      nullptr,
+      &viewport_state_create_info,
+      &rasterization_state_create_info,
+      &multisample_state_create_info,
+      &depth_stencil_state_create_info,
+      &color_blend_state_create_info,
+      &dynamic_state_create_info,
+      *pipeline_layout_,
+      *render_pass_};
+
+  pipeline_ = vk::raii::Pipeline{device_, pipeline_cache_,
+                                 graphics_pipeline_create_info};
+}
+
+// ------------------------------
 void Rendering::RecreateSwapchin() {
   int width{0};
   int height{0};
@@ -1363,4 +1223,146 @@ void Rendering::RecreateSwapchin() {
   MakeFramebuffer();
 }
 
+VKAPI_ATTR VkBool32 VKAPI_CALL Rendering::DebugUtilsMessengerCallback(
+    VkDebugUtilsMessageSeverityFlagBitsEXT message_severity,
+    VkDebugUtilsMessageTypeFlagsEXT message_types,
+    VkDebugUtilsMessengerCallbackDataEXT const* pCallbackData,
+    void* /*pUserData*/) {
+#ifndef NDEBUG
+  if (pCallbackData->messageIdNumber == 648835635) {
+    // UNASSIGNED-khronos-Validation-debug-build-warning-message
+    return VK_FALSE;
+  }
+  if (pCallbackData->messageIdNumber == 767975156) {
+    // UNASSIGNED-BestPractices-vkCreateInstance-specialuse-extension
+    return VK_FALSE;
+  }
+#endif
+
+  std::cout << vk::to_string(
+                   static_cast<vk::DebugUtilsMessageSeverityFlagBitsEXT>(
+                       message_severity))
+            << ": "
+            << vk::to_string(static_cast<vk::DebugUtilsMessageTypeFlagsEXT>(
+                   message_types))
+            << ":\n";
+  std::cout << std::string("\t") << "message id name   = <"
+            << pCallbackData->pMessageIdName << ">\n";
+  std::cout << std::string("\t")
+            << "message id number = " << pCallbackData->messageIdNumber << "\n";
+  std::cout << std::string("\t") << "message         = <"
+            << pCallbackData->pMessage << ">\n";
+  if (0 < pCallbackData->queueLabelCount) {
+    std::cout << std::string("\t") << "queue labels:\n";
+    for (uint32_t i = 0; i < pCallbackData->queueLabelCount; i++) {
+      std::cout << std::string("\t\t") << "label_name = <"
+                << pCallbackData->pQueueLabels[i].pLabelName << ">\n";
+    }
+  }
+  if (0 < pCallbackData->cmdBufLabelCount) {
+    std::cout << std::string("\t") << "command buffer labels:\n";
+    for (uint32_t i = 0; i < pCallbackData->cmdBufLabelCount; i++) {
+      std::cout << std::string("\t\t") << "label name = <"
+                << pCallbackData->pCmdBufLabels[i].pLabelName << ">\n";
+    }
+  }
+  if (0 < pCallbackData->objectCount) {
+    std::cout << std::string("\t") << "objects:\n";
+    for (uint32_t i = 0; i < pCallbackData->objectCount; i++) {
+      std::cout << std::string("\t\t") << "object " << i << "\n";
+      std::cout << std::string("\t\t\t") << "object type   = "
+                << vk::to_string(static_cast<vk::ObjectType>(
+                       pCallbackData->pObjects[i].objectType))
+                << "\n";
+      std::cout << std::string("\t\t\t")
+                << "object handle = " << pCallbackData->pObjects[i].objectHandle
+                << "\n";
+      if (pCallbackData->pObjects[i].pObjectName) {
+        std::cout << std::string("\t\t\t") << "object name   = <"
+                  << pCallbackData->pObjects[i].pObjectName << ">\n";
+      }
+    }
+  }
+  return VK_TRUE;
+}
+
+void Rendering::FramebufferSizeCallback(GLFWwindow* window, int width,
+                                        int height) {
+  auto rendering{
+      reinterpret_cast<Rendering*>(glfwGetWindowUserPointer(window))};
+  rendering->framebuffer_resized_ = true;
+}
+
+vk::raii::DeviceMemory Rendering::AllocateDeviceMemory(
+    const vk::MemoryRequirements& memory_requirements,
+    vk::MemoryPropertyFlags memory_properties_flags) {
+  vk::PhysicalDeviceMemoryProperties memory_properties{
+      physical_device_.getMemoryProperties()};
+
+  uint32_t memory_type_bits{memory_requirements.memoryTypeBits};
+
+  uint32_t type_index{static_cast<uint32_t>(~0)};
+  for (uint32_t i = 0; i < memory_properties.memoryTypeCount; i++) {
+    if ((memory_type_bits & 1) &&
+        ((memory_properties.memoryTypes[i].propertyFlags &
+          memory_properties_flags) == memory_properties_flags)) {
+      type_index = i;
+      break;
+    }
+    memory_type_bits >>= 1;
+  }
+  assert(type_index != static_cast<uint32_t>(~0));
+
+  vk::MemoryAllocateInfo memory_allocate_info{memory_requirements.size,
+                                              type_index};
+
+  return vk::raii::DeviceMemory{device_, memory_allocate_info};
+}
+
+vk::raii::CommandBuffer Rendering::BeginSingleTimeCommands() {
+  vk::CommandBufferAllocateInfo command_buffer_allocate_info{
+      *command_pool_, vk::CommandBufferLevel::ePrimary, 1};
+
+  vk::raii::CommandBuffer command_buffer = std::move(
+      vk::raii::CommandBuffers{device_, command_buffer_allocate_info}.front());
+
+  vk::CommandBufferBeginInfo command_begin_info{
+      vk::CommandBufferUsageFlagBits::eOneTimeSubmit};
+
+  command_buffer.begin(command_begin_info);
+
+  return command_buffer;
+}
+
+void Rendering::EndSingleTimeCommands(
+    const vk::raii::CommandBuffer& command_buffer) {
+  command_buffer.end();
+
+  vk::SubmitInfo submit_info{nullptr, nullptr, *command_buffer};
+  graphics_queue_.submit(submit_info, nullptr);
+
+  graphics_queue_.waitIdle();
+}
+
+vk::raii::ShaderModule Rendering::MakeShaderModule(
+    const std::string& shader_file) {
+  std::vector<char> buffer{ReadFile(shader_file)};
+
+  vk::ShaderModuleCreateInfo shader_module_create_info{
+      {}, buffer.size(), reinterpret_cast<const uint32_t*>(buffer.data())};
+
+  return vk::raii::ShaderModule{device_, shader_module_create_info};
+}
+
+void Rendering::CopyBuffer(const vk::raii::Buffer& src_buffer,
+                           const vk::raii::Buffer& dst_buffer,
+                           vk::DeviceSize size) {
+  vk::raii::CommandBuffer command_buffer{BeginSingleTimeCommands()};
+
+  vk::BufferCopy buffer_copy{0, 0, size};
+
+  command_buffer.copyBuffer(*src_buffer, *dst_buffer, buffer_copy);
+
+  EndSingleTimeCommands(command_buffer);
+}
 }  // namespace luka

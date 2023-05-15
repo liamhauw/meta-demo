@@ -53,8 +53,8 @@ add_library(luka_engine::resource ALIAS resource)
 add_library(function STATIC)
 target_sources(function
         PRIVATE
-        src/function/function.cc
-        src/function/rendering.cc)
+        src/function/rendering.cc
+        src/function/function.cc)
 target_link_libraries(function
         PUBLIC
         luka_engine::resource
