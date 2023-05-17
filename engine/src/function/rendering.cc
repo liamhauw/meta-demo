@@ -172,12 +172,10 @@ void Rendering::MakeInstance() {
   required_extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
 #endif
 
-#ifndef NDEBUG
   const std::vector<vk::LayerProperties> layer_properties{
       context_.enumerateInstanceLayerProperties()};
   const std::vector<vk::ExtensionProperties> extension_properties{
       context_.enumerateInstanceExtensionProperties()};
-#endif
 
   std::vector<const char*> enabled_layers;
   std::vector<const char*> enabled_extensions;
