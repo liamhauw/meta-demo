@@ -5,6 +5,8 @@
 
 #include "luka/core/math.h"
 
+#include <stb_image.h>
+
 namespace luka {
 
 struct Vertex {
@@ -27,10 +29,9 @@ struct UniformBufferObject {
 void LoadModel(const std::string& model, std::vector<Vertex>& vertices,
                std::vector<uint32_t>& indices);
 
-
 class Resource {};
 
-};  // namespace luka
+}  // namespace luka
 
 namespace std {
 template <>

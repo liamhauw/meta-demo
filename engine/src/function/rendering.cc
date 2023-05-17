@@ -1,8 +1,5 @@
 #include "luka/function/rendering.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-
 namespace luka {
 
 Rendering::Rendering() {
@@ -155,8 +152,6 @@ bool Rendering::ShouldClose() const {
 }
 
 void Rendering::MakeInstance() {
-  vk::raii::Context context;
-
   vk::ApplicationInfo application_info{"luka", VK_MAKE_VERSION(1, 0, 0), "luka",
                                        VK_MAKE_VERSION(1, 0, 0),
                                        VK_API_VERSION_1_0};
@@ -179,9 +174,9 @@ void Rendering::MakeInstance() {
 
 #ifndef NDEBUG
   const std::vector<vk::LayerProperties> layer_properties{
-      context.enumerateInstanceLayerProperties()};
+      context_.enumerateInstanceLayerProperties()};
   const std::vector<vk::ExtensionProperties> extension_properties{
-      context.enumerateInstanceExtensionProperties()};
+      context_.enumerateInstanceExtensionProperties()};
 #endif
 
   std::vector<const char*> enabled_layers;
@@ -189,20 +184,23 @@ void Rendering::MakeInstance() {
 
   enabled_layers.reserve(required_layers.size());
   for (const char* layer : required_layers) {
-    assert(std::find_if(layer_properties.begin(), layer_properties.end(),
-                        [layer](const vk::LayerProperties& lp) {
-                          return (strcmp(layer, lp.layerName) == 0);
-                        }) != layer_properties.end());
+    if (std::find_if(layer_properties.begin(), layer_properties.end(),
+                     [layer](const vk::LayerProperties& lp) {
+                       return (strcmp(layer, lp.layerName) == 0);
+                     }) == layer_properties.end()) {
+      throw std::runtime_error{std::string{"fail to find "} + layer};
+    }
     enabled_layers.push_back(layer);
   }
 
   enabled_extensions.reserve(required_extensions.size());
   for (const char* extension : required_extensions) {
-    assert(std::find_if(extension_properties.begin(),
-                        extension_properties.end(),
-                        [extension](const vk::ExtensionProperties& ep) {
-                          return (strcmp(extension, ep.extensionName) == 0);
-                        }) != extension_properties.end());
+    if (std::find_if(extension_properties.begin(), extension_properties.end(),
+                     [extension](const vk::ExtensionProperties& ep) {
+                       return (strcmp(extension, ep.extensionName) == 0);
+                     }) == extension_properties.end()) {
+      throw std::runtime_error{std::string{"fail to find "} + extension};
+    }
     enabled_extensions.push_back(extension);
   }
 
@@ -257,7 +255,7 @@ void Rendering::MakeInstance() {
 #endif
 
   instance_ =
-      vk::raii::Instance{context, info_chain.get<vk::InstanceCreateInfo>()};
+      vk::raii::Instance{context_, info_chain.get<vk::InstanceCreateInfo>()};
 
 #ifndef NDEBUG
   vk::DebugUtilsMessengerCreateInfoEXT debug_utils_messenger_create_info{
@@ -269,7 +267,7 @@ void Rendering::MakeInstance() {
           vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation,
       &DebugUtilsMessengerCallback};
 
-  vk::raii::DebugUtilsMessengerEXT debug_utils_messenger{
+  debug_utils_messenger_ = vk::raii::DebugUtilsMessengerEXT{
       instance_, debug_utils_messenger_create_info};
 #endif
 }
@@ -319,7 +317,6 @@ void Rendering::MakePhysicalDevice() {
   // queue family
   std::vector<vk::QueueFamilyProperties> queue_family_properties{
       physical_device_.getQueueFamilyProperties()};
-  assert(queue_family_properties.size() < std::numeric_limits<uint32_t>::max());
 
   std::vector<vk::QueueFamilyProperties>::const_iterator
       graphics_queue_family_property{std::find_if(
@@ -327,7 +324,9 @@ void Rendering::MakePhysicalDevice() {
           [](vk::QueueFamilyProperties const& qfp) {
             return qfp.queueFlags & vk::QueueFlagBits::eGraphics;
           })};
-  assert(graphics_queue_family_property != queue_family_properties.end());
+  if (graphics_queue_family_property == queue_family_properties.end()) {
+    throw std::runtime_error{"fail to find required queue family"};
+  }
   uint32_t graphics_queue_family_index{static_cast<uint32_t>(std::distance(
       queue_family_properties.cbegin(), graphics_queue_family_property))};
 
@@ -430,7 +429,6 @@ void Rendering::MakeSwapchain() {
   std::vector<vk::SurfaceFormatKHR> surface_formats{
       physical_device_.getSurfaceFormatsKHR(*(surface_data_.surface))};
 
-  assert(!surface_formats.empty());
   vk::SurfaceFormatKHR picked_format{surface_formats[0]};
   if (surface_formats.size() == 1) {
     if (surface_formats[0].format == vk::Format::eUndefined) {
@@ -455,7 +453,6 @@ void Rendering::MakeSwapchain() {
       }
     }
   }
-  assert(picked_format.colorSpace == vk::ColorSpaceKHR::eSrgbNonlinear);
 
   swapchain_data_.format = picked_format.format;
 
@@ -618,7 +615,6 @@ void Rendering::MakeColorImage() {
 void Rendering::MakeRenderPass() {
   std::vector<vk::AttachmentDescription> attachment_descriptions;
 
-  assert(swapchain_data_.format != vk::Format::eUndefined);
   attachment_descriptions.emplace_back(
       vk::AttachmentDescriptionFlags{}, swapchain_data_.format, sample_count_,
       vk::AttachmentLoadOp::eClear, vk::AttachmentStoreOp::eStore,
@@ -1250,7 +1246,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL Rendering::DebugUtilsMessengerCallback(
             << pCallbackData->pMessageIdName << ">\n";
   std::cout << std::string("\t")
             << "message id number = " << pCallbackData->messageIdNumber << "\n";
-  std::cout << std::string("\t") << "message         = <"
+  std::cout << std::string("\t") << "message          = <"
             << pCallbackData->pMessage << ">\n";
   if (0 < pCallbackData->queueLabelCount) {
     std::cout << std::string("\t") << "queue labels:\n";
@@ -1311,7 +1307,9 @@ vk::raii::DeviceMemory Rendering::AllocateDeviceMemory(
     }
     memory_type_bits >>= 1;
   }
-  assert(type_index != static_cast<uint32_t>(~0));
+  if (type_index == static_cast<uint32_t>(~0)) {
+    throw std::runtime_error{"fail to find required memory"};
+  }
 
   vk::MemoryAllocateInfo memory_allocate_info{memory_requirements.size,
                                               type_index};

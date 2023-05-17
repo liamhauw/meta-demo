@@ -149,13 +149,17 @@ class Rendering {
 
  private:
   const uint32_t kFramesInFlight{2};
-  const uint32_t kWidth{800};
-  const uint32_t kHeight{600};
+  const uint32_t kWidth{1280};
+  const uint32_t kHeight{720};
 
   bool framebuffer_resized_{false};
   uint32_t current_frame_{0};
 
+  vk::raii::Context context_;
   vk::raii::Instance instance_{nullptr};
+#ifndef NDEBUG
+  vk::raii::DebugUtilsMessengerEXT debug_utils_messenger_{nullptr};
+#endif
   SurfaceData surface_data_;
   vk::raii::PhysicalDevice physical_device_{nullptr};
   vk::SampleCountFlagBits sample_count_{vk::SampleCountFlagBits::e1};
