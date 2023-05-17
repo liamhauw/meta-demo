@@ -6,6 +6,7 @@
 #include <iterator>
 #include <memory>
 #include <numeric>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -103,8 +104,8 @@ class Rendering {
     return std::make_pair(result, image_index);
   }
 
-  static vk::Result QueuePresentWrapper(const vk::raii::Queue& queue,
-                                 const vk::PresentInfoKHR& present_info) {
+  static vk::Result QueuePresentWrapper(
+      const vk::raii::Queue& queue, const vk::PresentInfoKHR& present_info) {
     return static_cast<vk::Result>(queue.getDispatcher()->vkQueuePresentKHR(
         static_cast<VkQueue>(*queue),
         reinterpret_cast<const VkPresentInfoKHR*>(&present_info)));
@@ -125,6 +126,15 @@ class Rendering {
   struct SurfaceData {
     GLFWwindow* glfw_window;
     vk::raii::SurfaceKHR surface{nullptr};
+  };
+
+  struct QueueFamliy {
+    std::optional<uint32_t> graphics_index;
+    std::optional<uint32_t> present_index;
+
+    [[nodiscard]] bool IsComplete() const {
+      return graphics_index.has_value() && present_index.has_value();
+    }
   };
 
   struct SwapchainData {
@@ -149,10 +159,6 @@ class Rendering {
 
  private:
   const uint32_t kFramesInFlight{2};
-  const uint32_t kWidth{1280};
-  const uint32_t kHeight{720};
-
-  bool framebuffer_resized_{false};
   uint32_t current_frame_{0};
 
   vk::raii::Context context_;
@@ -160,22 +166,40 @@ class Rendering {
 #ifndef NDEBUG
   vk::raii::DebugUtilsMessengerEXT debug_utils_messenger_{nullptr};
 #endif
+
   SurfaceData surface_data_;
+  const uint32_t kWidth{1280};
+  const uint32_t kHeight{720};
+  bool framebuffer_resized_{false};
+
   vk::raii::PhysicalDevice physical_device_{nullptr};
+  QueueFamliy queue_family_;
+  const std::vector<const char*> kDeviceExtensions{
+      VK_KHR_SWAPCHAIN_EXTENSION_NAME};
   vk::SampleCountFlagBits sample_count_{vk::SampleCountFlagBits::e1};
-  std::pair<uint32_t, uint32_t> gp_queue_family_index_;
+  float max_anisotropy_{0.0f};
+
   vk::raii::Device device_{nullptr};
+
   vk::raii::Queue graphics_queue_{nullptr};
   vk::raii::Queue present_queue_{nullptr};
+
   std::vector<vk::raii::Fence> fence_;
   std::vector<vk::raii::Semaphore> image_available_semaphores_;
   std::vector<vk::raii::Semaphore> render_finished_semaphores_;
+
   vk::raii::CommandPool command_pool_{nullptr};
+
   std::vector<vk::raii::CommandBuffer> command_buffers_;
+
   SwapchainData swapchain_data_;
+
   ImageData depth_image_data_;
+
   ImageData color_image_data_;
+
   vk::raii::RenderPass render_pass_{nullptr};
+
   std::vector<vk::raii::Framebuffer> framebuffers_;
 
   std::vector<Vertex> vertices_;

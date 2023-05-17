@@ -260,11 +260,8 @@ void Rendering::MakeInstance() {
 #ifndef NDEBUG
   vk::DebugUtilsMessengerCreateInfoEXT debug_utils_messenger_create_info{
       {},
-      vk::DebugUtilsMessageSeverityFlagBitsEXT::eWarning |
-          vk::DebugUtilsMessageSeverityFlagBitsEXT::eError,
-      vk::DebugUtilsMessageTypeFlagBitsEXT::eGeneral |
-          vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance |
-          vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation,
+      message_severity_flags,
+      message_type_flags,
       &DebugUtilsMessengerCallback};
 
   debug_utils_messenger_ = vk::raii::DebugUtilsMessengerEXT{
@@ -289,9 +286,73 @@ void Rendering::MakeSurface() {
 }
 
 void Rendering::MakePhysicalDevice() {
-  physical_device_ = vk::raii::PhysicalDevices{instance_}.front();
+  vk::raii::PhysicalDevices physical_devices{instance_};
 
-  // sample count
+  for (auto& physical_device : physical_devices) {
+    // queue famliy
+    QueueFamliy queue_family;
+
+    std::vector<vk::QueueFamilyProperties> queue_family_properties{
+        physical_device.getQueueFamilyProperties()};
+    uint32_t i{0};
+    for (const auto& queue_famliy_propertie : queue_family_properties) {
+      if ((queue_famliy_propertie.queueFlags & vk::QueueFlagBits::eGraphics) &&
+          physical_device.getSurfaceSupportKHR(i, *surface_data_.surface)) {
+        queue_family.graphics_index = i;
+        queue_family.present_index = i;
+        break;
+      }
+      ++i;
+    }
+    if (!queue_family.IsComplete()) {
+      i = 0;
+      for (const auto& queue_famliy_propertie : queue_family_properties) {
+        if (queue_famliy_propertie.queueFlags & vk::QueueFlagBits::eGraphics) {
+          queue_family.graphics_index = i;
+        }
+        if (physical_device.getSurfaceSupportKHR(i, *surface_data_.surface)) {
+          queue_family.present_index = i;
+        }
+        if (queue_family.IsComplete()) {
+          break;
+        }
+        ++i;
+      }
+    }
+
+    // device extension
+    bool has_device_extension{true};
+    std::vector<vk::ExtensionProperties> extension_properties{
+        physical_device.enumerateDeviceExtensionProperties()};
+    for (const char* device_extension : kDeviceExtensions) {
+      if (std::find_if(extension_properties.begin(), extension_properties.end(),
+                       [device_extension](const vk::ExtensionProperties& ep) {
+                         return (strcmp(device_extension, ep.extensionName) ==
+                                 0);
+                       }) == extension_properties.end()) {
+        has_device_extension = false;
+        break;
+      }
+    }
+
+    // device feature
+    vk::PhysicalDeviceFeatures physical_device_features{
+        physical_device.getFeatures()};
+    bool has_device_feature{
+        static_cast<bool>(physical_device_features.samplerAnisotropy)};
+
+    if (queue_family.IsComplete() && has_device_extension &&
+        has_device_feature) {
+      queue_family_ = queue_family;
+      physical_device_ = std::move(physical_device);
+      break;
+    }
+  }
+
+  if (!(*physical_device_)) {
+    throw std::runtime_error{"fail to find physical device"};
+  }
+
   vk::PhysicalDeviceProperties physical_device_properties{
       physical_device_.getProperties()};
 
@@ -314,71 +375,18 @@ void Rendering::MakePhysicalDevice() {
     sample_count_ = vk::SampleCountFlagBits::e1;
   }
 
-  // queue family
-  std::vector<vk::QueueFamilyProperties> queue_family_properties{
-      physical_device_.getQueueFamilyProperties()};
-
-  std::vector<vk::QueueFamilyProperties>::const_iterator
-      graphics_queue_family_property{std::find_if(
-          queue_family_properties.begin(), queue_family_properties.end(),
-          [](vk::QueueFamilyProperties const& qfp) {
-            return qfp.queueFlags & vk::QueueFlagBits::eGraphics;
-          })};
-  if (graphics_queue_family_property == queue_family_properties.end()) {
-    throw std::runtime_error{"fail to find required queue family"};
-  }
-  uint32_t graphics_queue_family_index{static_cast<uint32_t>(std::distance(
-      queue_family_properties.cbegin(), graphics_queue_family_property))};
-
-  if (physical_device_.getSurfaceSupportKHR(graphics_queue_family_index,
-                                            *surface_data_.surface)) {
-    gp_queue_family_index_ = std::make_pair(graphics_queue_family_index,
-                                            graphics_queue_family_index);
-    return;
-  }
-
-  for (uint32_t i = 0; i < queue_family_properties.size(); ++i) {
-    if ((queue_family_properties[i].queueFlags &
-         vk::QueueFlagBits::eGraphics) &&
-        physical_device_.getSurfaceSupportKHR(static_cast<uint32_t>(i),
-                                              *surface_data_.surface)) {
-      gp_queue_family_index_ =
-          std::make_pair(static_cast<uint32_t>(i), static_cast<uint32_t>(i));
-
-      return;
-    }
-  }
-
-  for (uint32_t i = 0; i < queue_family_properties.size(); i++) {
-    if (physical_device_.getSurfaceSupportKHR(static_cast<uint32_t>(i),
-                                              *surface_data_.surface)) {
-      gp_queue_family_index_ =
-          std::make_pair(graphics_queue_family_index, static_cast<uint32_t>(i));
-      return;
-    }
-  }
-
-  throw std::runtime_error{"fail to find queues for both graphics or present"};
+  max_anisotropy_ = physical_device_properties.limits.maxSamplerAnisotropy;
 }
 
 void Rendering::MakeDevice() {
-  std::vector<const char*> required_extensions;
-
-  required_extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
-
+  std::vector<const char*> enabled_extensions{kDeviceExtensions};
 #ifdef __APPLE__
-  required_extensions.push_back("VK_KHR_portability_subset");
+  enabled_extensions.push_back("VK_KHR_portability_subset");
 #endif
-
-  std::vector<const char*> enabled_extensions;
-  enabled_extensions.reserve(required_extensions.size());
-  for (const char* extension : required_extensions) {
-    enabled_extensions.push_back(extension);
-  }
 
   float queue_priority{0.0f};
   vk::DeviceQueueCreateInfo device_queue_create_info{
-      {}, gp_queue_family_index_.first, 1, &queue_priority};
+      {}, queue_family_.graphics_index.value(), 1, &queue_priority};
 
   vk::PhysicalDeviceFeatures device_features{};
   device_features.samplerAnisotropy = VK_TRUE;
@@ -390,8 +398,10 @@ void Rendering::MakeDevice() {
 }
 
 void Rendering::MakeQueue() {
-  graphics_queue_ = vk::raii::Queue{device_, gp_queue_family_index_.first, 0};
-  present_queue_ = vk::raii::Queue{device_, gp_queue_family_index_.second, 0};
+  graphics_queue_ =
+      vk::raii::Queue{device_, queue_family_.graphics_index.value(), 0};
+  present_queue_ =
+      vk::raii::Queue{device_, queue_family_.present_index.value(), 0};
 }
 
 void Rendering::MakeSyncObjects() {
@@ -413,7 +423,7 @@ void Rendering::MakeCommandPool() {
   command_pool_ =
       vk::raii::CommandPool{device_,
                             {vk::CommandPoolCreateFlagBits::eResetCommandBuffer,
-                             gp_queue_family_index_.first}};
+                             queue_family_.graphics_index.value()}};
 }
 
 void Rendering::MakeCommandBuffer() {
@@ -425,6 +435,33 @@ void Rendering::MakeCommandBuffer() {
 }
 
 void Rendering::MakeSwapchain() {
+  // extent
+  vk::SurfaceCapabilitiesKHR surface_capabilities{
+      physical_device_.getSurfaceCapabilitiesKHR(*surface_data_.surface)};
+
+  if (surface_capabilities.currentExtent.width ==
+      std::numeric_limits<uint32_t>::max()) {
+    int width, height;
+    glfwGetFramebufferSize(surface_data_.glfw_window, &width, &height);
+
+    swapchain_data_.extent.width = Clamp(
+        static_cast<uint32_t>(width), surface_capabilities.minImageExtent.width,
+        surface_capabilities.maxImageExtent.width);
+    swapchain_data_.extent.height =
+        Clamp(static_cast<uint32_t>(height),
+              surface_capabilities.minImageExtent.height,
+              surface_capabilities.maxImageExtent.height);
+  } else {
+    swapchain_data_.extent = surface_capabilities.currentExtent;
+  }
+
+  // image count
+  uint32_t image_count{surface_capabilities.minImageCount + 1};
+  if (surface_capabilities.maxImageCount > 0 &&
+      image_count > surface_capabilities.maxImageCount) {
+    image_count = surface_capabilities.maxImageCount;
+  }
+
   // formats
   std::vector<vk::SurfaceFormatKHR> surface_formats{
       physical_device_.getSurfaceFormatsKHR(*(surface_data_.surface))};
@@ -456,26 +493,6 @@ void Rendering::MakeSwapchain() {
 
   swapchain_data_.format = picked_format.format;
 
-  // extent
-  vk::SurfaceCapabilitiesKHR surface_capabilities{
-      physical_device_.getSurfaceCapabilitiesKHR(*surface_data_.surface)};
-
-  if (surface_capabilities.currentExtent.width ==
-      std::numeric_limits<uint32_t>::max()) {
-    int width, height;
-    glfwGetFramebufferSize(surface_data_.glfw_window, &width, &height);
-
-    swapchain_data_.extent.width = Clamp(
-        static_cast<uint32_t>(width), surface_capabilities.minImageExtent.width,
-        surface_capabilities.maxImageExtent.width);
-    swapchain_data_.extent.height =
-        Clamp(static_cast<uint32_t>(height),
-              surface_capabilities.minImageExtent.height,
-              surface_capabilities.maxImageExtent.height);
-  } else {
-    swapchain_data_.extent = surface_capabilities.currentExtent;
-  }
-
   // present modes
   std::vector<vk::PresentModeKHR> present_modes{
       physical_device_.getSurfacePresentModesKHR(*surface_data_.surface)};
@@ -490,13 +507,6 @@ void Rendering::MakeSwapchain() {
     if (present_mode == vk::PresentModeKHR::eImmediate) {
       picked_mode = present_mode;
     }
-  }
-
-  // image count
-  uint32_t image_count{surface_capabilities.minImageCount + 1};
-  if (surface_capabilities.maxImageCount > 0 &&
-      image_count > surface_capabilities.maxImageCount) {
-    image_count = surface_capabilities.maxImageCount;
   }
 
   vk::SwapchainCreateInfoKHR swapchain_create_info{
@@ -516,9 +526,10 @@ void Rendering::MakeSwapchain() {
       VK_TRUE,
       {}};
 
-  if (gp_queue_family_index_.first != gp_queue_family_index_.second) {
-    uint32_t queue_family_indices[2]{gp_queue_family_index_.first,
-                                     gp_queue_family_index_.second};
+  if (queue_family_.graphics_index.value() !=
+      queue_family_.present_index.value()) {
+    uint32_t queue_family_indices[2]{queue_family_.graphics_index.value(),
+                                     queue_family_.present_index.value()};
     swapchain_create_info.imageSharingMode = vk::SharingMode::eConcurrent;
     swapchain_create_info.queueFamilyIndexCount = 2;
     swapchain_create_info.pQueueFamilyIndices = queue_family_indices;
@@ -952,27 +963,23 @@ void Rendering::MakeTextureImage() {
 }
 
 void Rendering::MakeTextureSampler() {
-  vk::PhysicalDeviceProperties physical_device_properties{
-      physical_device_.getProperties()};
-
   sampler_ = vk::raii::Sampler{
-      device_, vk::SamplerCreateInfo{
-                   {},
-                   vk::Filter::eLinear,
-                   vk::Filter::eLinear,
-                   vk::SamplerMipmapMode::eLinear,
-                   vk::SamplerAddressMode::eRepeat,
-                   vk::SamplerAddressMode::eRepeat,
-                   vk::SamplerAddressMode::eRepeat,
-                   {},
-                   VK_TRUE,
-                   physical_device_properties.limits.maxSamplerAnisotropy,
-                   VK_FALSE,
-                   vk::CompareOp::eAlways,
-                   0.0f,
-                   static_cast<float>(mip_levels_),
-                   vk::BorderColor::eIntOpaqueBlack,
-                   VK_FALSE}};
+      device_, vk::SamplerCreateInfo{{},
+                                     vk::Filter::eLinear,
+                                     vk::Filter::eLinear,
+                                     vk::SamplerMipmapMode::eLinear,
+                                     vk::SamplerAddressMode::eRepeat,
+                                     vk::SamplerAddressMode::eRepeat,
+                                     vk::SamplerAddressMode::eRepeat,
+                                     {},
+                                     VK_TRUE,
+                                     max_anisotropy_,
+                                     VK_FALSE,
+                                     vk::CompareOp::eAlways,
+                                     0.0f,
+                                     static_cast<float>(mip_levels_),
+                                     vk::BorderColor::eIntOpaqueBlack,
+                                     VK_FALSE}};
 }
 
 void Rendering::MakeShaderModule() {
