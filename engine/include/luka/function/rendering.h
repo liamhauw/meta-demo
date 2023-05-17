@@ -50,10 +50,10 @@ class Rendering {
   void MakeTextureImage();
   void MakeTextureSampler();
 
-  void MakeShaderModule();
   void MakeDescriptorSetLayout();
   void MakeDescriptorPool();
   void MakeDescriptorSet();
+
   void MakePipelineLayout();
   void MakePipelineCache();
   void MakePipeline();
@@ -217,8 +217,6 @@ class Rendering {
   vk::raii::DescriptorSetLayout descriptor_set_layout_{nullptr};
   vk::raii::DescriptorPool descriptor_pool_{nullptr};
   std::vector<vk::raii::DescriptorSet> descriptor_sets_;
-  vk::raii::ShaderModule vertex_shader_module_{nullptr};
-  vk::raii::ShaderModule fragment_shader_module_{nullptr};
   vk::raii::PipelineLayout pipeline_layout_{nullptr};
   vk::raii::PipelineCache pipeline_cache_{nullptr};
   vk::raii::Pipeline pipeline_{nullptr};

@@ -27,7 +27,6 @@ Rendering::Rendering() {
   MakeDescriptorPool();
   MakeDescriptorSet();
 
-  MakeShaderModule();
   MakePipelineLayout();
   MakePipelineCache();
   MakePipeline();
@@ -980,12 +979,6 @@ void Rendering::MakeTextureSampler() {
                                      VK_FALSE}};
 }
 
-void Rendering::MakeShaderModule() {
-  vertex_shader_module_ = MakeShaderModule(
-      root_directory + "resource/shaders/generated/shader.vert.spirv");
-  fragment_shader_module_ = MakeShaderModule(
-      root_directory + "resource/shaders/generated/shader.frag.spirv");
-}
 
 void Rendering::MakeDescriptorSetLayout() {
   std::vector<std::tuple<vk::DescriptorType, uint32_t, vk::ShaderStageFlags>>
@@ -1078,15 +1071,20 @@ void Rendering::MakePipelineCache() {
 }
 
 void Rendering::MakePipeline() {
+  vk::raii::ShaderModule vertex_shader_module{MakeShaderModule(
+      root_directory + "resource/shaders/generated/shader.vert.spirv")};
+  vk::raii::ShaderModule fragment_shader_module{MakeShaderModule(
+      root_directory + "resource/shaders/generated/shader.frag.spirv")};
+
   std::vector<vk::PipelineShaderStageCreateInfo> shader_stage_create_infos{
       {{},
        vk::ShaderStageFlagBits::eVertex,
-       *vertex_shader_module_,
+       *vertex_shader_module,
        "main",
        nullptr},
       {{},
        vk::ShaderStageFlagBits::eFragment,
-       *fragment_shader_module_,
+       *fragment_shader_module,
        "main",
        nullptr}};
 
