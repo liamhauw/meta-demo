@@ -38,8 +38,8 @@ class Rendering {
   void MakeSyncObject();
 
   void MakeSwapchain();
-  void MakeDepthImage();
   void MakeColorImage();
+  void MakeDepthImage();
   void MakeRenderPass();
   void MakeFramebuffer();
   void MakeVertexBuffer();
@@ -52,6 +52,26 @@ class Rendering {
   void MakeDescriptorPool();
   void MakeDescriptorSet();
   void MakePipeline();
+
+  static std::pair<vk::Result, uint32_t> AcquireNextImageWrapper(
+      const vk::raii::SwapchainKHR& swapchain, uint64_t timeout,
+      vk::Semaphore semaphore, vk::Fence fence) {
+    uint32_t image_index;
+    vk::Result result{static_cast<vk::Result>(
+        swapchain.getDispatcher()->vkAcquireNextImageKHR(
+            static_cast<VkDevice>(swapchain.getDevice()),
+            static_cast<VkSwapchainKHR>(*swapchain), timeout,
+            static_cast<VkSemaphore>(semaphore), static_cast<VkFence>(fence),
+            &image_index))};
+    return std::make_pair(result, image_index);
+  }
+
+  static vk::Result QueuePresentWrapper(
+      const vk::raii::Queue& queue, const vk::PresentInfoKHR& present_info) {
+    return static_cast<vk::Result>(queue.getDispatcher()->vkQueuePresentKHR(
+        static_cast<VkQueue>(*queue),
+        reinterpret_cast<const VkPresentInfoKHR*>(&present_info)));
+  }
 
   void RecreateSwapchin();
 
@@ -85,26 +105,6 @@ class Rendering {
   void EndSingleTimeCommand(const vk::raii::CommandBuffer& command_buffer);
 
   vk::raii::ShaderModule MakeShaderModule(const std::string& shader_file);
-
-  static std::pair<vk::Result, uint32_t> AcquireNextImageWrapper(
-      const vk::raii::SwapchainKHR& swapchain, uint64_t timeout,
-      vk::Semaphore semaphore, vk::Fence fence) {
-    uint32_t image_index;
-    vk::Result result{static_cast<vk::Result>(
-        swapchain.getDispatcher()->vkAcquireNextImageKHR(
-            static_cast<VkDevice>(swapchain.getDevice()),
-            static_cast<VkSwapchainKHR>(*swapchain), timeout,
-            static_cast<VkSemaphore>(semaphore), static_cast<VkFence>(fence),
-            &image_index))};
-    return std::make_pair(result, image_index);
-  }
-
-  static vk::Result QueuePresentWrapper(
-      const vk::raii::Queue& queue, const vk::PresentInfoKHR& present_info) {
-    return static_cast<vk::Result>(queue.getDispatcher()->vkQueuePresentKHR(
-        static_cast<VkQueue>(*queue),
-        reinterpret_cast<const VkPresentInfoKHR*>(&present_info)));
-  }
 
  private:
   struct GlfwContext {
@@ -187,9 +187,9 @@ class Rendering {
 
   SwapchainData swapchain_data_;
 
-  ImageData depth_image_data_;
-
   ImageData color_image_data_;
+
+  ImageData depth_image_data_;
 
   vk::raii::RenderPass render_pass_{nullptr};
 

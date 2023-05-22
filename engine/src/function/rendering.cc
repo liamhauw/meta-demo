@@ -11,8 +11,8 @@ Rendering::Rendering() {
   MakeSyncObject();
 
   MakeSwapchain();
-  MakeDepthImage();
   MakeColorImage();
+  MakeDepthImage();
   MakeRenderPass();
   MakeFramebuffer();
   MakeVertexBuffer();
@@ -539,39 +539,6 @@ void Rendering::MakeSwapchain() {
   }
 }
 
-void Rendering::MakeDepthImage() {
-  depth_image_data_.format = vk::Format::eD32Sfloat;
-
-  vk::ImageCreateInfo image_create_info{
-      {},
-      vk::ImageType::e2D,
-      depth_image_data_.format,
-      vk::Extent3D{swapchain_data_.extent, 1},
-      1,
-      1,
-      sample_count_,
-      vk::ImageTiling::eOptimal,
-      vk::ImageUsageFlagBits::eDepthStencilAttachment,
-      vk::SharingMode::eExclusive,
-      {},
-      vk::ImageLayout::eUndefined};
-  depth_image_data_.image = vk::raii::Image{device_, image_create_info};
-
-  depth_image_data_.device_memory =
-      AllocateDeviceMemory(depth_image_data_.image.getMemoryRequirements(),
-                           vk::MemoryPropertyFlagBits::eDeviceLocal);
-
-  depth_image_data_.image.bindMemory(*(depth_image_data_.device_memory), 0);
-  depth_image_data_.image_view = vk::raii::ImageView{
-      device_,
-      vk::ImageViewCreateInfo{{},
-                              *(depth_image_data_.image),
-                              vk::ImageViewType::e2D,
-                              depth_image_data_.format,
-                              {},
-                              {vk::ImageAspectFlagBits::eDepth, 0, 1, 0, 1}}};
-}
-
 void Rendering::MakeColorImage() {
   color_image_data_.format = swapchain_data_.format;
 
@@ -608,11 +575,44 @@ void Rendering::MakeColorImage() {
                               {vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1}}};
 }
 
+void Rendering::MakeDepthImage() {
+  depth_image_data_.format = vk::Format::eD32Sfloat;
+
+  vk::ImageCreateInfo image_create_info{
+      {},
+      vk::ImageType::e2D,
+      depth_image_data_.format,
+      vk::Extent3D{swapchain_data_.extent, 1},
+      1,
+      1,
+      sample_count_,
+      vk::ImageTiling::eOptimal,
+      vk::ImageUsageFlagBits::eDepthStencilAttachment,
+      vk::SharingMode::eExclusive,
+      {},
+      vk::ImageLayout::eUndefined};
+  depth_image_data_.image = vk::raii::Image{device_, image_create_info};
+
+  depth_image_data_.device_memory =
+      AllocateDeviceMemory(depth_image_data_.image.getMemoryRequirements(),
+                           vk::MemoryPropertyFlagBits::eDeviceLocal);
+
+  depth_image_data_.image.bindMemory(*(depth_image_data_.device_memory), 0);
+  depth_image_data_.image_view = vk::raii::ImageView{
+      device_,
+      vk::ImageViewCreateInfo{{},
+                              *(depth_image_data_.image),
+                              vk::ImageViewType::e2D,
+                              depth_image_data_.format,
+                              {},
+                              {vk::ImageAspectFlagBits::eDepth, 0, 1, 0, 1}}};
+}
+
 void Rendering::MakeRenderPass() {
   std::vector<vk::AttachmentDescription> attachment_descriptions;
 
   attachment_descriptions.emplace_back(
-      vk::AttachmentDescriptionFlags{}, swapchain_data_.format, sample_count_,
+      vk::AttachmentDescriptionFlags{}, color_image_data_.format, sample_count_,
       vk::AttachmentLoadOp::eClear, vk::AttachmentStoreOp::eStore,
       vk::AttachmentLoadOp::eDontCare, vk::AttachmentStoreOp::eDontCare,
       vk::ImageLayout::eUndefined, vk::ImageLayout::eColorAttachmentOptimal);
@@ -625,7 +625,7 @@ void Rendering::MakeRenderPass() {
       vk::ImageLayout::eDepthStencilAttachmentOptimal);
 
   attachment_descriptions.emplace_back(
-      vk::AttachmentDescriptionFlags{}, color_image_data_.format,
+      vk::AttachmentDescriptionFlags{}, swapchain_data_.format,
       vk::SampleCountFlagBits::e1, vk::AttachmentLoadOp::eDontCare,
       vk::AttachmentStoreOp::eStore, vk::AttachmentLoadOp::eDontCare,
       vk::AttachmentStoreOp::eDontCare, vk::ImageLayout::eUndefined,
@@ -1166,7 +1166,6 @@ void Rendering::MakePipeline() {
                                  graphics_pipeline_create_info};
 }
 
-// ------------------------------
 void Rendering::RecreateSwapchin() {
   int width{0};
   int height{0};
@@ -1303,6 +1302,18 @@ vk::raii::DeviceMemory Rendering::AllocateDeviceMemory(
   return vk::raii::DeviceMemory{device_, memory_allocate_info};
 }
 
+void Rendering::CopyBuffer(const vk::raii::Buffer& src_buffer,
+                           const vk::raii::Buffer& dst_buffer,
+                           vk::DeviceSize size) {
+  vk::raii::CommandBuffer command_buffer{BeginSingleTimeCommand()};
+
+  vk::BufferCopy buffer_copy{0, 0, size};
+
+  command_buffer.copyBuffer(*src_buffer, *dst_buffer, buffer_copy);
+
+  EndSingleTimeCommand(command_buffer);
+}
+
 vk::raii::CommandBuffer Rendering::BeginSingleTimeCommand() {
   vk::CommandBufferAllocateInfo command_buffer_allocate_info{
       *command_pool_, vk::CommandBufferLevel::ePrimary, 1};
@@ -1336,17 +1347,5 @@ vk::raii::ShaderModule Rendering::MakeShaderModule(
       {}, buffer.size(), reinterpret_cast<const uint32_t*>(buffer.data())};
 
   return vk::raii::ShaderModule{device_, shader_module_create_info};
-}
-
-void Rendering::CopyBuffer(const vk::raii::Buffer& src_buffer,
-                           const vk::raii::Buffer& dst_buffer,
-                           vk::DeviceSize size) {
-  vk::raii::CommandBuffer command_buffer{BeginSingleTimeCommand()};
-
-  vk::BufferCopy buffer_copy{0, 0, size};
-
-  command_buffer.copyBuffer(*src_buffer, *dst_buffer, buffer_copy);
-
-  EndSingleTimeCommand(command_buffer);
 }
 }  // namespace luka
