@@ -34,16 +34,14 @@ class Rendering {
   void MakeSurface();
   void MakePhysicalDevice();
   void MakeDevice();
-  void MakeQueue();
-  void MakeSyncObjects();
-  void MakeCommandPool();
-  void MakeCommandBuffer();
+  void MakeCommandObject();
+  void MakeSyncObject();
+
   void MakeSwapchain();
   void MakeDepthImage();
   void MakeColorImage();
   void MakeRenderPass();
   void MakeFramebuffer();
-
   void MakeVertexBuffer();
   void MakeIndexBuffer();
   void MakeUniformBuffer();
@@ -53,9 +51,6 @@ class Rendering {
   void MakeDescriptorSetLayout();
   void MakeDescriptorPool();
   void MakeDescriptorSet();
-
-  void MakePipelineLayout();
-  void MakePipelineCache();
   void MakePipeline();
 
   void RecreateSwapchin();
@@ -85,9 +80,9 @@ class Rendering {
   void CopyBuffer(const vk::raii::Buffer& src_buffer,
                   const vk::raii::Buffer& dst_buffer, vk::DeviceSize size);
 
-  vk::raii::CommandBuffer BeginSingleTimeCommands();
+  vk::raii::CommandBuffer BeginSingleTimeCommand();
 
-  void EndSingleTimeCommands(const vk::raii::CommandBuffer& command_buffer);
+  void EndSingleTimeCommand(const vk::raii::CommandBuffer& command_buffer);
 
   vk::raii::ShaderModule MakeShaderModule(const std::string& shader_file);
 
@@ -183,14 +178,12 @@ class Rendering {
 
   vk::raii::Queue graphics_queue_{nullptr};
   vk::raii::Queue present_queue_{nullptr};
+  vk::raii::CommandPool command_pool_{nullptr};
+  std::vector<vk::raii::CommandBuffer> command_buffers_;
 
-  std::vector<vk::raii::Fence> fence_;
+  std::vector<vk::raii::Fence> fences_;
   std::vector<vk::raii::Semaphore> image_available_semaphores_;
   std::vector<vk::raii::Semaphore> render_finished_semaphores_;
-
-  vk::raii::CommandPool command_pool_{nullptr};
-
-  std::vector<vk::raii::CommandBuffer> command_buffers_;
 
   SwapchainData swapchain_data_;
 
@@ -206,10 +199,10 @@ class Rendering {
   std::vector<uint32_t> indices_;
   BufferData vertex_buffer_data_;
   BufferData index_buffer_data_;
-  std::vector<BufferData> uniform_buffer_data_;
-  std::vector<void*> uniform_buffer_mapped_;
+  std::vector<BufferData> uniform_buffer_datas_;
+  std::vector<void*> uniform_buffer_mapped_dates_;
 
-  uint32_t mip_levels_{};
+  uint32_t mip_level_count_{};
   ImageData texture_image_data_;
 
   vk::raii::Sampler sampler_{nullptr};

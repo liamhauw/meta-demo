@@ -7,16 +7,14 @@ Rendering::Rendering() {
   MakeSurface();
   MakePhysicalDevice();
   MakeDevice();
-  MakeQueue();
-  MakeSyncObjects();
-  MakeCommandPool();
-  MakeCommandBuffer();
+  MakeCommandObject();
+  MakeSyncObject();
+
   MakeSwapchain();
   MakeDepthImage();
   MakeColorImage();
   MakeRenderPass();
   MakeFramebuffer();
-
   MakeVertexBuffer();
   MakeIndexBuffer();
   MakeUniformBuffer();
@@ -26,9 +24,6 @@ Rendering::Rendering() {
   MakeDescriptorSetLayout();
   MakeDescriptorPool();
   MakeDescriptorSet();
-
-  MakePipelineLayout();
-  MakePipelineCache();
   MakePipeline();
 }
 
@@ -38,7 +33,7 @@ void Rendering::Tick() {
   glfwPollEvents();
 
   vk::Result res{
-      device_.waitForFences(*(fence_[current_frame_]), VK_TRUE, UINT64_MAX)};
+      device_.waitForFences(*(fences_[current_frame_]), VK_TRUE, UINT64_MAX)};
   if (res != vk::Result::eSuccess) {
     throw std::runtime_error{"fail to wait for fences"};
   }
@@ -77,10 +72,10 @@ void Rendering::Tick() {
                            static_cast<float>(swapchain_data_.extent.height),
                        0.1f, 10.0f);
   ubo.proj[1][1] *= -1;
-  memcpy(uniform_buffer_mapped_[current_frame_], &ubo, sizeof(ubo));
+  memcpy(uniform_buffer_mapped_dates_[current_frame_], &ubo, sizeof(ubo));
 
   // record command
-  device_.resetFences(*(fence_[current_frame_]));
+  device_.resetFences(*(fences_[current_frame_]));
 
   auto& cur_command_buffer{command_buffers_[current_frame_]};
 
@@ -128,7 +123,7 @@ void Rendering::Tick() {
                              wait_stage, *cur_command_buffer,
                              *(render_finished_semaphores_[current_frame_])};
 
-  graphics_queue_.submit(submit_info, *(fence_[current_frame_]));
+  graphics_queue_.submit(submit_info, *(fences_[current_frame_]));
 
   vk::PresentInfoKHR presten_info_khr{
       *(render_finished_semaphores_[current_frame_]),
@@ -394,15 +389,23 @@ void Rendering::MakeDevice() {
   device_ = vk::raii::Device{physical_device_, device_create_info};
 }
 
-void Rendering::MakeQueue() {
+void Rendering::MakeCommandObject() {
   graphics_queue_ =
       vk::raii::Queue{device_, queue_family_.graphics_index.value(), 0};
   present_queue_ =
       vk::raii::Queue{device_, queue_family_.present_index.value(), 0};
+  command_pool_ =
+      vk::raii::CommandPool{device_,
+                            {vk::CommandPoolCreateFlagBits::eResetCommandBuffer,
+                             queue_family_.graphics_index.value()}};
+  vk::CommandBufferAllocateInfo command_buffer_allocate_info{
+      *command_pool_, vk::CommandBufferLevel::ePrimary, kFramesInFlight};
+  command_buffers_ = std::move(
+      vk::raii::CommandBuffers{device_, command_buffer_allocate_info});
 }
 
-void Rendering::MakeSyncObjects() {
-  fence_.reserve(kFramesInFlight);
+void Rendering::MakeSyncObject() {
+  fences_.reserve(kFramesInFlight);
   image_available_semaphores_.reserve(kFramesInFlight);
   render_finished_semaphores_.reserve(kFramesInFlight);
 
@@ -410,25 +413,10 @@ void Rendering::MakeSyncObjects() {
   vk::SemaphoreCreateInfo semaphore_create_info{};
 
   for (uint32_t i = 0; i < kFramesInFlight; ++i) {
-    fence_.emplace_back(device_, fence_create_info);
+    fences_.emplace_back(device_, fence_create_info);
     image_available_semaphores_.emplace_back(device_, semaphore_create_info);
     render_finished_semaphores_.emplace_back(device_, semaphore_create_info);
   }
-}
-
-void Rendering::MakeCommandPool() {
-  command_pool_ =
-      vk::raii::CommandPool{device_,
-                            {vk::CommandPoolCreateFlagBits::eResetCommandBuffer,
-                             queue_family_.graphics_index.value()}};
-}
-
-void Rendering::MakeCommandBuffer() {
-  vk::CommandBufferAllocateInfo command_buffer_allocate_info{
-      *command_pool_, vk::CommandBufferLevel::ePrimary, kFramesInFlight};
-
-  command_buffers_ = std::move(
-      vk::raii::CommandBuffers{device_, command_buffer_allocate_info});
 }
 
 void Rendering::MakeSwapchain() {
@@ -676,8 +664,8 @@ void Rendering::MakeRenderPass() {
 
 void Rendering::MakeFramebuffer() {
   std::vector<vk::ImageView> attachements(3);
-  attachements[1] = *(depth_image_data_.image_view);
   attachements[0] = *(color_image_data_.image_view);
+  attachements[1] = *(depth_image_data_.image_view);
 
   vk::FramebufferCreateInfo framebuffer_create_info{
       {},
@@ -753,26 +741,26 @@ void Rendering::MakeIndexBuffer() {
 void Rendering::MakeUniformBuffer() {
   VkDeviceSize buffer_size{sizeof(UniformBufferObject)};
 
-  uniform_buffer_data_.resize(kFramesInFlight);
-  uniform_buffer_mapped_.resize(kFramesInFlight);
+  uniform_buffer_datas_.resize(kFramesInFlight);
+  uniform_buffer_mapped_dates_.resize(kFramesInFlight);
 
   vk::BufferCreateInfo buffer_create_info{
       {}, buffer_size, vk::BufferUsageFlagBits::eUniformBuffer};
 
   for (uint32_t i = 0; i < kFramesInFlight; ++i) {
-    uniform_buffer_data_[i].buffer =
+    uniform_buffer_datas_[i].buffer =
         vk::raii::Buffer{device_, buffer_create_info};
-    uniform_buffer_data_[i].device_memory =
+    uniform_buffer_datas_[i].device_memory =
         vk::raii::DeviceMemory{AllocateDeviceMemory(
-            uniform_buffer_data_[i].buffer.getMemoryRequirements(),
+            uniform_buffer_datas_[i].buffer.getMemoryRequirements(),
             vk::MemoryPropertyFlagBits::eHostVisible |
                 vk::MemoryPropertyFlagBits::eHostCoherent)};
 
-    uniform_buffer_data_[i].buffer.bindMemory(
-        *(uniform_buffer_data_[i].device_memory), 0);
+    uniform_buffer_datas_[i].buffer.bindMemory(
+        *(uniform_buffer_datas_[i].device_memory), 0);
 
-    uniform_buffer_mapped_[i] = static_cast<uint8_t*>(
-        uniform_buffer_data_[i].device_memory.mapMemory(0, buffer_size));
+    uniform_buffer_mapped_dates_[i] = static_cast<uint8_t*>(
+        uniform_buffer_datas_[i].device_memory.mapMemory(0, buffer_size));
   }
 }
 
@@ -786,9 +774,9 @@ void Rendering::MakeTextureImage() {
   if (!piexls) {
     throw std::runtime_error{"fail to load texture image"};
   }
-  mip_levels_ = static_cast<uint32_t>(
-                    std::floor(std::log2(std::max(tex_width, tex_height)))) +
-                1;
+  mip_level_count_ = static_cast<uint32_t>(std::floor(
+                         std::log2(std::max(tex_width, tex_height)))) +
+                     1;
   vk::DeviceSize image_size{
       static_cast<vk::DeviceSize>(tex_width * tex_height * 4)};
 
@@ -811,7 +799,7 @@ void Rendering::MakeTextureImage() {
       texture_image_data_.format,
       vk::Extent3D{static_cast<uint32_t>(tex_width),
                    static_cast<uint32_t>(tex_height), 1},
-      mip_levels_,
+      mip_level_count_,
       1,
       vk::SampleCountFlagBits::e1,
       vk::ImageTiling::eOptimal,
@@ -829,7 +817,7 @@ void Rendering::MakeTextureImage() {
 
   // copy buffer to image
   {
-    vk::raii::CommandBuffer command_buffer{BeginSingleTimeCommands()};
+    vk::raii::CommandBuffer command_buffer{BeginSingleTimeCommand()};
     vk::ImageMemoryBarrier barrier{
         {},
         vk::AccessFlagBits::eTransferWrite,
@@ -838,15 +826,15 @@ void Rendering::MakeTextureImage() {
         VK_QUEUE_FAMILY_IGNORED,
         VK_QUEUE_FAMILY_IGNORED,
         *(texture_image_data_.image),
-        {vk::ImageAspectFlagBits::eColor, 0, mip_levels_, 0, 1}};
+        {vk::ImageAspectFlagBits::eColor, 0, mip_level_count_, 0, 1}};
     command_buffer.pipelineBarrier(vk::PipelineStageFlagBits::eTopOfPipe,
                                    vk::PipelineStageFlagBits::eTransfer, {}, {},
                                    {}, barrier);
-    EndSingleTimeCommands(command_buffer);
+    EndSingleTimeCommand(command_buffer);
   }
 
   {
-    vk::raii::CommandBuffer command_buffer{BeginSingleTimeCommands()};
+    vk::raii::CommandBuffer command_buffer{BeginSingleTimeCommand()};
 
     vk::BufferImageCopy buffer_image_copy{
         {},
@@ -861,7 +849,7 @@ void Rendering::MakeTextureImage() {
         *staging_buffer, *(texture_image_data_.image),
         vk::ImageLayout::eTransferDstOptimal, buffer_image_copy);
 
-    EndSingleTimeCommands(command_buffer);
+    EndSingleTimeCommand(command_buffer);
   }
 
   // generate mipmaps
@@ -874,7 +862,7 @@ void Rendering::MakeTextureImage() {
   }
 
   {
-    vk::raii::CommandBuffer command_buffer{BeginSingleTimeCommands()};
+    vk::raii::CommandBuffer command_buffer{BeginSingleTimeCommand()};
 
     vk::ImageMemoryBarrier barrier{
         {},
@@ -889,7 +877,7 @@ void Rendering::MakeTextureImage() {
     int32_t mip_width{tex_width};
     int32_t mip_height{tex_height};
 
-    for (uint32_t i = 1; i < mip_levels_; ++i) {
+    for (uint32_t i = 1; i < mip_level_count_; ++i) {
       barrier.subresourceRange.baseMipLevel = i - 1;
       barrier.oldLayout = vk::ImageLayout::eTransferDstOptimal;
       barrier.newLayout = vk::ImageLayout::eTransferSrcOptimal;
@@ -936,7 +924,7 @@ void Rendering::MakeTextureImage() {
       }
     }
 
-    barrier.subresourceRange.baseMipLevel = mip_levels_ - 1;
+    barrier.subresourceRange.baseMipLevel = mip_level_count_ - 1;
     barrier.oldLayout = vk::ImageLayout::eTransferDstOptimal;
     barrier.newLayout = vk::ImageLayout::eShaderReadOnlyOptimal;
     barrier.srcAccessMask = vk::AccessFlagBits::eTransferWrite;
@@ -946,17 +934,17 @@ void Rendering::MakeTextureImage() {
                                    vk::PipelineStageFlagBits::eFragmentShader,
                                    {}, nullptr, nullptr, barrier);
 
-    EndSingleTimeCommands(command_buffer);
+    EndSingleTimeCommand(command_buffer);
   }
 
   texture_image_data_.image_view = vk::raii::ImageView{
-      device_, vk::ImageViewCreateInfo{
-                   {},
-                   *(texture_image_data_.image),
-                   vk::ImageViewType::e2D,
-                   texture_image_data_.format,
-                   {},
-                   {vk::ImageAspectFlagBits::eColor, 0, mip_levels_, 0, 1}}};
+      device_, vk::ImageViewCreateInfo{{},
+                                       *(texture_image_data_.image),
+                                       vk::ImageViewType::e2D,
+                                       texture_image_data_.format,
+                                       {},
+                                       {vk::ImageAspectFlagBits::eColor, 0,
+                                        mip_level_count_, 0, 1}}};
 }
 
 void Rendering::MakeTextureSampler() {
@@ -974,11 +962,10 @@ void Rendering::MakeTextureSampler() {
                                      VK_FALSE,
                                      vk::CompareOp::eAlways,
                                      0.0f,
-                                     static_cast<float>(mip_levels_),
+                                     static_cast<float>(mip_level_count_),
                                      vk::BorderColor::eIntOpaqueBlack,
                                      VK_FALSE}};
 }
-
 
 void Rendering::MakeDescriptorSetLayout() {
   std::vector<std::tuple<vk::DescriptorType, uint32_t, vk::ShaderStageFlags>>
@@ -1030,7 +1017,7 @@ void Rendering::MakeDescriptorSet() {
       device_, {*descriptor_pool_, descriptor_set_layouts}});
 
   for (uint32_t i = 0; i < kFramesInFlight; ++i) {
-    vk::DescriptorBufferInfo buffer_info{*(uniform_buffer_data_[i].buffer), 0,
+    vk::DescriptorBufferInfo buffer_info{*(uniform_buffer_datas_[i].buffer), 0,
                                          sizeof(UniformBufferObject)};
 
     vk::DescriptorImageInfo image_info{*sampler_,
@@ -1059,15 +1046,6 @@ void Rendering::MakeDescriptorSet() {
 
     device_.updateDescriptorSets(descriptir_writes, nullptr);
   }
-}
-
-void Rendering::MakePipelineLayout() {
-  pipeline_layout_ =
-      vk::raii::PipelineLayout{device_, {{}, *descriptor_set_layout_}};
-}
-
-void Rendering::MakePipelineCache() {
-  pipeline_cache_ = vk::raii::PipelineCache{device_, {}};
 }
 
 void Rendering::MakePipeline() {
@@ -1118,7 +1096,7 @@ void Rendering::MakePipeline() {
   vertex_input_state_create_info.setVertexAttributeDescriptions(
       vertex_input_attribute_descriptions);
 
-  vk::PipelineInputAssemblyStateCreateInfo InputAssemblyStateCreateInfo{
+  vk::PipelineInputAssemblyStateCreateInfo input_assembly_state_create_info{
       {}, vk::PrimitiveTopology::eTriangleList, VK_FALSE};
 
   vk::PipelineViewportStateCreateInfo viewport_state_create_info{
@@ -1164,11 +1142,14 @@ void Rendering::MakePipeline() {
   vk::PipelineDynamicStateCreateInfo dynamic_state_create_info{{},
                                                                dynamic_states};
 
+  pipeline_layout_ =
+      vk::raii::PipelineLayout{device_, {{}, *descriptor_set_layout_}};
+
   vk::GraphicsPipelineCreateInfo graphics_pipeline_create_info{
       {},
       shader_stage_create_infos,
       &vertex_input_state_create_info,
-      &InputAssemblyStateCreateInfo,
+      &input_assembly_state_create_info,
       nullptr,
       &viewport_state_create_info,
       &rasterization_state_create_info,
@@ -1178,6 +1159,8 @@ void Rendering::MakePipeline() {
       &dynamic_state_create_info,
       *pipeline_layout_,
       *render_pass_};
+
+  pipeline_cache_ = vk::raii::PipelineCache{device_, {}};
 
   pipeline_ = vk::raii::Pipeline{device_, pipeline_cache_,
                                  graphics_pipeline_create_info};
@@ -1320,7 +1303,7 @@ vk::raii::DeviceMemory Rendering::AllocateDeviceMemory(
   return vk::raii::DeviceMemory{device_, memory_allocate_info};
 }
 
-vk::raii::CommandBuffer Rendering::BeginSingleTimeCommands() {
+vk::raii::CommandBuffer Rendering::BeginSingleTimeCommand() {
   vk::CommandBufferAllocateInfo command_buffer_allocate_info{
       *command_pool_, vk::CommandBufferLevel::ePrimary, 1};
 
@@ -1335,7 +1318,7 @@ vk::raii::CommandBuffer Rendering::BeginSingleTimeCommands() {
   return command_buffer;
 }
 
-void Rendering::EndSingleTimeCommands(
+void Rendering::EndSingleTimeCommand(
     const vk::raii::CommandBuffer& command_buffer) {
   command_buffer.end();
 
@@ -1358,12 +1341,12 @@ vk::raii::ShaderModule Rendering::MakeShaderModule(
 void Rendering::CopyBuffer(const vk::raii::Buffer& src_buffer,
                            const vk::raii::Buffer& dst_buffer,
                            vk::DeviceSize size) {
-  vk::raii::CommandBuffer command_buffer{BeginSingleTimeCommands()};
+  vk::raii::CommandBuffer command_buffer{BeginSingleTimeCommand()};
 
   vk::BufferCopy buffer_copy{0, 0, size};
 
   command_buffer.copyBuffer(*src_buffer, *dst_buffer, buffer_copy);
 
-  EndSingleTimeCommands(command_buffer);
+  EndSingleTimeCommand(command_buffer);
 }
 }  // namespace luka
