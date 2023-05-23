@@ -331,7 +331,8 @@ void Rendering::MakePhysicalDevice() {
     vk::PhysicalDeviceFeatures physical_device_features{
         physical_device.getFeatures()};
     bool has_device_feature{
-        static_cast<bool>(physical_device_features.samplerAnisotropy)};
+        static_cast<bool>(physical_device_features.samplerAnisotropy &
+                          physical_device_features.fillModeNonSolid)};
 
     if (queue_family.IsComplete() && has_device_extension &&
         has_device_feature) {
