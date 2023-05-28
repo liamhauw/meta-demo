@@ -4,16 +4,11 @@ project(luka_engine)
 # **********************************************************
 #                         platform
 # **********************************************************
-add_library(platform STATIC)
-target_compile_features(platform PUBLIC cxx_std_20)
-target_include_directories(platform PUBLIC include)
-target_sources(
-        platform
-        PRIVATE
-        src/platform/platform.cc
-)
+add_library(platform INTERFACE)
+target_compile_features(platform INTERFACE cxx_std_20)
+target_include_directories(platform INTERFACE include)
 target_link_libraries(
-        platform PUBLIC
+        platform INTERFACE
         Vulkan::Vulkan
         glfw::glfw
         glm::glm
@@ -32,54 +27,50 @@ add_library(core STATIC)
 target_sources(
         core
         PRIVATE
-        src/core/core.cc
         src/core/file.cc
         src/core/math.cc
         src/core/time.cc
 )
-target_link_libraries(
-        core
-        PUBLIC
-        luka_engine::platform
-)
+target_link_libraries(core PUBLIC luka_engine::platform)
 add_library(luka_engine::core ALIAS core)
 
 # **********************************************************
 #                         resource
 # **********************************************************
 add_library(resource STATIC)
-target_sources(resource
+target_sources(
+        resource
         PRIVATE
-        src/resource/resource.cc)
-target_link_libraries(resource
-        PUBLIC
-        luka_engine::core)
+        src/resource/image.cc
+        src/resource/obj_model.cc
+)
+target_link_libraries(resource PUBLIC luka_engine::core)
 add_library(luka_engine::resource ALIAS resource)
 
 # **********************************************************
 #                         function
 # **********************************************************
 add_library(function STATIC)
-target_sources(function
+target_sources(
+        function
         PRIVATE
+        src/function/function.cc
         src/function/rendering.cc
-        src/function/function.cc)
-target_link_libraries(function
-        PUBLIC
-        luka_engine::resource
-        )
+        src/function/window.cc
+)
+target_link_libraries(function PUBLIC luka_engine::resource)
 add_library(luka_engine::function ALIAS function)
 
 # **********************************************************
 #                          editor
 # **********************************************************
 add_library(editor STATIC)
-target_sources(editor
+target_sources(
+        editor
         PRIVATE
-        src/editor/editor.cc)
-target_link_libraries(editor
-        PUBLIC
-        luka_engine::function)
+        src/editor/editor.cc
+)
+target_link_libraries(editor PUBLIC luka_engine::function)
 add_library(luka_engine::editor ALIAS editor)
 
 # **********************************************************

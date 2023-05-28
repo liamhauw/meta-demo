@@ -1,11 +1,9 @@
 #pragma once
 
-#include <stb_image.h>
-
 #include <string>
 #include <vector>
 
-#include "luka/core/core.h"
+#include "luka/core/math.h"
 
 namespace luka {
 
@@ -28,8 +26,6 @@ struct UniformBufferObject {
 
 void LoadModel(const std::string& model, std::vector<Vertex>& vertices,
                std::vector<uint32_t>& indices);
-
-class Resource {};
 
 }  // namespace luka
 

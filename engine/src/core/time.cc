@@ -1,5 +1,7 @@
 #include "luka/core/time.h"
 
+#include <ratio>
+
 namespace luka {
 
 void Time::Tick() {

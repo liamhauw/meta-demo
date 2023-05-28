@@ -5,16 +5,14 @@
 namespace luka {
 
 Engine::Engine() {
-  platform_ = std::make_shared<Platform>();
-  core_ = std::make_shared<Core>();
-  resource_ = std::make_shared<Resource>();
+  time_ = std::make_shared<Time>();
   function_ = std::make_shared<Function>();
   editor_ = std::make_shared<Editor>();
 }
 
 void Engine::Run() {
   while (!function_->ShouldClose()) {
-    core_->Tick();
+    time_->Tick();
     function_->Tick();
   }
 }

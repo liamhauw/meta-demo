@@ -2,6 +2,7 @@
 #include <memory>
 
 #include "luka/function/rendering.h"
+#include "luka/function/window.h"
 
 namespace luka {
 class Function {

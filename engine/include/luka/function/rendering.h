@@ -12,13 +12,11 @@
 #include <vector>
 #include <vulkan/vulkan_raii.hpp>
 
-#define GLFW_INCLUDE_VULKAN
-#include <GLFW/glfw3.h>
-
 #include "luka/core/file.h"
 #include "luka/core/math.h"
-#include "luka/core/time.h"
-#include "luka/resource/resource.h"
+#include "luka/function/window.h"
+#include "luka/resource/image.h"
+#include "luka/resource/obj_model.h"
 
 namespace luka {
 class Rendering {
