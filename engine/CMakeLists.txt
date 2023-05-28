@@ -7,32 +7,41 @@ project(luka_engine)
 add_library(platform STATIC)
 target_compile_features(platform PUBLIC cxx_std_20)
 target_include_directories(platform PUBLIC include)
-target_sources(platform
+target_sources(
+        platform
         PRIVATE
-        src/platform/platform.cc)
-
-target_link_libraries(platform PUBLIC
+        src/platform/platform.cc
+)
+target_link_libraries(
+        platform PUBLIC
         Vulkan::Vulkan
         glfw::glfw
         glm::glm
         stb_image::stb_image
         tiny_obj_loader::tiny_obj_loader
-        )
+)
 add_dependencies(platform glsl2spirv)
-
 add_library(luka_engine::platform ALIAS platform)
 
 # **********************************************************
 #                          core
 # **********************************************************
+configure_file("${CMAKE_SOURCE_DIR}/cmake/config.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/include/luka/core/generated/config.h")
+
 add_library(core STATIC)
-target_sources(core
+target_sources(
+        core
         PRIVATE
         src/core/core.cc
-        src/core/file.cc)
-target_link_libraries(core
+        src/core/file.cc
+        src/core/math.cc
+        src/core/time.cc
+)
+target_link_libraries(
+        core
         PUBLIC
-        luka_engine::platform)
+        luka_engine::platform
+)
 add_library(luka_engine::core ALIAS core)
 
 # **********************************************************

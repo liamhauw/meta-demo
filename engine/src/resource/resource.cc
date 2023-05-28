@@ -1,4 +1,5 @@
 #include "luka/resource/resource.h"
+#include "luka/core/file.h"
 
 #include <unordered_map>
 
@@ -18,7 +19,7 @@ void LoadModel(const std::string& model, std::vector<Vertex>& vertices,
   std::string warn, err;
 
   if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err,
-                        model.c_str())) {
+                        (root_directory + model).c_str())) {
     throw std::runtime_error{"tingobj: " + warn + err};
   }
 

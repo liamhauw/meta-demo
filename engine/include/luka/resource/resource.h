@@ -1,11 +1,11 @@
 #pragma once
 
+#include <stb_image.h>
+
 #include <string>
 #include <vector>
 
-#include "luka/core/math.h"
-
-#include <stb_image.h>
+#include "luka/core/core.h"
 
 namespace luka {
 

@@ -430,13 +430,13 @@ void Rendering::MakeSwapchain() {
     int width, height;
     glfwGetFramebufferSize(surface_data_.glfw_window, &width, &height);
 
-    swapchain_data_.extent.width = Clamp(
+    swapchain_data_.extent.width = glm::clamp(
         static_cast<uint32_t>(width), surface_capabilities.minImageExtent.width,
         surface_capabilities.maxImageExtent.width);
     swapchain_data_.extent.height =
-        Clamp(static_cast<uint32_t>(height),
-              surface_capabilities.minImageExtent.height,
-              surface_capabilities.maxImageExtent.height);
+        glm::clamp(static_cast<uint32_t>(height),
+                   surface_capabilities.minImageExtent.height,
+                   surface_capabilities.maxImageExtent.height);
   } else {
     swapchain_data_.extent = surface_capabilities.currentExtent;
   }
@@ -685,8 +685,7 @@ void Rendering::MakeFramebuffer() {
 }
 
 void Rendering::MakeVertexBuffer() {
-  LoadModel(root_directory + "resource/models/viking_room.obj", vertices_,
-            indices_);
+  LoadModel("/resource/models/viking_room.obj", vertices_, indices_);
   VkDeviceSize buffer_size{sizeof(vertices_[0]) * vertices_.size()};
 
   vk::raii::Buffer staging_buffer{
@@ -768,9 +767,9 @@ void Rendering::MakeUniformBuffer() {
 void Rendering::MakeTextureImage() {
   // load texture
   int tex_width, tex_height, tex_channels;
-  stbi_uc* piexls{stbi_load(
-      std::string{root_directory + "resource/textures/viking_room.png"}.c_str(),
-      &tex_width, &tex_height, &tex_channels, STBI_rgb_alpha)};
+  stbi_uc* piexls{
+      stbi_load(std::string{root_directory + "/resource/textures/viking_room.png"}.c_str(),
+                &tex_width, &tex_height, &tex_channels, STBI_rgb_alpha)};
 
   if (!piexls) {
     throw std::runtime_error{"fail to load texture image"};
@@ -1050,10 +1049,10 @@ void Rendering::MakeDescriptorSet() {
 }
 
 void Rendering::MakePipeline() {
-  vk::raii::ShaderModule vertex_shader_module{MakeShaderModule(
-      root_directory + "resource/shaders/generated/shader.vert.spirv")};
-  vk::raii::ShaderModule fragment_shader_module{MakeShaderModule(
-      root_directory + "resource/shaders/generated/shader.frag.spirv")};
+  vk::raii::ShaderModule vertex_shader_module{
+      MakeShaderModule("/resource/shaders/generated/shader.vert.spirv")};
+  vk::raii::ShaderModule fragment_shader_module{
+      MakeShaderModule("/resource/shaders/generated/shader.frag.spirv")};
 
   std::vector<vk::PipelineShaderStageCreateInfo> shader_stage_create_infos{
       {{},

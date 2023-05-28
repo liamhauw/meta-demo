@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
 
+#include "luka/core/file.h"
+#include "luka/core/math.h"
 #include "luka/core/time.h"
 
 namespace luka {

@@ -7,16 +7,7 @@ namespace luka {
 
 class Time {
  public:
-  void Tick() {
-    {
-      using namespace std::chrono;
-      auto now{high_resolution_clock::now()};
-      auto diff{now - last_};
-      delta_time_ = duration<double, std::milli>{diff}.count();
-      last_ = now;
-      fps_ = static_cast<uint32_t>(1.0 / delta_time_);
-    }
-  }
+  void Tick();
 
  private:
   double delta_time_{0.0};
@@ -25,4 +16,4 @@ class Time {
       std::chrono::high_resolution_clock::now()};
 };
 
-};  // namespace luka
+}  // namespace luka

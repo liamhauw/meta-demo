@@ -2,9 +2,6 @@
 
 namespace luka {
 
-class Platform {
- public:  
-  Platform();
-};
+class Platform {};
 
 }  // namespace luka

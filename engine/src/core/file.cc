@@ -1,13 +1,14 @@
 #include "luka/core/file.h"
+#include "luka/core/generated/config.h"
 
 #include <fstream>
 
 namespace luka {
 
-std::string root_directory;
+std::string root_directory{LUKA_ROOT_DIRECTORY};
 
 std::vector<char> ReadFile(const std::string& filename) {
-  std::ifstream file{filename, std::ios::ate | std::ios::binary};
+  std::ifstream file{root_directory + filename, std::ios::ate | std::ios::binary};
   if(!file.is_open()) {
     throw std::runtime_error{"fail to open " + filename };
   }
