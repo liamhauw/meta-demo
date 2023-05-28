@@ -9,4 +9,4 @@ extern std::string root_directory;
 
 std::vector<char> ReadFile(const std::string& filename);
 
-};
+}  // namespace luka

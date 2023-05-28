@@ -26,4 +26,4 @@ std::vector<char> ReadFile(const std::string& filename) {
   return buffer;
 }
 
-};  // namespace luka
+}  // namespace luka
