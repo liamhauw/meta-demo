@@ -685,7 +685,7 @@ void Rendering::MakeFramebuffer() {
 }
 
 void Rendering::MakeVertexBuffer() {
-  LoadModel("/resource/models/viking_room.obj", vertices_, indices_);
+  LoadModel("/resource/model/viking_room.obj", vertices_, indices_);
   VkDeviceSize buffer_size{sizeof(vertices_[0]) * vertices_.size()};
 
   vk::raii::Buffer staging_buffer{
@@ -768,7 +768,7 @@ void Rendering::MakeTextureImage() {
   // load texture
   int tex_width, tex_height, tex_channels;
   stbi_uc* piexls{
-      stbi_load(std::string{root_directory + "/resource/textures/viking_room.png"}.c_str(),
+      stbi_load(std::string{root_directory + "/resource/texture/viking_room.png"}.c_str(),
                 &tex_width, &tex_height, &tex_channels, STBI_rgb_alpha)};
 
   if (!piexls) {
@@ -1050,9 +1050,9 @@ void Rendering::MakeDescriptorSet() {
 
 void Rendering::MakePipeline() {
   vk::raii::ShaderModule vertex_shader_module{
-      MakeShaderModule("/resource/shaders/generated/shader.vert.spirv")};
+      MakeShaderModule("/resource/shader/generated/shader.vert.spirv")};
   vk::raii::ShaderModule fragment_shader_module{
-      MakeShaderModule("/resource/shaders/generated/shader.frag.spirv")};
+      MakeShaderModule("/resource/shader/generated/shader.frag.spirv")};
 
   std::vector<vk::PipelineShaderStageCreateInfo> shader_stage_create_infos{
       {{},
