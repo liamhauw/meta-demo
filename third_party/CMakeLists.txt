@@ -9,12 +9,12 @@ find_package(Vulkan REQUIRED GLOBAL)
 # **********************************************************
 # glfw
 # **********************************************************
+set(BUILD_SHARED_LIBS OFF)
 set(GLFW_BUILD_EXAMPLES OFF)
 set(GLFW_BUILD_TESTS OFF)
 set(GLFW_BUILD_DOCS OFF)
 set(GLFW_INSTALL OFF)
 add_subdirectory(glfw)
-add_library(glfw::glfw ALIAS glfw)
 
 # **********************************************************
 # glm
@@ -26,11 +26,22 @@ add_subdirectory(glm)
 # **********************************************************
 add_library(stb_image INTERFACE)
 target_include_directories(stb_image INTERFACE stb_image)
-add_library(stb_image::stb_image ALIAS stb_image)
+
+# **********************************************************
+# tiny gltf
+# **********************************************************
+set(TINYGLTF_BUILD_LOADER_EXAMPLE OFF)
+set(TINYGLTF_BUILD_GL_EXAMPLES OFF)
+set(TINYGLTF_BUILD_VALIDATOR_EXAMPLE OFF)
+set(TINYGLTF_BUILD_BUILDER_EXAMPLE OFF)
+set(TINYGLTF_HEADER_ONLY ON)
+set(TINYGLTF_INSTALL OFF)
+add_subdirectory(tiny_gltf)
 
 # **********************************************************
 # tiny obj loader
 # **********************************************************
-add_library(tiny_obj_loader INTERFACE)
-target_include_directories(tiny_obj_loader INTERFACE tiny_obj_loader)
-add_library(tiny_obj_loader::tiny_obj_loader ALIAS tiny_obj_loader)
+set(TINYOBJLOADER_USE_DOUBLE OFF)
+set(TINYOBJLOADER_BUILD_TEST_LOADER OFF)
+set(TINYOBJLOADER_BUILD_OBJ_STICHER OFF)
+add_subdirectory(tiny_obj_loader)

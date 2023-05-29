@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 project(luka_engine)
 
 # **********************************************************
-#                         platform
+# platform
 # **********************************************************
 add_library(platform INTERFACE)
 target_compile_features(platform INTERFACE cxx_std_20)
@@ -10,16 +10,17 @@ target_include_directories(platform INTERFACE include)
 target_link_libraries(
         platform INTERFACE
         Vulkan::Vulkan
-        glfw::glfw
-        glm::glm
-        stb_image::stb_image
-        tiny_obj_loader::tiny_obj_loader
+        glfw
+        glm
+        stb_image
+        tinygltf
+        tinyobjloader
 )
 add_dependencies(platform glsl2spirv)
 add_library(luka_engine::platform ALIAS platform)
 
 # **********************************************************
-#                          core
+# core
 # **********************************************************
 configure_file("${CMAKE_SOURCE_DIR}/cmake/config.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/include/luka/core/generated/config.h")
 
@@ -35,7 +36,7 @@ target_link_libraries(core PUBLIC luka_engine::platform)
 add_library(luka_engine::core ALIAS core)
 
 # **********************************************************
-#                         resource
+# resource
 # **********************************************************
 add_library(resource STATIC)
 target_sources(
@@ -48,7 +49,7 @@ target_link_libraries(resource PUBLIC luka_engine::core)
 add_library(luka_engine::resource ALIAS resource)
 
 # **********************************************************
-#                         function
+# function
 # **********************************************************
 add_library(function STATIC)
 target_sources(
@@ -62,7 +63,7 @@ target_link_libraries(function PUBLIC luka_engine::resource)
 add_library(luka_engine::function ALIAS function)
 
 # **********************************************************
-#                          editor
+# editor
 # **********************************************************
 add_library(editor STATIC)
 target_sources(
@@ -74,7 +75,7 @@ target_link_libraries(editor PUBLIC luka_engine::function)
 add_library(luka_engine::editor ALIAS editor)
 
 # **********************************************************
-#                       luka engine
+# luka engine
 # **********************************************************
 add_executable(${PROJECT_NAME})
 target_sources(${PROJECT_NAME}
