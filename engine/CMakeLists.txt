@@ -42,6 +42,7 @@ add_library(resource STATIC)
 target_sources(
         resource
         PRIVATE
+        src/resource/gltf_model.cc
         src/resource/image.cc
         src/resource/obj_model.cc
 )

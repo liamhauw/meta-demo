@@ -1,11 +1,10 @@
 #include "luka/resource/obj_model.h"
 
 #include <unordered_map>
-
-#include "luka/core/file.h"
-
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
+
+#include "luka/core/file.h"
 
 namespace luka {
 
