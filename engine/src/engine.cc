@@ -1,19 +1,18 @@
 #include "luka/engine.h"
 
-#include <memory>
+#include "luka/core/log.h"
+#include "luka/function/context/context.h"
+#include "luka/function/window/window.h"
 
 namespace luka {
 
-Engine::Engine() {
-  time_ = std::make_shared<Time>();
-  function_ = std::make_shared<Function>();
-  editor_ = std::make_shared<Editor>();
-}
-
 void Engine::Run() {
-  while (!function_->ShouldClose()) {
-    time_->Tick();
-    function_->Tick();
+  LOGI("engine initialize");
+  g_function_context.Initialize();
+  LOGI("engine run");
+  std::shared_ptr<Window> window{g_function_context.window};
+  while (!window->ShouldClose()) {
+    window->PollEvent();
   }
 }
 

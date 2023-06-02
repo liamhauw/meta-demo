@@ -9,8 +9,7 @@ namespace luka {
 std::string root_directory{LUKA_ROOT_DIRECTORY};
 
 std::vector<char> ReadFile(const std::string& filename) {
-  std::ifstream file{root_directory + filename,
-                     std::ios::ate | std::ios::binary};
+  std::ifstream file{root_directory + filename, std::ios::ate | std::ios::binary};
   if (!file.is_open()) {
     throw std::runtime_error{"fail to open " + filename};
   }

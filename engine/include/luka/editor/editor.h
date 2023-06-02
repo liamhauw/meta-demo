@@ -4,7 +4,8 @@ namespace luka {
 
 class Editor {
  public:
-  Editor();
+
+  void Tick();
 };
 
 }  // namespace luka

@@ -1,5 +1,16 @@
 #include "luka/function/rendering.h"
 
+#include <algorithm>
+#include <iterator>
+#include <memory>
+#include <numeric>
+#include <utility>
+
+#include "luka/core/file.h"
+#include "luka/core/math.h"
+#include "luka/resource/image.h"
+#include "luka/resource/resource_path.h"
+
 namespace luka {
 
 Rendering::Rendering() {
@@ -15,6 +26,9 @@ Rendering::Rendering() {
   MakeDepthImage();
   MakeRenderPass();
   MakeFramebuffer();
+
+  MakeModel();
+
   MakeVertexBuffer();
   MakeIndexBuffer();
   MakeUniformBuffer();
@@ -234,13 +248,16 @@ void Rendering::MakeInstance() {
       vk::DebugUtilsMessageTypeFlagBitsEXT::ePerformance |
       vk::DebugUtilsMessageTypeFlagBitsEXT::eValidation};
 
+  vk::DebugUtilsMessengerCreateInfoEXT debug_utils_messenger_create_info{
+      {},
+      message_severity_flags,
+      message_type_flags,
+      &DebugUtilsMessengerCallback};
+
   vk::StructureChain<vk::InstanceCreateInfo,
                      vk::DebugUtilsMessengerCreateInfoEXT>
       info_chain{{flags, &application_info, enabled_layers, enabled_extensions},
-                 {{},
-                  message_severity_flags,
-                  message_type_flags,
-                  &DebugUtilsMessengerCallback}};
+                 debug_utils_messenger_create_info};
 #else
   vk::StructureChain<vk::InstanceCreateInfo> info_chain{
       {flags, &application_info, enabled_layers, enabled_extensions}};
@@ -250,12 +267,6 @@ void Rendering::MakeInstance() {
       vk::raii::Instance{context_, info_chain.get<vk::InstanceCreateInfo>()};
 
 #ifndef NDEBUG
-  vk::DebugUtilsMessengerCreateInfoEXT debug_utils_messenger_create_info{
-      {},
-      message_severity_flags,
-      message_type_flags,
-      &DebugUtilsMessengerCallback};
-
   debug_utils_messenger_ = vk::raii::DebugUtilsMessengerEXT{
       instance_, debug_utils_messenger_create_info};
 #endif
@@ -684,6 +695,13 @@ void Rendering::MakeFramebuffer() {
   }
 }
 
+void Rendering::MakeModel() {
+  gltf_model_.LoadFromFile(
+      GetResourcePath("model/cube.gltf"), device_, graphics_queue_,
+      FileLoadFlag::PreTransformVertex | FileLoadFlag::PreMultiplyVertexColor |
+          FileLoadFlag::FlipY);
+}
+
 void Rendering::MakeVertexBuffer() {
   LoadModel("/resource/model/viking_room.obj", vertices_, indices_);
   VkDeviceSize buffer_size{sizeof(vertices_[0]) * vertices_.size()};
@@ -767,9 +785,9 @@ void Rendering::MakeUniformBuffer() {
 void Rendering::MakeTextureImage() {
   // load texture
   int tex_width, tex_height, tex_channels;
-  stbi_uc* piexls{
-      stbi_load(std::string{root_directory + "/resource/texture/viking_room.png"}.c_str(),
-                &tex_width, &tex_height, &tex_channels, STBI_rgb_alpha)};
+  stbi_uc* piexls{stbi_load(
+      std::string{root_directory + "/resource/texture/viking_room.png"}.c_str(),
+      &tex_width, &tex_height, &tex_channels, STBI_rgb_alpha)};
 
   if (!piexls) {
     throw std::runtime_error{"fail to load texture image"};
@@ -1267,8 +1285,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL Rendering::DebugUtilsMessengerCallback(
   return VK_TRUE;
 }
 
-void Rendering::FramebufferSizeCallback(GLFWwindow* window, int width,
-                                        int height) {
+void Rendering::FramebufferSizeCallback(GLFWwindow* window, int, int) {
   auto rendering{
       reinterpret_cast<Rendering*>(glfwGetWindowUserPointer(window))};
   rendering->framebuffer_resized_ = true;

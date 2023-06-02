@@ -1,20 +1,20 @@
 #include <exception>
-#include <iostream>
+#include <vulkan/vulkan_raii.hpp>
 
+#include "luka/core/log.h"
 #include "luka/engine.h"
 
-int main(int argc, char** argv) {
+int main(int, char**) {
   try {
-    luka::Engine engine;
-    engine.Run();
-  } catch (const vk::SystemError& err) {
-    std::cout << "vk::SystemError: " << err.what() << std::endl;
+    luka::Engine::Run();
+  } catch (const vk::SystemError& e) {
+    LOGE("vk::SystemError: {}", e.what());
     return -1;
-  } catch (const std::exception& err) {
-    std::cout << "std::exception: " << err.what() << std::endl;
+  } catch (const std::exception& e) {
+    LOGE("std::exception: {}", e.what());
     return -1;
   } catch (...) {
-    std::cout << "unknown error\n";
+    LOGE("unknown exception.");
     return -1;
   }
   return 0;

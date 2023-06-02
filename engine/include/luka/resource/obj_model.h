@@ -13,8 +13,7 @@ struct Vertex {
   glm::vec2 tex_coord;
 
   bool operator==(const Vertex& other) const {
-    return pos == other.pos && color == other.color &&
-           tex_coord == other.tex_coord;
+    return pos == other.pos && color == other.color && tex_coord == other.tex_coord;
   }
 };
 
@@ -33,9 +32,7 @@ namespace std {
 template <>
 struct hash<luka::Vertex> {
   size_t operator()(const luka::Vertex& vertex) const {
-    return ((hash<glm::vec3>()(vertex.pos) ^
-             (hash<glm::vec3>()(vertex.color) << 1)) >>
-            1) ^
+    return ((hash<glm::vec3>()(vertex.pos) ^ (hash<glm::vec3>()(vertex.color) << 1)) >> 1) ^
            (hash<glm::vec2>()(vertex.tex_coord) << 1);
   }
 };

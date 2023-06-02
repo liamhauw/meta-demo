@@ -4,7 +4,9 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third_party/glfw" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third_party/glm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third_party/spdlog" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third_party/stb_image" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third_party/tiny_gltf" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third_party/tiny_obj_loader" vcs="Git" />
   </component>
 </project>

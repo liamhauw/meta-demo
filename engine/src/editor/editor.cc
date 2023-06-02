@@ -3,5 +3,7 @@
 #include <iostream>
 
 namespace luka {
-Editor::Editor() {}
+
+void Editor::Tick() {}
+
 }  // namespace luka

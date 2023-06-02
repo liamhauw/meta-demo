@@ -12,6 +12,7 @@ target_link_libraries(
         Vulkan::Vulkan
         glfw
         glm
+        spdlog_header_only
         stb_image
         tinygltf
         tinyobjloader
@@ -28,6 +29,7 @@ add_library(core STATIC)
 target_sources(
         core
         PRIVATE
+        src/core/context.cc
         src/core/file.cc
         src/core/math.cc
         src/core/time.cc
@@ -45,6 +47,7 @@ target_sources(
         src/resource/gltf_model.cc
         src/resource/image.cc
         src/resource/obj_model.cc
+        src/resource/resource_path.cc
 )
 target_link_libraries(resource PUBLIC luka_engine::core)
 add_library(luka_engine::resource ALIAS resource)
@@ -56,9 +59,10 @@ add_library(function STATIC)
 target_sources(
         function
         PRIVATE
-        src/function/function.cc
-        src/function/rendering.cc
-        src/function/window.cc
+        src/function/context/context.cc
+        src/function/window/input.cc
+        src/function/window/window.cc
+#        src/function/rendering.cc
 )
 target_link_libraries(function PUBLIC luka_engine::resource)
 add_library(luka_engine::function ALIAS function)
@@ -79,9 +83,11 @@ add_library(luka_engine::editor ALIAS editor)
 # luka engine
 # **********************************************************
 add_executable(${PROJECT_NAME})
-target_sources(${PROJECT_NAME}
+target_sources(
+        ${PROJECT_NAME}
         PRIVATE
         src/engine.cc
-        src/main.cc)
+        src/main.cc
+        )
 target_link_libraries(${PROJECT_NAME} PRIVATE luka_engine::editor)
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

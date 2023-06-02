@@ -1,21 +1,13 @@
 #pragma once
 
-#include <algorithm>
-#include <cassert>
 #include <iostream>
-#include <iterator>
-#include <memory>
-#include <numeric>
 #include <optional>
 #include <string>
-#include <utility>
 #include <vector>
 #include <vulkan/vulkan_raii.hpp>
 
-#include "luka/core/file.h"
-#include "luka/core/math.h"
 #include "luka/function/window.h"
-#include "luka/resource/image.h"
+#include "luka/resource/gltf_model.h"
 #include "luka/resource/obj_model.h"
 
 namespace luka {
@@ -40,6 +32,10 @@ class Rendering {
   void MakeDepthImage();
   void MakeRenderPass();
   void MakeFramebuffer();
+
+  void MakeModel();
+  GltfModel gltf_model_;
+
   void MakeVertexBuffer();
   void MakeIndexBuffer();
   void MakeUniformBuffer();
