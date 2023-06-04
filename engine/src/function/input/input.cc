@@ -1,8 +1,9 @@
-#include "luka/function/window/input.h"
+#include "luka/function/input/input.h"
 
 #include <memory>
 
 #include "luka/core/context.h"
+#include "luka/core/log.h"
 #include "luka/function/context/context.h"
 #include "luka/function/window/window.h"
 
@@ -31,7 +32,7 @@ void Input::OnKey(int key, int scancode, int action, int mod) {
   }
 }
 void Input::OnCursorPos(double xpos, double ypos) {
-  if (g_function_context.window->focus_mode()) {
+  if (g_function_context.window->FocusMode()) {
     cursor_delta_xpos = cursor_last_xpos - xpos;
     cursor_delta_ypos = cursor_last_ypos - ypos;
   }
@@ -57,7 +58,7 @@ void Input::OnKeyInFuncMode(int key, int /*scancode*/, int action, int /*mod*/) 
         g_is_editor_mode = true;
       case GLFW_KEY_LEFT_ALT: {
         std::shared_ptr<Window> window{g_function_context.window};
-        window->set_focus_mode(!window->focus_mode());
+        window->SetFocusMode(!window->FocusMode());
       } break;
       case GLFW_KEY_W:
         game_command_ |= static_cast<unsigned>(GameCommand::kForward);

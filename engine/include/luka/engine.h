@@ -1,10 +1,6 @@
 #pragma once
 
-#include <memory>
-
 namespace luka {
-
-
 
 class Engine {
  public:

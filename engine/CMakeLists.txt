@@ -23,14 +23,11 @@ add_library(luka_engine::platform ALIAS platform)
 # **********************************************************
 # core
 # **********************************************************
-configure_file("${CMAKE_SOURCE_DIR}/cmake/config.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/include/luka/core/generated/config.h")
-
 add_library(core STATIC)
 target_sources(
         core
         PRIVATE
         src/core/context.cc
-        src/core/file.cc
         src/core/math.cc
         src/core/time.cc
 )
@@ -40,14 +37,17 @@ add_library(luka_engine::core ALIAS core)
 # **********************************************************
 # resource
 # **********************************************************
+configure_file(
+        "${CMAKE_SOURCE_DIR}/cmake/source_path.h.in"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/luka/resource/config/generated/source_path.h"
+)
+
 add_library(resource STATIC)
 target_sources(
         resource
         PRIVATE
-        src/resource/gltf_model.cc
-        src/resource/image.cc
-        src/resource/obj_model.cc
-        src/resource/resource_path.cc
+        src/resource/asset/asset.cc
+        src/resource/config/config.cc
 )
 target_link_libraries(resource PUBLIC luka_engine::core)
 add_library(luka_engine::resource ALIAS resource)
@@ -60,9 +60,11 @@ target_sources(
         function
         PRIVATE
         src/function/context/context.cc
-        src/function/window/input.cc
+        src/function/input/input.cc
         src/function/window/window.cc
-#        src/function/rendering.cc
+        src/function/rendering/rendering.cc
+        src/function/rendering/vulkan_rhi.cc
+        src/function/rendering/vulkan_util.cc
 )
 target_link_libraries(function PUBLIC luka_engine::resource)
 add_library(luka_engine::function ALIAS function)
@@ -88,6 +90,6 @@ target_sources(
         PRIVATE
         src/engine.cc
         src/main.cc
-        )
+)
 target_link_libraries(${PROJECT_NAME} PRIVATE luka_engine::editor)
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

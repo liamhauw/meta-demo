@@ -3,6 +3,7 @@
 #include <functional>
 #include <string>
 #include <vector>
+#include <vulkan/vulkan_raii.hpp>
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -23,8 +24,12 @@ class Window {
   bool ShouldClose();
   void SetShouldClose();
   static void PollEvent();
-  [[nodiscard]] bool focus_mode() const;
-  void set_focus_mode(bool mode);
+  [[nodiscard]] bool FocusMode() const;
+  void SetFocusMode(bool mode);
+
+  std::vector<const char*> GetRequiredInstanceExtension();
+  void CreateWindowSurface(const vk::raii::Instance& instance, VkSurfaceKHR* surface);
+  void GetFramebufferSize(int* width, int* height);
 
   using OnWindowCloseFunc = std::function<void()>;
   using OnWindowSizeFunc = std::function<void(int, int)>;

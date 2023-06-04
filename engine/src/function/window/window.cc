@@ -1,7 +1,6 @@
 #include "luka/function/window/window.h"
 
 #include "luka/core/log.h"
-#include "luka/engine.h"
 
 namespace luka {
 
@@ -46,12 +45,27 @@ void Window::SetShouldClose() { glfwSetWindowShouldClose(glfw_window_, GLFW_TRUE
 
 void Window::PollEvent() { glfwPollEvents(); }
 
-bool Window::focus_mode() const { return focus_mode_; }
+bool Window::FocusMode() const { return focus_mode_; }
 
-void Window::set_focus_mode(bool mode) {
+void Window::SetFocusMode(bool mode) {
   focus_mode_ = mode;
   glfwSetInputMode(glfw_window_, GLFW_CURSOR,
                    focus_mode_ ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+}
+
+std::vector<const char*> Window::GetRequiredInstanceExtension() {
+  uint32_t glfw_extension_count{0};
+  const char** glfw_extensions{glfwGetRequiredInstanceExtensions(&glfw_extension_count)};
+  std::vector<const char*> extension{glfw_extensions, glfw_extensions + glfw_extension_count};
+  return extension;
+}
+
+void Window::CreateWindowSurface(const vk::raii::Instance& instance, VkSurfaceKHR* surface) {
+  glfwCreateWindowSurface(static_cast<VkInstance>(*instance), glfw_window_, nullptr, surface);
+}
+
+void Window::GetFramebufferSize(int* width, int* height) {
+  glfwGetFramebufferSize(glfw_window_, width, height);
 }
 
 void Window::RegisterOnWindowCloseFunc(const OnWindowCloseFunc& func) {
@@ -167,5 +181,4 @@ void Window::OnScroll(double xoffset, double yoffset) {
 void Window::OnDrop(int count, const char** paths) {
   for (auto& func : on_drop_func_) func(count, paths);
 }
-
 }  // namespace luka
