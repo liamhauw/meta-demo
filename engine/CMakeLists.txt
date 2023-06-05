@@ -61,10 +61,11 @@ target_sources(
         PRIVATE
         src/function/context/context.cc
         src/function/input/input.cc
-        src/function/window/window.cc
         src/function/rendering/rendering.cc
         src/function/rendering/vulkan_rhi.cc
         src/function/rendering/vulkan_util.cc
+        src/function/window/window.cc
+        src/function/world/world.cc
 )
 target_link_libraries(function PUBLIC luka_engine::resource)
 add_library(luka_engine::function ALIAS function)

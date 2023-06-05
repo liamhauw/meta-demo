@@ -21,13 +21,13 @@ class Window {
   explicit Window(const WindowCreateInfo& window_create_info = {});
   ~Window();
 
-  bool ShouldClose();
+  bool Tick(double delta_time);
+
   void SetShouldClose();
-  static void PollEvent();
   [[nodiscard]] bool FocusMode() const;
   void SetFocusMode(bool mode);
 
-  std::vector<const char*> GetRequiredInstanceExtension();
+  static std::vector<const char*> GetRequiredInstanceExtension();
   void CreateWindowSurface(const vk::raii::Instance& instance, VkSurfaceKHR* surface);
   void GetFramebufferSize(int* width, int* height);
 

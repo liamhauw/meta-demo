@@ -39,11 +39,15 @@ Window::~Window() {
   glfwTerminate();
 }
 
-bool Window::ShouldClose() { return glfwWindowShouldClose(glfw_window_); }
+bool Window::Tick(double delta_time) {
+  std::string title{std::string{"luka "} + std::to_string(static_cast<int>(1.0 / delta_time)) +
+                    " fps"};
+  glfwSetWindowTitle(glfw_window_, title.c_str());
+  glfwPollEvents();
+  return !glfwWindowShouldClose(glfw_window_);
+}
 
 void Window::SetShouldClose() { glfwSetWindowShouldClose(glfw_window_, GLFW_TRUE); }
-
-void Window::PollEvent() { glfwPollEvents(); }
 
 bool Window::FocusMode() const { return focus_mode_; }
 

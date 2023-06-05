@@ -1,6 +1,7 @@
 #include "luka/engine.h"
 
 #include "luka/core/log.h"
+#include "luka/core/time.h"
 #include "luka/function/context/context.h"
 #include "luka/function/window/window.h"
 
@@ -11,9 +12,14 @@ void Engine::Run() {
   g_function_context.Initialize();
 
   LOGI("engine run");
-  std::shared_ptr<Window> window{g_function_context.window};
-  while (!window->ShouldClose()) {
-    window->PollEvent();
+
+  Time time;
+  double delta_time;
+  while(true) {
+    delta_time = time.Tick().GetDeltaTime();
+    if(!g_function_context.Tick(delta_time)) {
+      break;
+    }
   }
 
   g_function_context.Terminate();

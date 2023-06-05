@@ -10,9 +10,7 @@ class Config {
  public:
   Config();
 
-  std::filesystem::path model_path();
-  std::filesystem::path shader_path();
-  std::filesystem::path texture_path();
+[[nodiscard]] const std::filesystem::path& GetWorldFile() const;
 
  private:
   std::filesystem::path source_path_{LUKA_SOURCE_PATH};
@@ -20,9 +18,7 @@ class Config {
   std::filesystem::path asset_path_{resource_path_ / "asset"};
   std::filesystem::path config_file_{resource_path_ / "config/config.ini"};
 
-  std::filesystem::path model_path_;
-  std::filesystem::path shader_path_;
-  std::filesystem::path texture_path_;
+  std::filesystem::path world_file_;
 };
 
 }  // namespace luka

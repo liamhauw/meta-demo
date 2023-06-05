@@ -5,9 +5,6 @@
 
 namespace luka {
 
-class Asset {
- public:
-  static std::vector<char> ReadFile(const std::string &filename);
-};
+class Asset {};
 
 }  // namespace luka
