@@ -2,28 +2,33 @@
 
 #include "luka/core/log.h"
 #include "luka/core/time.h"
-#include "luka/function/context/context.h"
-#include "luka/function/window/window.h"
 
 namespace luka {
 
-void Engine::Run() {
+Engine::Engine() {
   LOGI("engine initialize");
-  g_function_context.Initialize();
 
+  config_ = std::make_shared<Config>();
+  asset_ = std::make_shared<Asset>();
+  world_ = std::make_shared<World>(config_);
+  window_ = std::make_shared<Window>();
+  input_ = std::make_shared<Input>(window_);
+  rendering_ = std::make_shared<Rendering>(window_);
+}
+
+void Engine::Run() {
   LOGI("engine run");
 
   Time time;
   double delta_time;
-  while(true) {
+  while (true) {
     delta_time = time.Tick().GetDeltaTime();
-    if(!g_function_context.Tick(delta_time)) {
+    if (!window_->Tick(delta_time)) {
       break;
     }
   }
-
-  g_function_context.Terminate();
-  LOGI("engine terminate");
 }
+
+Engine::~Engine() { LOGI("engine terminate"); }
 
 }  // namespace luka

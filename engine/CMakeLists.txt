@@ -59,7 +59,6 @@ add_library(function STATIC)
 target_sources(
         function
         PRIVATE
-        src/function/context/context.cc
         src/function/input/input.cc
         src/function/rendering/rendering.cc
         src/function/rendering/vulkan_rhi.cc

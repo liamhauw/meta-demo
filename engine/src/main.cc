@@ -5,7 +5,8 @@
 
 int main(int, char**) {
   try {
-    luka::Engine::Run();
+    luka::Engine engine;
+    engine.Run();
   } catch (const vk::SystemError& e) {
     LOGE("vk::SystemError: {}", e.what());
     return -1;

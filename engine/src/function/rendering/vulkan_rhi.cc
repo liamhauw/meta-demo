@@ -5,11 +5,10 @@
 
 #include "luka/core/log.h"
 #include "luka/core/math.h"
-#include "luka/function/context/context.h"
 
 namespace luka {
 
-VulkanRhi::VulkanRhi() {
+VulkanRhi::VulkanRhi(const std::shared_ptr<Window>& window) : window_{window} {
   MakeInstance();
   MakeSurface();
   MakePhysicalDevice();
@@ -25,8 +24,6 @@ VulkanRhi::~VulkanRhi() { device_.waitIdle(); }
 void VulkanRhi::MakeInstance() {
   vk::ApplicationInfo application_info{"luka", VK_MAKE_VERSION(1, 0, 0), "luka",
                                        VK_MAKE_VERSION(1, 0, 0), VK_API_VERSION_1_0};
-
-  window_ = g_function_context.window;
 
   std::vector<const char*> required_layers;
   std::vector<const char*> required_extensions{window_->GetRequiredInstanceExtension()};

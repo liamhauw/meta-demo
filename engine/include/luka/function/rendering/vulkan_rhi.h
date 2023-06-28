@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vulkan/vulkan_raii.hpp>
 
 #include "luka/function/rendering/vulkan_util.h"
@@ -9,7 +10,7 @@ namespace luka {
 
 class VulkanRhi {
  public:
-  VulkanRhi();
+  explicit VulkanRhi(const std::shared_ptr<Window>& window);
   ~VulkanRhi();
 
  private:
@@ -27,13 +28,11 @@ class VulkanRhi {
       VkDebugUtilsMessageTypeFlagsEXT message_types,
       const VkDebugUtilsMessengerCallbackDataEXT* p_callback_data, void* p_user_data);
 
-
-
  private:
+  std::shared_ptr<Window> window_;
+
   const uint32_t frames_in_flight_{2};
   uint32_t current_frame_{0};
-
-  std::shared_ptr<Window> window_;
 
   vk::raii::Context context_;
   vk::raii::Instance instance_{nullptr};
