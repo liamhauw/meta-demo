@@ -1,9 +1,8 @@
 #pragma once
 
-#include <spdlog/fmt/fmt.h>
 #include <spdlog/spdlog.h>
 
-#include <exception>
+#include <stdexcept>
 
 namespace luka {
 
@@ -14,6 +13,6 @@ namespace luka {
 
 #define THROW(...)                               \
   spdlog::error("[{}:{}]:", __FILE__, __LINE__); \
-  throw std::runtime_error { fmt::format(__VA_ARGS__) }
+  throw std::runtime_error { "" }
 
 }  // namespace luka
