@@ -22,6 +22,11 @@ add_subdirectory(glfw)
 add_subdirectory(glm)
 
 # **********************************************************
+# meta parser
+# **********************************************************
+add_subdirectory(meta_parser)
+
+# **********************************************************
 # spdlog
 # **********************************************************
 add_subdirectory(spdlog)
@@ -50,3 +55,18 @@ set(TINYOBJLOADER_USE_DOUBLE OFF)
 set(TINYOBJLOADER_BUILD_TEST_LOADER OFF)
 set(TINYOBJLOADER_BUILD_OBJ_STICHER OFF)
 add_subdirectory(tiny_obj_loader)
+
+# **********************************************************
+# third_party
+# **********************************************************
+add_library(third_party INTERFACE)
+target_link_libraries(
+        third_party INTERFACE
+        Vulkan::Vulkan
+        glfw
+        glm
+        spdlog_header_only
+        stb_image
+        tinygltf
+        tinyobjloader
+)

@@ -3,49 +3,74 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="CMakePresetLoader">{
-  &quot;useNewFormat&quot;: true
-}</component>
+  <component name="CMakePresetLoader"><![CDATA[{
+  "useNewFormat": true
+}]]></component>
   <component name="CMakeReloadState">
     <option name="reloaded" value="true" />
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
-      <config projectName="luka" targetName="function" />
-      <config projectName="luka" targetName="spdlog" />
       <config projectName="luka" targetName="update_mappings" />
+      <config projectName="luka" targetName="spdlog" />
       <config projectName="luka" targetName="tinyobjloader" />
-      <config projectName="luka" targetName="tinygltf" />
-      <config projectName="luka" targetName="core" />
-      <config projectName="luka" targetName="loader_example" />
       <config projectName="luka" targetName="luka_engine" />
-      <config projectName="luka" targetName="editor" />
-      <config projectName="luka" targetName="resource" />
+      <config projectName="luka" targetName="run_meta_parser" />
+      <config projectName="luka" targetName="meta_parser" />
       <config projectName="luka" targetName="uninstall" />
       <config projectName="luka" targetName="glfw" />
     </generated>
   </component>
   <component name="CMakeSettings">
     <configurations>
-      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" BUILD_OPTIONS="-j 18" />
-      <configuration PROFILE_NAME="Release" ENABLED="true" CONFIG_NAME="Release" />
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Visual Studio" GENERATION_OPTIONS="-G &quot;Visual Studio 17 2022&quot;" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d3fadd99-ef39-40da-a628-862c3bb2b16c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/Liam_Hauw.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" />
+    <list default="true" id="7705b5c6-6591-4406-b481-62543ddfc5d9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/luka.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/resource/asset/asset.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Liam.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/luka.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/core/log.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/include/luka/core/log.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/engine.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/include/luka/engine.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/engine.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/engine.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/function/world/world.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/function/world/world.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/main.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/src/main.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Liam_Hauw.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/engine/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/core/context.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/context.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/core/log.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/log.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/core/math.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/math.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/core/time.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/time.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/editor/editor.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/editor/editor.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/engine.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/input/input.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/input/input.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/rendering/rendering.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/rendering/rendering.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/rendering/rendering_old.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/rendering/rendering_old.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/rendering/vulkan_rhi.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/rendering/vulkan_rhi.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/rendering/vulkan_util.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/rendering/vulkan_util.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/window/window.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/window/window.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/world/world.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/world/world.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/platform/.placeholder" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/resource/asset/asset.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/include/luka/resource/config/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/config/config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/core/context.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/core/math.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/core/time.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/editor/editor.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/engine.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/function/input/input.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/function/rendering/rendering.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/function/rendering/rendering_old.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/function/rendering/vulkan_rhi.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/function/rendering/vulkan_util.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/function/window/window.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/function/world/world.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/main.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/platform/.placeholder" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/resource/asset/asset.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/src/resource/config/config.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/third_party/CMakeLists.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,56 +84,59 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectId" id="2RponVgf3j5S3VeNv4wgtrm2iYJ" />
+  <component name="ProjectApplicationVersion">
+    <option name="ide" value="CLion" />
+    <option name="majorVersion" value="2023" />
+    <option name="minorVersion" value="1.4" />
+  </component>
+  <component name="ProjectId" id="2S6jADOyAM3YtfJjnAelrA3HyZN" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "cf.advertisement.text.has.clang-format": "true",
     "cf.advertisement.text.overridden": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Liam Hauw/Code/Piccolo",
+    "last_opened_file_path": "C:/Users/Liam Hauw/Code/luka/engine",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "CMakeSettings",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Liam Hauw\Code\luka\engine" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Liam Hauw\Code\luka\engine" />
+      <recent name="C:\Users\Liam Hauw\Code\luka\engine\resource\asset" />
+      <recent name="C:\Users\Liam Hauw\Code\luka\engine\resource\config" />
+      <recent name="C:\Users\Liam Hauw\Code\luka\engine\resource\res_type" />
+      <recent name="C:\Users\Liam Hauw\Code\luka\engine\function\world" />
+    </key>
+  </component>
   <component name="RunManager" selected="CMake Application.luka_engine">
-    <configuration name="core" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="core" CONFIG_NAME="Debug">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="editor" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="editor" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="function" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="function" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
     <configuration name="glfw" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="glfw" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="loader_example" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="loader_example" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="luka" RUN_TARGET_NAME="loader_example">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -118,17 +146,17 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="resource" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="resource" CONFIG_NAME="Debug">
+    <configuration name="meta_parser" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="meta_parser" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="luka" RUN_TARGET_NAME="meta_parser">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="run_meta_parser" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="run_meta_parser" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="spdlog" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="spdlog" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="tinygltf" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="tinygltf" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -149,31 +177,25 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="CMake Application.core" />
-      <item itemvalue="CMake Application.editor" />
-      <item itemvalue="CMake Application.function" />
       <item itemvalue="CMake Application.luka_engine" />
-      <item itemvalue="CMake Application.resource" />
+      <item itemvalue="CMake Application.run_meta_parser" />
       <item itemvalue="CMake Application.glfw" />
       <item itemvalue="CMake Application.update_mappings" />
       <item itemvalue="CMake Application.uninstall" />
+      <item itemvalue="CMake Application.meta_parser" />
       <item itemvalue="CMake Application.spdlog" />
-      <item itemvalue="CMake Application.loader_example" />
-      <item itemvalue="CMake Application.tinygltf" />
       <item itemvalue="CMake Application.tinyobjloader" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d3fadd99-ef39-40da-a628-862c3bb2b16c" name="Changes" comment="" />
-      <created>1687942208834</created>
+      <changelist id="7705b5c6-6591-4406-b481-62543ddfc5d9" name="Changes" comment="" />
+      <created>1688473779324</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1687942208834</updated>
-      <workItem from="1687942210750" duration="2626000" />
-      <workItem from="1687956554342" duration="876000" />
-      <workItem from="1687957489497" duration="1354000" />
+      <updated>1688473779324</updated>
+      <workItem from="1688473780292" duration="3255000" />
     </task>
     <servers />
   </component>
@@ -185,32 +207,5 @@
     <isAutomaticCheckingOnLaunch value="false" />
     <isAutomaticFoundErrors value="true" />
     <isAutomaticFoundErrors value="true" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="FILTERS">
-                <map>
-                  <entry key="branch">
-                    <value>
-                      <list>
-                        <option value="main" />
-                      </list>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </State>
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
   </component>
 </project>
