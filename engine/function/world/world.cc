@@ -1,4 +1,7 @@
 #include "function/world/world.h"
+#include "resource/res_type/common/world.h"
+
+
 
 namespace luka {
 
@@ -13,7 +16,7 @@ void World::Tick(double delta_time) {
 }
 
 bool World::LoadWorld() {
-
+  WorldRes world_res;
 
 
   return false;

@@ -5,8 +5,8 @@
 #include "core/meta/reflection/reflection_register.h"
 #include "core/meta/serializer/serializer.h"
 
-#include "../generated/_generated/reflection/all_reflection.h"
-#include "../generated/_generated/serializer/all_serializer.ipp"
+#include "../generated/reflection/all_reflection.h"
+#include "../generated/serializer/all_serializer.ipp"
 
 namespace luka
 {

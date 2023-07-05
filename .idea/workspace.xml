@@ -28,67 +28,26 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d9a84928-3a52-46dc-ba54-43f879fb93d4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="d9a84928-3a52-46dc-ba54-43f879fb93d4" name="Changes" comment="commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake/source_path.h.in" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake/header_file.json.in" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/header_file.json.in" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake/source_path.h.in" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/config/source_path.h.in" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/engine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/resource/config/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/config/config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/resource/res_type/common/world.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/res_type/common/world.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resource/asset/global/particle.global.json" beforeDir="false" afterPath="$PROJECT_DIR$/resource/asset/global/particle.global.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resource/asset/objects/character/player/components/animation/data/W2_CrouchWalk_Aim_F_Loop_IP.animation_clip.json" beforeDir="false" afterPath="$PROJECT_DIR$/resource/asset/objects/character/player/components/animation/data/W2_CrouchWalk_Aim_F_Loop_IP.animation_clip.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/third_party/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/bin/Linux/libclang.so.12" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/bin/macOS/libc++.1.dylib" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/bin/macOS/libc++abi.1.dylib" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/bin/macOS/libclang.dylib" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/bin/x64/libclang.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/BuildSystem.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/CXCompilationDatabase.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/CXErrorCode.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/CXString.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/Documentation.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/Index.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/Platform.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/llvm-c/lto.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/lib/x64/libclang.lib" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/mustache/mustache.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/CMakeLists.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/common/namespace.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/common/precompiled.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/common/schema_module.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/cursor/cursor.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/cursor/cursor.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/cursor/cursor_type.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/cursor/cursor_type.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/generator/generator.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/generator/generator.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/generator/reflection_generator.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/generator/reflection_generator.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/generator/serializer_generator.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/generator/serializer_generator.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/class.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/class.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/field.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/field.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/method.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/method.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/type_info.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/type_info.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/meta/meta_data_config.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/meta/meta_info.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/meta/meta_info.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/meta/meta_utils.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/meta/meta_utils.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/meta/meta_utils.hpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/parser/parser.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/parser/parser.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/template_manager/template_manager.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/template_manager/template_manager.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/3rd_party/LLVM/bin/Linux/libclang.so.12" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/generator/reflection_generator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/generator/reflection_generator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/generator/serializer_generator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/generator/serializer_generator.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/parser/parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/parser/parser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/parser/parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/parser/parser.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/template_manager/template_manager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/template_manager/template_manager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/reflection/reflection_register.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/reflection/reflection_register.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/template/allReflectionFile.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/template/allReflectionFile.mustache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/template/commonReflectionFile.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/template/commonReflectionFile.mustache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/template/commonSerializerGenFile.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/template/commonSerializerGenFile.mustache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/function/world/world.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/world/world.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/resource/asset/asset.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/asset/asset.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/third_party/tiny_gltf" beforeDir="false" afterPath="$PROJECT_DIR$/third_party/tiny_gltf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/tiny_gltf/models/CubeImageUriSpaces/ 2x2 image  has multiple      spaces.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,13 +85,13 @@
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Code/Piccolo",
+    "last_opened_file_path": "C:/Code/luka/engine/core",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CMakeSettings",
+    "settings.editor.selected.configurable": "fileTemplates",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -215,8 +174,17 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1688529321987</updated>
-      <workItem from="1688529323859" duration="7933000" />
+      <workItem from="1688529323859" duration="14894000" />
     </task>
+    <task id="LOCAL-00001" summary="commit">
+      <option name="closed" value="true" />
+      <created>1688538648131</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1688538648131</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,5 +206,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit" />
   </component>
 </project>

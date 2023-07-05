@@ -12,12 +12,30 @@ configure_file(
         "${RESOURCE_FILE}/config/generated/source_path.h"
 )
 
+#file(GLOB_RECURSE HEADER_FILE "*.h")
+#file(GLOB_RECURSE SOURCE_FILE "*.cc")
+
+
 set(
         HEADER_FILE
         # core
         ${CORE_FILE}/meta/reflection/reflection.h
         ${CORE_FILE}/meta/reflection/reflection_register.h
         ${CORE_FILE}/meta/serializer/serializer.h
+
+        ${CORE_FILE}/math/math.h
+        ${CORE_FILE}/math/math_headers.h
+        ${CORE_FILE}/math/math_marcos.h
+        ${CORE_FILE}/math/matrix3.h
+        ${CORE_FILE}/math/matrix4.h
+        ${CORE_FILE}/math/quaternion.h
+        ${CORE_FILE}/math/random.h
+        ${CORE_FILE}/math/transform.h
+        ${CORE_FILE}/math/vector2.h
+        ${CORE_FILE}/math/vector3.h
+        ${CORE_FILE}/math/vector4.h
+        ${CORE_FILE}/math/axis_aligned.h
+
         ${CORE_FILE}/context.h
         ${CORE_FILE}/log.h
         ${CORE_FILE}/math.h
@@ -27,6 +45,7 @@ set(
         ${RESOURCE_FILE}/config/generated/source_path.h
         ${RESOURCE_FILE}/config/config.h
         ${RESOURCE_FILE}/res_type/common/world.h
+        ${RESOURCE_FILE}/res_type/common/level.h
         # function
         ${FUNCTION_FILE}/input/input.h
         ${FUNCTION_FILE}/rendering/rendering.h
@@ -43,6 +62,14 @@ set(
 set(
         SOURCE_FILE
         # core
+        ${CORE_FILE}/math/axis_aligned.cc
+        ${CORE_FILE}/math/math.cc
+        ${CORE_FILE}/math/matrix3.cc
+        ${CORE_FILE}/math/matrix4.cc
+        ${CORE_FILE}/math/quaternion.cc
+        ${CORE_FILE}/math/vector2.cc
+        ${CORE_FILE}/math/vector3.cc
+        ${CORE_FILE}/math/vector4.cc
         ${CORE_FILE}/meta/reflection/reflection.cc
         ${CORE_FILE}/meta/reflection/reflection_register.cc
         ${CORE_FILE}/meta/serializer/serializer.cc
@@ -53,6 +80,7 @@ set(
         ${RESOURCE_FILE}/asset/asset.cc
         ${RESOURCE_FILE}/config/config.cc
         ${RESOURCE_FILE}/res_type/common/world.cc
+        ${RESOURCE_FILE}/res_type/common/level.cc
         # function
         ${FUNCTION_FILE}/input/input.cc
         ${FUNCTION_FILE}/rendering/rendering.cc

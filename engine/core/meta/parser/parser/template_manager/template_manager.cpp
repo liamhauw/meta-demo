@@ -5,8 +5,6 @@
 
 void TemplateManager::loadTemplates(std::string path, std::string template_name)
 {
-
-    std::cout << path + "/../template/" << std::endl;
     m_template_pool.insert_or_assign(template_name,
                                      Utils::loadFile(path + "/../template/" + template_name + ".mustache"));
 }

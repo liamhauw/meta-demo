@@ -1,11 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 project(meta_parser)
 
-#set(
-#        PARSER_HEADER_FILE
-#
-#)
-
 file(GLOB_RECURSE HEADERS "*.h")
 file(GLOB_RECURSE SOURCES "*.cpp")
 
