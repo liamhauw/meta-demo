@@ -5,7 +5,7 @@
 #include "function/input/input.h"
 #include "function/rendering/rendering.h"
 #include "function/window/window.h"
-#include "function/world/world.h"
+#include "function/framework/common/world.h"
 #include "resource/asset/asset.h"
 #include "resource/config/config.h"
 

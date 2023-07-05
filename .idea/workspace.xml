@@ -29,25 +29,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d9a84928-3a52-46dc-ba54-43f879fb93d4" name="Changes" comment="commit">
+      <change afterPath="$PROJECT_DIR$/engine/function/framework/common/world.cc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/engine/function/framework/common/world.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake/header_file.json.in" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/header_file.json.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake/source_path.h.in" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/config/source_path.h.in" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/engine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/3rd_party/LLVM/bin/Linux/libclang.so.12" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/generator/reflection_generator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/generator/reflection_generator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/generator/serializer_generator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/generator/serializer_generator.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/parser/parser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/parser/parser.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/parser/parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/parser/parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/template_manager/template_manager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/template_manager/template_manager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/reflection/reflection_register.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/reflection/reflection_register.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/template/allReflectionFile.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/template/allReflectionFile.mustache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/template/commonReflectionFile.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/template/commonReflectionFile.mustache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/template/commonSerializerGenFile.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/template/commonSerializerGenFile.mustache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/function/world/world.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/world/world.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/serializer/serializer.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/serializer/serializer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/engine.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/engine.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/engine.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/engine.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/function/world/world.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/function/world/world.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/resource/asset/asset.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/asset/asset.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/third_party/tiny_gltf" beforeDir="false" afterPath="$PROJECT_DIR$/third_party/tiny_gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/resource/config/config.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/config/config.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/resource/config/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/config/config.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +84,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "fileTemplates",
+    "settings.editor.selected.configurable": "Errors",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -100,6 +93,7 @@
       <recent name="C:\Code\luka\engine\core" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Code\luka\engine\function\framework\common" />
       <recent name="C:\Code\luka\engine\core\meta" />
     </key>
   </component>
@@ -174,7 +168,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1688529321987</updated>
-      <workItem from="1688529323859" duration="14894000" />
+      <workItem from="1688529323859" duration="18666000" />
     </task>
     <task id="LOCAL-00001" summary="commit">
       <option name="closed" value="true" />
@@ -184,7 +178,15 @@
       <option name="project" value="LOCAL" />
       <updated>1688538648131</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="commit">
+      <option name="closed" value="true" />
+      <created>1688547320159</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1688547320159</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -65,7 +65,7 @@ namespace luka
             else
             {
                 static_assert(always_false<T>, "Serializer::write<T> has not been implemented yet!");
-                return Json();
+                return {};
             }
         }
 

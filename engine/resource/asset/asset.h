@@ -12,14 +12,14 @@ namespace luka {
 class Asset {
  public:
   template <typename AssetType>
-  bool LoadAsset(const std::string& asset_file, AssetType& out_asset) const {
-    std::ifstream asset_json_file{asset_file};
-    if (!asset_json_file) {
+  void LoadAsset(const std::string& asset_file_path, AssetType& asset) const {
+    std::ifstream asset_file{asset_file_path};
+    if (!asset_file) {
       THROW("fail to open file");
     }
 
     std::stringstream buffer;
-    buffer << asset_json_file.rdbuf();
+    buffer << asset_file.rdbuf();
     std::string asset_json_text{buffer.str()};
 
     std::string error;
@@ -28,8 +28,7 @@ class Asset {
       THROW("fail to parse json file");
     }
 
-    Serializer::read(asset_json, out_asset);
-    return true;
+    Serializer::read(asset_json, asset);
   }
 };
 
