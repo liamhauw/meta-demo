@@ -12,10 +12,6 @@ configure_file(
         "${RESOURCE_FILE}/config/generated/source_path.h"
 )
 
-#file(GLOB_RECURSE HEADER_FILE "*.h")
-#file(GLOB_RECURSE SOURCE_FILE "*.cc")
-
-
 set(
         HEADER_FILE
         # core
@@ -53,6 +49,9 @@ set(
         ${FUNCTION_FILE}/rendering/vulkan_util.h
         ${FUNCTION_FILE}/window/window.h
         ${FUNCTION_FILE}/framework/common/world.h
+        ${FUNCTION_FILE}/framework/common/object.h
+        ${FUNCTION_FILE}/framework/common/object_id_allocator.h
+        ${FUNCTION_FILE}/framework/component/component.h
         # editor
         ${EDITOR_FILE}/editor.h
         # engine
@@ -88,6 +87,9 @@ set(
         ${FUNCTION_FILE}/rendering/vulkan_util.cc
         ${FUNCTION_FILE}/window/window.cc
         ${FUNCTION_FILE}/framework/common/world.cc
+        ${FUNCTION_FILE}/framework/common/object.cc
+        ${FUNCTION_FILE}/framework/common/object_id_allocator.cc
+        ${FUNCTION_FILE}/framework/component/component.cc
         # editor
         ${EDITOR_FILE}/editor.cc
         # engine
