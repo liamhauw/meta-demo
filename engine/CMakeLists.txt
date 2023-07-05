@@ -1,28 +1,87 @@
 cmake_minimum_required(VERSION 3.24)
 project(luka_engine)
 
-set(LUKA_HEADER_FILE "${CMAKE_BINARY_DIR}/header_file.json")
+set(CORE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/core)
+set(RESOURCE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/resource)
+set(FUNCTION_FILE ${CMAKE_CURRENT_SOURCE_DIR}/function)
+set(EDITOR_FILE ${CMAKE_CURRENT_SOURCE_DIR}/editor)
+set(ENGINE_FILE ${CMAKE_CURRENT_SOURCE_DIR})
 
 configure_file(
-        "${CMAKE_SOURCE_DIR}/cmake/source_path.h.in"
-        "${CMAKE_BINARY_DIR}/generated/luka/source_path.h"
+        "${RESOURCE_FILE}/config/source_path.h.in"
+        "${RESOURCE_FILE}/config/generated/source_path.h"
 )
-file(GLOB_RECURSE HEADER_FILE "*.h")
-file(GLOB_RECURSE SOURCE_FILE "*.cc")
+
+set(
+        HEADER_FILE
+        # core
+        ${CORE_FILE}/meta/reflection/reflection.h
+        ${CORE_FILE}/meta/reflection/reflection_register.h
+        ${CORE_FILE}/meta/serializer/serializer.h
+        ${CORE_FILE}/context.h
+        ${CORE_FILE}/log.h
+        ${CORE_FILE}/math.h
+        ${CORE_FILE}/time.h
+        # resource
+        ${RESOURCE_FILE}/asset/asset.h
+        ${RESOURCE_FILE}/config/generated/source_path.h
+        ${RESOURCE_FILE}/config/config.h
+        ${RESOURCE_FILE}/res_type/common/world.h
+        # function
+        ${FUNCTION_FILE}/input/input.h
+        ${FUNCTION_FILE}/rendering/rendering.h
+        ${FUNCTION_FILE}/rendering/vulkan_rhi.h
+        ${FUNCTION_FILE}/rendering/vulkan_util.h
+        ${FUNCTION_FILE}/window/window.h
+        ${FUNCTION_FILE}/world/world.h
+        # editor
+        ${EDITOR_FILE}/editor.h
+        # engine
+        ${ENGINE_FILE}/engine.h
+)
+
+set(
+        SOURCE_FILE
+        # core
+        ${CORE_FILE}/meta/reflection/reflection.cc
+        ${CORE_FILE}/meta/reflection/reflection_register.cc
+        ${CORE_FILE}/meta/serializer/serializer.cc
+        ${CORE_FILE}/context.cc
+        ${CORE_FILE}/math.cc
+        ${CORE_FILE}/time.cc
+        # resource
+        ${RESOURCE_FILE}/asset/asset.cc
+        ${RESOURCE_FILE}/config/config.cc
+        ${RESOURCE_FILE}/res_type/common/world.cc
+        # function
+        ${FUNCTION_FILE}/input/input.cc
+        ${FUNCTION_FILE}/rendering/rendering.cc
+        ${FUNCTION_FILE}/rendering/vulkan_rhi.cc
+        ${FUNCTION_FILE}/rendering/vulkan_util.cc
+        ${FUNCTION_FILE}/window/window.cc
+        ${FUNCTION_FILE}/world/world.cc
+        # editor
+        ${EDITOR_FILE}/editor.cc
+        # engine
+        ${ENGINE_FILE}/engine.cc
+        ${ENGINE_FILE}/main.cc
+)
+
+add_subdirectory(${CORE_FILE}/meta/parser)
+set(HEADER_FILE_JSON "${CORE_FILE}/meta/generated/header_file.json")
 configure_file(
-        "${CMAKE_SOURCE_DIR}/cmake/header_file.json.in"
-        ${LUKA_HEADER_FILE}
+        "${CORE_FILE}/meta/header_file.json.in"
+        ${HEADER_FILE_JSON}
 )
 add_custom_target(
-        run_meta_parser
-        COMMAND meta_parser ${LUKA_HEADER_FILE} "${CMAKE_BINARY_DIR}/parser_header.h" "${CMAKE_BINARY_DIR}/generated/luka" "*" "luka" 0
+        run_meta_parser ALL
+        COMMAND meta_parser ${HEADER_FILE_JSON} "${CORE_FILE}/meta/generated/parser_header.h" "${CORE_FILE}/meta/generated" "*" "luka" 0
 )
 add_dependencies(run_meta_parser meta_parser)
 
 add_executable(${PROJECT_NAME})
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCE_FILE})
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_BINARY_DIR}/generated)
+target_include_directories(${PROJECT_NAME} PRIVATE ${ENGINE_FILE})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
-target_link_libraries(${PROJECT_NAME} PRIVATE third_party)
-set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+target_link_libraries(${PROJECT_NAME} PRIVATE luka_third_party)
 add_dependencies(${PROJECT_NAME} run_meta_parser)

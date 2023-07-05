@@ -2,7 +2,7 @@
 
 #include <filesystem>
 
-#include "luka/source_path.h"
+#include "resource/config/generated/source_path.h"
 
 namespace luka {
 

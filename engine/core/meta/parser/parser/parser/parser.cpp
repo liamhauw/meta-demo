@@ -129,6 +129,9 @@ bool MetaParser::parseProject()
     {
         std::string temp_string(include_item);
         Utils::replace(temp_string, '\\', '/');
+        if (temp_string.back() == '\n') {
+          temp_string.pop_back();
+        }
         include_file << "#include  \"" << temp_string << "\"" << std::endl;
     }
 

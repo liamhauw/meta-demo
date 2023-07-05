@@ -15,6 +15,7 @@
       <config projectName="luka" targetName="spdlog" />
       <config projectName="luka" targetName="tinyobjloader" />
       <config projectName="luka" targetName="luka_engine" />
+      <config projectName="luka" targetName="json11" />
       <config projectName="luka" targetName="run_meta_parser" />
       <config projectName="luka" targetName="meta_parser" />
       <config projectName="luka" targetName="uninstall" />
@@ -23,61 +24,78 @@
   </component>
   <component name="CMakeSettings">
     <configurations>
-      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Visual Studio" GENERATION_OPTIONS="-G &quot;Visual Studio 17 2022&quot;" />
+      <configuration PROFILE_NAME="Debug-Visual Studio" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Visual Studio" GENERATION_OPTIONS="-G &quot;Visual Studio 17 2022&quot;" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7705b5c6-6591-4406-b481-62543ddfc5d9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/luka.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/engine/resource/asset/asset.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Liam_Hauw.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+    <list default="true" id="d9a84928-3a52-46dc-ba54-43f879fb93d4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake/source_path.h.in" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/engine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/core/context.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/context.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/core/log.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/log.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/core/math.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/math.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/core/time.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/time.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/editor/editor.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/editor/editor.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/engine.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/input/input.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/input/input.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/rendering/rendering.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/rendering/rendering.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/rendering/rendering_old.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/rendering/rendering_old.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/rendering/vulkan_rhi.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/rendering/vulkan_rhi.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/rendering/vulkan_util.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/rendering/vulkan_util.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/window/window.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/window/window.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/function/world/world.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/world/world.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/platform/.placeholder" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/resource/asset/asset.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/include/luka/resource/config/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/config/config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/core/context.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/core/math.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/core/time.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/editor/editor.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/engine.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/function/input/input.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/function/rendering/rendering.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/function/rendering/rendering_old.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/function/rendering/vulkan_rhi.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/function/rendering/vulkan_util.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/function/window/window.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/function/world/world.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/main.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/platform/.placeholder" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/resource/asset/asset.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/src/resource/config/config.cc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/resource/config/config.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/config/config.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/resource/res_type/common/world.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/res_type/common/world.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/asset/global/particle.global.json" beforeDir="false" afterPath="$PROJECT_DIR$/resource/asset/global/particle.global.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resource/asset/objects/character/player/components/animation/data/W2_CrouchWalk_Aim_F_Loop_IP.animation_clip.json" beforeDir="false" afterPath="$PROJECT_DIR$/resource/asset/objects/character/player/components/animation/data/W2_CrouchWalk_Aim_F_Loop_IP.animation_clip.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/third_party/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/third_party/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/bin/Linux/libclang.so.12" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/bin/macOS/libc++.1.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/bin/macOS/libc++abi.1.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/bin/macOS/libclang.dylib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/bin/x64/libclang.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/BuildSystem.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/CXCompilationDatabase.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/CXErrorCode.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/CXString.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/Documentation.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/Index.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/clang-c/Platform.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/include/llvm-c/lto.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/LLVM/lib/x64/libclang.lib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/3rd_party/mustache/mustache.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/CMakeLists.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/common/namespace.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/common/precompiled.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/common/schema_module.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/cursor/cursor.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/cursor/cursor.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/cursor/cursor_type.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/cursor/cursor_type.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/generator/generator.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/generator/generator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/generator/reflection_generator.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/generator/reflection_generator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/generator/serializer_generator.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/generator/serializer_generator.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/class.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/class.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/field.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/field.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/method.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/method.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/type_info.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/language_types/type_info.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/main.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/meta/meta_data_config.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/meta/meta_info.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/meta/meta_info.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/meta/meta_utils.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/meta/meta_utils.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/meta/meta_utils.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/parser/parser.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/parser/parser.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/template_manager/template_manager.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/meta_parser/parser/template_manager/template_manager.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/tiny_gltf" beforeDir="false" afterPath="$PROJECT_DIR$/third_party/tiny_gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/third_party/tiny_gltf/models/CubeImageUriSpaces/ 2x2 image  has multiple      spaces.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug-Visual Studio" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -89,7 +107,7 @@
     <option name="majorVersion" value="2023" />
     <option name="minorVersion" value="1.4" />
   </component>
-  <component name="ProjectId" id="2S6jADOyAM3YtfJjnAelrA3HyZN" />
+  <component name="ProjectId" id="2S8Xk8lFRS5rMCkjYCsoOS0rWco" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
@@ -99,16 +117,16 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "cf.advertisement.text.overridden": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/Liam Hauw/Code/luka/engine",
+    "last_opened_file_path": "C:/Code/Piccolo",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -120,14 +138,10 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Liam Hauw\Code\luka\engine" />
+      <recent name="C:\Code\luka\engine\core" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Liam Hauw\Code\luka\engine" />
-      <recent name="C:\Users\Liam Hauw\Code\luka\engine\resource\asset" />
-      <recent name="C:\Users\Liam Hauw\Code\luka\engine\resource\config" />
-      <recent name="C:\Users\Liam Hauw\Code\luka\engine\resource\res_type" />
-      <recent name="C:\Users\Liam Hauw\Code\luka\engine\function\world" />
+      <recent name="C:\Code\luka\engine\core\meta" />
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.luka_engine">
@@ -136,42 +150,47 @@
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="glfw" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="glfw" CONFIG_NAME="Debug">
+    <configuration name="glfw" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="glfw" CONFIG_NAME="Debug-Visual Studio">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="luka_engine" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="luka_engine" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="luka" RUN_TARGET_NAME="luka_engine">
+    <configuration name="json11" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="json11" CONFIG_NAME="Debug-Visual Studio">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="meta_parser" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="meta_parser" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="luka" RUN_TARGET_NAME="meta_parser">
+    <configuration name="luka_engine" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="luka_engine" CONFIG_NAME="Debug-Visual Studio" RUN_TARGET_PROJECT_NAME="luka" RUN_TARGET_NAME="luka_engine">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="run_meta_parser" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="run_meta_parser" CONFIG_NAME="Debug">
+    <configuration name="meta_parser" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/engine/core/meta/generated/header_file.json $PROJECT_DIR$/engine/core/meta/generated/parser_header.h $PROJECT_DIR$/engine/core/meta/generated * luka 0 " REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="meta_parser" CONFIG_NAME="Debug-Visual Studio" RUN_TARGET_PROJECT_NAME="luka" RUN_TARGET_NAME="meta_parser">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="spdlog" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="spdlog" CONFIG_NAME="Debug">
+    <configuration name="run_meta_parser" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/engine/core/meta/generated/header_file.json $PROJECT_DIR$/engine/core/meta/generated/parser_header.h $PROJECT_DIR$/engine/core/meta/generated * luka 0" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="meta_parser" CONFIG_NAME="Debug-Visual Studio" RUN_TARGET_PROJECT_NAME="luka" RUN_TARGET_NAME="meta_parser">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="tinyobjloader" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="tinyobjloader" CONFIG_NAME="Debug">
+    <configuration name="spdlog" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="spdlog" CONFIG_NAME="Debug-Visual Studio">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="uninstall" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="uninstall" CONFIG_NAME="Debug">
+    <configuration name="tinyobjloader" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="tinyobjloader" CONFIG_NAME="Debug-Visual Studio">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="update_mappings" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="update_mappings" CONFIG_NAME="Debug">
+    <configuration name="uninstall" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="uninstall" CONFIG_NAME="Debug-Visual Studio">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="update_mappings" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="update_mappings" CONFIG_NAME="Debug-Visual Studio">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -179,10 +198,11 @@
     <list>
       <item itemvalue="CMake Application.luka_engine" />
       <item itemvalue="CMake Application.run_meta_parser" />
+      <item itemvalue="CMake Application.meta_parser" />
       <item itemvalue="CMake Application.glfw" />
       <item itemvalue="CMake Application.update_mappings" />
       <item itemvalue="CMake Application.uninstall" />
-      <item itemvalue="CMake Application.meta_parser" />
+      <item itemvalue="CMake Application.json11" />
       <item itemvalue="CMake Application.spdlog" />
       <item itemvalue="CMake Application.tinyobjloader" />
     </list>
@@ -190,12 +210,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="7705b5c6-6591-4406-b481-62543ddfc5d9" name="Changes" comment="" />
-      <created>1688473779324</created>
+      <changelist id="d9a84928-3a52-46dc-ba54-43f879fb93d4" name="Changes" comment="" />
+      <created>1688529321987</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1688473779324</updated>
-      <workItem from="1688473780292" duration="3255000" />
+      <updated>1688529321987</updated>
+      <workItem from="1688529323859" duration="7933000" />
     </task>
     <servers />
   </component>
@@ -207,5 +227,16 @@
     <isAutomaticCheckingOnLaunch value="false" />
     <isAutomaticFoundErrors value="true" />
     <isAutomaticFoundErrors value="true" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

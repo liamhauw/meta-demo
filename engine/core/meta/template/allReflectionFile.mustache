@@ -1,0 +1,15 @@
+#pragma once
+#include "core/meta/reflection/reflection.h"
+#include "core/meta/generated/_generated/serializer/all_serializer.h"
+{{#include_headfiles}}
+#include "core/meta/generated/{{headfile_name}}"
+{{/include_headfiles}}
+
+namespace luka{
+namespace Reflection{
+    void TypeMetaRegister::metaRegister(){
+        {{#sourefile_names}}TypeWrappersRegister::{{sourefile_name_upper_camel_case}}();
+        {{/sourefile_names}}
+    }
+}
+}

@@ -22,9 +22,9 @@ add_subdirectory(glfw)
 add_subdirectory(glm)
 
 # **********************************************************
-# meta parser
+# json11
 # **********************************************************
-add_subdirectory(meta_parser)
+add_subdirectory(json11)
 
 # **********************************************************
 # spdlog
@@ -40,6 +40,7 @@ target_include_directories(stb_image INTERFACE stb_image)
 # **********************************************************
 # tiny gltf
 # **********************************************************
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(TINYGLTF_BUILD_LOADER_EXAMPLE OFF)
 set(TINYGLTF_BUILD_GL_EXAMPLES OFF)
 set(TINYGLTF_BUILD_VALIDATOR_EXAMPLE OFF)
@@ -59,12 +60,13 @@ add_subdirectory(tiny_obj_loader)
 # **********************************************************
 # third_party
 # **********************************************************
-add_library(third_party INTERFACE)
+add_library(${PROJECT_NAME} INTERFACE)
 target_link_libraries(
-        third_party INTERFACE
+        ${PROJECT_NAME} INTERFACE
         Vulkan::Vulkan
         glfw
         glm
+        json11
         spdlog_header_only
         stb_image
         tinygltf
