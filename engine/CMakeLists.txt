@@ -15,10 +15,12 @@ configure_file(
 set(
         HEADER_FILE
         # core
+        # meta must be the first, otherwise it won't reflect the previous header, i don't know.
+        # --------------------------------------------------
         ${CORE_FILE}/meta/reflection/reflection.h
         ${CORE_FILE}/meta/reflection/reflection_register.h
         ${CORE_FILE}/meta/serializer/serializer.h
-
+        # --------------------------------------------------
         ${CORE_FILE}/math/math.h
         ${CORE_FILE}/math/math_headers.h
         ${CORE_FILE}/math/math_marcos.h
@@ -31,7 +33,6 @@ set(
         ${CORE_FILE}/math/vector3.h
         ${CORE_FILE}/math/vector4.h
         ${CORE_FILE}/math/axis_aligned.h
-
         ${CORE_FILE}/context.h
         ${CORE_FILE}/log.h
         ${CORE_FILE}/math.h
@@ -61,6 +62,9 @@ set(
 set(
         SOURCE_FILE
         # core
+        ${CORE_FILE}/meta/reflection/reflection.cc
+        ${CORE_FILE}/meta/reflection/reflection_register.cc
+        ${CORE_FILE}/meta/serializer/serializer.cc
         ${CORE_FILE}/math/axis_aligned.cc
         ${CORE_FILE}/math/math.cc
         ${CORE_FILE}/math/matrix3.cc
@@ -69,9 +73,6 @@ set(
         ${CORE_FILE}/math/vector2.cc
         ${CORE_FILE}/math/vector3.cc
         ${CORE_FILE}/math/vector4.cc
-        ${CORE_FILE}/meta/reflection/reflection.cc
-        ${CORE_FILE}/meta/reflection/reflection_register.cc
-        ${CORE_FILE}/meta/serializer/serializer.cc
         ${CORE_FILE}/context.cc
         ${CORE_FILE}/math.cc
         ${CORE_FILE}/time.cc

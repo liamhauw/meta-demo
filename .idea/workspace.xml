@@ -31,7 +31,7 @@
     <list default="true" id="d9a84928-3a52-46dc-ba54-43f879fb93d4" name="Changes" comment="commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/engine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/engine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/json.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/json.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,9 +90,9 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.luka_engine">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
     <configuration name="glfw" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="glfw" CONFIG_NAME="Debug-Visual Studio">
@@ -161,7 +161,8 @@
       <option name="presentableId" value="Default" />
       <updated>1688529321987</updated>
       <workItem from="1688529323859" duration="19585000" />
-      <workItem from="1688559060628" duration="1246000" />
+      <workItem from="1688559060628" duration="3802000" />
+      <workItem from="1688621302014" duration="335000" />
     </task>
     <task id="LOCAL-00001" summary="commit">
       <option name="closed" value="true" />
@@ -187,7 +188,23 @@
       <option name="project" value="LOCAL" />
       <updated>1688551129176</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="commit">
+      <option name="closed" value="true" />
+      <created>1688560339812</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1688560339812</updated>
+    </task>
+    <task id="LOCAL-00005" summary="commit">
+      <option name="closed" value="true" />
+      <created>1688560343345</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1688560343345</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
