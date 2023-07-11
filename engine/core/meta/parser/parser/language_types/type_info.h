@@ -14,7 +14,7 @@ public:
 
     const MetaInfo& getMetaData(void) const;
 
-    std::string getSourceFile(void) const;
+    std::string GetSourceFile(void) const;
 
     Namespace getCurrentNamespace() const;
 

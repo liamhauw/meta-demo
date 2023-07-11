@@ -2,19 +2,19 @@
 
 #include "class.h"
 
-BaseClass::BaseClass(const Cursor& cursor) : name(Utils::getTypeNameWithoutNamespace(cursor.getType())) {}
+BaseClass::BaseClass(const Cursor& cursor) : name(Utils::getTypeNameWithoutNamespace(cursor.GetType())) {}
 
 Class::Class(const Cursor& cursor, const Namespace& current_namespace) :
-    TypeInfo(cursor, current_namespace), m_name(cursor.getDisplayName()),
-    m_qualified_name(Utils::getTypeNameWithoutNamespace(cursor.getType())),
-    m_display_name(Utils::getNameWithoutFirstM(m_qualified_name))
+    TypeInfo(cursor, current_namespace), m_name(cursor.GetDisplayName()),
+    m_qualified_name(Utils::getTypeNameWithoutNamespace(cursor.GetType())),
+    display_name_(Utils::getNameWithoutFirstM(m_qualified_name))
 {
     Utils::replaceAll(m_name, " ", "");
     Utils::replaceAll(m_name, "luka::", "");
 
-    for (auto& child : cursor.getChildren())
+    for (auto& child : cursor.GetChildren())
     {
-        switch (child.getKind())
+        switch (child.GetKind())
         {
             case CXCursor_CXXBaseSpecifier: {
                 auto base_class = new BaseClass(child);
@@ -35,7 +35,7 @@ Class::Class(const Cursor& cursor, const Namespace& current_namespace) :
     }
 }
 
-bool Class::shouldCompile(void) const { return shouldCompileFields()|| shouldCompileMethods(); }
+bool Class::ShouldCompile(void) const { return shouldCompileFields()|| shouldCompileMethods(); }
 
 bool Class::shouldCompileFields(void) const
 {

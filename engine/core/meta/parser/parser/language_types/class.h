@@ -22,7 +22,7 @@ class Class : public TypeInfo
 public:
     Class(const Cursor& cursor, const Namespace& current_namespace);
 
-    virtual bool shouldCompile(void) const;
+    virtual bool ShouldCompile(void) const;
 
     bool shouldCompileFields(void) const;
     bool shouldCompileMethods(void) const;
@@ -42,7 +42,7 @@ public:
     SharedPtrVector<Field> m_fields;
     SharedPtrVector<Method> m_methods;
 
-    std::string m_display_name;
+    std::string display_name_;
 
     bool isAccessible(void) const;
 };

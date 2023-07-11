@@ -4,9 +4,9 @@
 #include "field.h"
 
 Field::Field(const Cursor& cursor, const Namespace& current_namespace, Class* parent) :
-    TypeInfo(cursor, current_namespace), m_is_const(cursor.getType().IsConst()), m_parent(parent),
-    m_name(cursor.getSpelling()), m_display_name(Utils::getNameWithoutFirstM(m_name)),
-    m_type(Utils::getTypeNameWithoutNamespace(cursor.getType()))
+    TypeInfo(cursor, current_namespace), m_is_const(cursor.GetType().IsConst()), m_parent(parent),
+    m_name(cursor.GetSpelling()), m_display_name(Utils::getNameWithoutFirstM(m_name)),
+    m_type(Utils::getTypeNameWithoutNamespace(cursor.GetType()))
 {
     Utils::replaceAll(m_type, " ", "");
     Utils::replaceAll(m_type, "luka::", "");

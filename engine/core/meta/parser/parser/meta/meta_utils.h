@@ -6,7 +6,7 @@
 namespace Utils
 {
 
-    void toString(const CXString& str, std::string& output);
+    void ToString(const CXString& str, std::string& output);
 
     std::string getQualifiedName(const CursorType& type);
 
@@ -23,9 +23,9 @@ namespace Utils
     template<typename A, typename B>
     bool rangeEqual(A startA, A endA, B startB, B endB);
 
-    std::vector<std::string> split(std::string input, std::string pat);
+    std::vector<std::string> Split(std::string input, std::string pat);
 
-    std::string getFileName(std::string path);
+    std::string GetFileName(std::string path);
 
     std::string getNameWithoutFirstM(std::string& name);
 
@@ -35,11 +35,11 @@ namespace Utils
 
     std::string getStringWithoutQuot(std::string input);
 
-    std::string replace(std::string& source_string, std::string sub_string, const std::string new_string);
+    std::string Replace(std::string& source_string, std::string sub_string, const std::string new_string);
 
-    std::string replace(std::string& source_string, char taget_char, const char new_char);
+    std::string Replace(std::string& source_string, char taget_char, const char new_char);
 
-    std::string toUpper(std::string& source_string);
+    std::string ToUpper(std::string& source_string);
 
     std::string join(std::vector<std::string> context_list, std::string separator);
 

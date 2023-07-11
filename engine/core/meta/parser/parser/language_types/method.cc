@@ -4,7 +4,7 @@
 #include "method.h"
 
 Method::Method(const Cursor& cursor, const Namespace& current_namespace, Class* parent) :
-    TypeInfo(cursor, current_namespace), m_parent(parent), m_name(cursor.getSpelling())
+    TypeInfo(cursor, current_namespace), m_parent(parent), m_name(cursor.GetSpelling())
 {}
 
 bool Method::shouldCompile(void) const { return isAccessible(); }

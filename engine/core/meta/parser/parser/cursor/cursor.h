@@ -2,29 +2,22 @@
 
 #include "cursor_type.h"
 
-class Cursor
-{
-public:
-    typedef std::vector<Cursor> List;
-    
-    typedef CXCursorVisitor Visitor;
+class Cursor {
+ public:
+  typedef std::vector<Cursor> List;
 
-    Cursor(const CXCursor& handle);
+  typedef CXCursorVisitor Visitor;
 
-    CXCursorKind getKind(void) const;
+  explicit Cursor(const CXCursor& handle);
 
-    std::string getSpelling(void) const;
-    std::string getDisplayName(void) const;
+  [[nodiscard]] CXCursorKind GetKind() const;
+  [[nodiscard]] std::string GetSpelling() const;
+  [[nodiscard]] std::string GetDisplayName() const;
+  [[nodiscard]] std::string GetSourceFile() const;
+  [[nodiscard]] bool IsDefinition() const;
+  [[nodiscard]] CursorType GetType() const;
+  [[nodiscard]] List GetChildren() const;
 
-    std::string getSourceFile(void) const;
-
-    bool isDefinition(void) const;
-
-    CursorType getType(void) const;
-
-    List getChildren(void) const;
-    void visitChildren(Visitor visitor, void* data = nullptr);
-
-private:
-    CXCursor m_handle;
+ private:
+  CXCursor cx_cursor_;
 };

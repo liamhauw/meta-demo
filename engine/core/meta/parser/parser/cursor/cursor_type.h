@@ -2,25 +2,24 @@
 
 class Cursor;
 
-class CursorType
-{
-public:
-    CursorType(const CXType& handle);
+class CursorType {
+ public:
+  explicit CursorType(const CXType& handle);
 
-    std::string GetDisplayName(void) const;
+  [[nodiscard]] std::string GetDisplayName() const;
 
-    int GetArgumentCount(void) const;
+  [[nodiscard]] int GetArgumentCount() const;
 
-    CursorType GetArgument(unsigned index) const;
+  [[nodiscard]] CursorType GetArgument(unsigned index) const;
 
-    CursorType GetCanonicalType(void) const;
+  [[nodiscard]] CursorType GetCanonicalType() const;
 
-    Cursor GetDeclaration(void) const;
+  [[nodiscard]] Cursor GetDeclaration() const;
 
-    CXTypeKind GetKind(void) const;
+  [[nodiscard]] CXTypeKind GetKind() const;
 
-    bool IsConst(void) const;
+  [[nodiscard]] bool IsConst() const;
 
-private:
-    CXType m_handle;
+ private:
+  CXType handle_;
 };

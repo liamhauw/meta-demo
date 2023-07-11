@@ -6,7 +6,7 @@ static int parse_flag = 0;
 namespace Utils
 {
 
-    void toString(const CXString& str, std::string& output)
+    void ToString(const CXString& str, std::string& output)
     {
         auto cstr = clang_getCString(str);
 
@@ -38,15 +38,15 @@ namespace Utils
 
     std::string getQualifiedName(const Cursor& cursor, const Namespace& current_namespace)
     {
-        return getQualifiedName(cursor.getSpelling(), current_namespace);
+        return getQualifiedName(cursor.GetSpelling(), current_namespace);
     }
 
     std::string formatQualifiedName(std::string& source_string)
     {
-        Utils::replace(source_string, '<', 'L');
-        Utils::replace(source_string, ':', 'S');
-        Utils::replace(source_string, '>', 'R');
-        Utils::replace(source_string, '*', 'P');
+      Utils::Replace(source_string, '<', 'L');
+      Utils::Replace(source_string, ':', 'S');
+      Utils::Replace(source_string, '>', 'R');
+      Utils::Replace(source_string, '*', 'P');
         return source_string;
     }
 
@@ -106,7 +106,7 @@ namespace Utils
         exit(EXIT_FAILURE);
     }
 
-    std::vector<std::string> split(std::string input, std::string pat)
+    std::vector<std::string> Split(std::string input, std::string pat)
     {
         std::vector<std::string> ret_list;
         while (true)
@@ -127,13 +127,13 @@ namespace Utils
         return ret_list;
     }
 
-    std::string getFileName(std::string path)
+    std::string GetFileName(std::string path)
     {
         if (path.size() < 1)
         {
             return std::string();
         }
-        std::vector<std::string> result = split(path, "/");
+        std::vector<std::string> result = Split(path, "/");
         if (result.size() < 1)
         {
             return std::string();
@@ -191,7 +191,7 @@ namespace Utils
         return ret_string;
     }
 
-    std::string replace(std::string& source_string, std::string sub_string, const std::string new_string)
+    std::string Replace(std::string& source_string, std::string sub_string, const std::string new_string)
     {
         std::string::size_type pos = 0;
         while ((pos = source_string.find(sub_string)) != std::string::npos)
@@ -201,13 +201,13 @@ namespace Utils
         return source_string;
     }
 
-    std::string replace(std::string& source_string, char taget_char, const char new_char)
+    std::string Replace(std::string& source_string, char taget_char, const char new_char)
     {
         std::replace(source_string.begin(), source_string.end(), taget_char, new_char);
         return source_string;
     }
 
-    std::string toUpper(std::string& source_string)
+    std::string ToUpper(std::string& source_string)
     {
         transform(source_string.begin(), source_string.end(), source_string.begin(), ::toupper);
         return source_string;
@@ -302,7 +302,7 @@ namespace Utils
         }
 
         replaceAll(local_path_string, "\\", "/");
-        std::vector<std::string> subString = split(local_path_string, "/");
+        std::vector<std::string> subString = Split(local_path_string, "/");
         std::vector<std::string> out_sub_string;
         for (auto p : subString)
         {
@@ -325,7 +325,7 @@ namespace Utils
     std::string convertNameToUpperCamelCase(const std::string& name, std::string pat)
     {
         std::string ret_string;
-        auto&& name_spilts = split(name, pat);
+        auto&& name_spilts = Split(name, pat);
         for (auto& split_string : name_spilts)
         {
             split_string[0] = toupper(split_string[0]);

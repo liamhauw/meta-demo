@@ -1,5 +1,7 @@
 #pragma once
 
+#include <clang-c/Index.h>
+
 #include <algorithm>
 #include <chrono>
 #include <filesystem>
@@ -13,13 +15,9 @@
 #include <unordered_set>
 #include <vector>
 
-#include <clang-c/Index.h>
-
-namespace fs = std::filesystem;
-
 #include "meta/meta_data_config.h"
 #include "meta/meta_utils.h"
-
 #include "mustache.hpp"
 
+namespace fs = std::filesystem;
 namespace Mustache = kainjow::mustache;
