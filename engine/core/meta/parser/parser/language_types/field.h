@@ -12,16 +12,16 @@ public:
 
     virtual ~Field(void) {}
 
-    bool shouldCompile(void) const;
+    bool ShouldCompile(void) const;
 
 public:
     bool m_is_const;
 
     Class* m_parent;
 
-    std::string m_name;
-    std::string m_display_name;
-    std::string m_type;
+    std::string name_;
+    std::string display_name_;
+    std::string type_;
 
     std::string m_default;
 

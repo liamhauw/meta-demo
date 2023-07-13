@@ -1,11 +1,12 @@
 #pragma once
-#include "precompiled.h"
+
+#include <vector>
+#include <memory>
+#include <string>
 
 class Class;
-class Enum;
 
-struct SchemaMoudle
-{
-    std::string name;
-    std::vector<std::shared_ptr<Class>> classes;
+struct SchemaMoudle {
+  std::string name;
+  std::vector<std::shared_ptr<Class>> classes;
 };

@@ -108,8 +108,6 @@ add_custom_target(
         "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated/parser_header.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated"
         "*"
-        "luka"
-        "0"
         "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 add_dependencies(run_meta_parser meta_parser)

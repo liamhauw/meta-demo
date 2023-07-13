@@ -5039,7 +5039,7 @@ enum CXCompletionChunkKind {
    */
   CXCompletionChunk_LeftParen,
   /**
-   * A right parenthesis (')'), used to finish a function call or
+   * A right parenthesis (')'), used to Finish a function call or
    * signal the end of a function parameter list.
    */
   CXCompletionChunk_RightParen,

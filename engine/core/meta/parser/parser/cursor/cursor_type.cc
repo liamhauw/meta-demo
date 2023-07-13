@@ -1,7 +1,6 @@
-#include "common/precompiled.h"
 
-#include "cursor.h"
-#include "cursor_type.h"
+#include "meta/meta_utils.h"
+#include "cursor/cursor_type.h"
 
 CursorType::CursorType(const CXType& handle) : handle_(handle) {}
 

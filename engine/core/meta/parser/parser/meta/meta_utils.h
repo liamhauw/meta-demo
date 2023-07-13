@@ -3,57 +3,59 @@
 #include "common/namespace.h"
 #include "cursor/cursor.h"
 
-namespace Utils
-{
+#include <filesystem>
+namespace fs = std::filesystem;
 
-    void ToString(const CXString& str, std::string& output);
+namespace Utils {
 
-    std::string getQualifiedName(const CursorType& type);
+void ToString(const CXString& str, std::string& output);
 
-    std::string getQualifiedName(const std::string& display_name, const Namespace& current_namespace);
+std::string getQualifiedName(const CursorType& type);
 
-    std::string getQualifiedName(const Cursor& cursor, const Namespace& current_namespace);
+std::string getQualifiedName(const std::string& display_name, const Namespace& current_namespace);
 
-    std::string formatQualifiedName(std::string& source_string);
+std::string getQualifiedName(const Cursor& cursor, const Namespace& current_namespace);
 
-    fs::path makeRelativePath(const fs::path& from, const fs::path& to);
+std::string formatQualifiedName(std::string& source_string);
 
-    void fatalError(const std::string& error);
+fs::path makeRelativePath(const fs::path& from, const fs::path& to);
 
-    template<typename A, typename B>
-    bool rangeEqual(A startA, A endA, B startB, B endB);
+void fatalError(const std::string& error);
 
-    std::vector<std::string> Split(std::string input, std::string pat);
+template<typename A, typename B>
+bool rangeEqual(A startA, A endA, B startB, B endB);
 
-    std::string GetFileName(std::string path);
+std::vector<std::string> Split(std::string input, std::string pat);
 
-    std::string getNameWithoutFirstM(std::string& name);
+std::string GetFileName(std::string path);
 
-    std::string getTypeNameWithoutNamespace(const CursorType& type);
+std::string getNameWithoutFirstM(std::string& name);
 
-    std::string getNameWithoutContainer(std::string name);
+std::string getTypeNameWithoutNamespace(const CursorType& type);
 
-    std::string getStringWithoutQuot(std::string input);
+std::string getNameWithoutContainer(std::string name);
 
-    std::string Replace(std::string& source_string, std::string sub_string, const std::string new_string);
+std::string getStringWithoutQuot(std::string input);
 
-    std::string Replace(std::string& source_string, char taget_char, const char new_char);
+std::string Replace(std::string& source_string, std::string sub_string, const std::string new_string);
 
-    std::string ToUpper(std::string& source_string);
+std::string Replace(std::string& source_string, char taget_char, const char new_char);
 
-    std::string join(std::vector<std::string> context_list, std::string separator);
+std::string ToUpper(std::string& source_string);
 
-    std::string trim(std::string& source_string, const std::string trim_chars);
+std::string join(std::vector<std::string> context_list, std::string separator);
 
-    std::string loadFile(std::string path);
+std::string trim(std::string& source_string, const std::string trim_chars);
 
-    void saveFile(const std::string& outpu_string, const std::string& output_file);
+std::string LoadFile(std::string path);
 
-    void replaceAll(std::string& resource_str, std::string sub_str, std::string new_str);
+void saveFile(const std::string& outpu_string, const std::string& output_file);
 
-    unsigned long formatPathString(const std::string& path_string, std::string& out_string);
+void replaceAll(std::string& resource_str, std::string sub_str, std::string new_str);
 
-    std::string convertNameToUpperCamelCase(const std::string& name, std::string pat);
+unsigned long formatPathString(const std::string& path_string, std::string& out_string);
+
+std::string convertNameToUpperCamelCase(const std::string& name, std::string pat);
 
 } // namespace Utils
 

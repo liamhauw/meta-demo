@@ -8,10 +8,6 @@
 #include "../generated/reflection/all_reflection.h"
 #include "../generated/serializer/all_serializer.ipp"
 
-namespace luka
-{
-    namespace Reflection
-    {
-        void TypeMetaRegister::metaUnregister() { TypeMetaRegisterinterface::unregisterAll(); }
-    } // namespace Reflection
+namespace luka::Reflection {
+void TypeMetaRegister::metaUnregister() { TypeMetaRegisterInterface::UnregisterAll(); }
 } // namespace luka

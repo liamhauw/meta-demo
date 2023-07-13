@@ -1,7 +1,6 @@
-#include "common/precompiled.h"
-#include "meta/meta_utils.h"
 
 #include "cursor.h"
+#include "meta/meta_utils.h"
 
 Cursor::Cursor(const CXCursor& handle) : cx_cursor_(handle) {}
 
@@ -42,7 +41,7 @@ std::string Cursor::GetSourceFile() const {
 
 bool Cursor::IsDefinition() const { return clang_isCursorDefinition(cx_cursor_); }
 
-CursorType Cursor::GetType() const { return clang_getCursorType(cx_cursor_); }
+CursorType Cursor::GetType() const { return CursorType{clang_getCursorType(cx_cursor_)}; }
 
 Cursor::List Cursor::GetChildren() const {
   List children;

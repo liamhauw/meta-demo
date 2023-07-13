@@ -18,7 +18,6 @@ set(
         parser/meta/meta_data_config.h
         parser/meta/meta_info.h
         parser/meta/meta_utils.h
-        parser/meta/meta_utils.hpp
         parser/parser/parser.h
         parser/template_manager/template_manager.h
 )

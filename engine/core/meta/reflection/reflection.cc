@@ -14,15 +14,15 @@ namespace luka
         static std::multimap<std::string, MethodFunctionTuple*> m_method_map;
         static std::map<std::string, ArrayFunctionTuple*>       m_array_map;
 
-        void TypeMetaRegisterinterface::registerToFieldMap(const char* name, FieldFunctionTuple* value)
+        void TypeMetaRegisterInterface::RegisterToFieldMap(const char* name, FieldFunctionTuple* value)
         {
             m_field_map.insert(std::make_pair(name, value));
         }
-        void TypeMetaRegisterinterface::registerToMethodMap(const char* name, MethodFunctionTuple* value)
+        void TypeMetaRegisterInterface::RegisterToMethodMap(const char* name, MethodFunctionTuple* value)
         {
             m_method_map.insert(std::make_pair(name, value));
         }
-        void TypeMetaRegisterinterface::registerToArrayMap(const char* name, ArrayFunctionTuple* value)
+        void TypeMetaRegisterInterface::RegisterToArrayMap(const char* name, ArrayFunctionTuple* value)
         {
             if (m_array_map.find(name) == m_array_map.end())
             {
@@ -34,7 +34,7 @@ namespace luka
             }
         }
 
-        void TypeMetaRegisterinterface::registerToClassMap(const char* name, ClassFunctionTuple* value)
+        void TypeMetaRegisterInterface::RegisterToClassMap(const char* name, ClassFunctionTuple* value)
         {
             if (m_class_map.find(name) == m_class_map.end())
             {
@@ -46,7 +46,7 @@ namespace luka
             }
         }
 
-        void TypeMetaRegisterinterface::unregisterAll()
+        void TypeMetaRegisterInterface::UnregisterAll()
         {
             for (const auto& itr : m_field_map)
             {
@@ -65,18 +65,18 @@ namespace luka
             m_array_map.clear();
         }
 
-        TypeMeta::TypeMeta(std::string type_name) : m_type_name(type_name)
+        TypeMeta::TypeMeta(std::string type_name) : type_name_(type_name)
         {
-            m_is_valid = false;
-            m_fields.clear();
-            m_methods.clear();
+          is_valid_ = false;
+            fields_.clear();
+            methods_.clear();
 
             auto fileds_iter = m_field_map.equal_range(type_name);
             while (fileds_iter.first != fileds_iter.second)
             {
                 FieldAccessor f_field(fileds_iter.first->second);
-                m_fields.emplace_back(f_field);
-                m_is_valid = true;
+                fields_.emplace_back(f_field);
+              is_valid_ = true;
 
                 ++fileds_iter.first;
             }
@@ -85,22 +85,22 @@ namespace luka
             while (methods_iter.first != methods_iter.second)
             {
                 MethodAccessor f_method(methods_iter.first->second);
-                m_methods.emplace_back(f_method);
-                m_is_valid = true;
+                methods_.emplace_back(f_method);
+              is_valid_ = true;
 
                 ++methods_iter.first;
             }
         }
 
-        TypeMeta::TypeMeta() : m_type_name(k_unknown_type), m_is_valid(false) { m_fields.clear(); m_methods.clear(); }
+        TypeMeta::TypeMeta() : type_name_(k_unknown_type), is_valid_(false) { fields_.clear(); methods_.clear(); }
 
-        TypeMeta TypeMeta::newMetaFromName(std::string type_name)
+        TypeMeta TypeMeta::NewMetaFromName(std::string type_name)
         {
             TypeMeta f_type(type_name);
             return f_type;
         }
 
-        bool TypeMeta::newArrayAccessorFromName(std::string array_type_name, ArrayAccessor& accessor)
+        bool TypeMeta::NewArrayAccessorFromName(std::string array_type_name, ArrayAccessor& accessor)
         {
             auto iter = m_array_map.find(array_type_name);
 
@@ -114,7 +114,7 @@ namespace luka
             return false;
         }
 
-        ReflectionInstance TypeMeta::newFromNameAndJson(std::string type_name, const Json& json_context)
+        ReflectionInstance TypeMeta::NewFromNameAndJson(std::string type_name, const Json& json_context)
         {
             auto iter = m_class_map.find(type_name);
 
@@ -125,7 +125,7 @@ namespace luka
             return ReflectionInstance();
         }
 
-        Json TypeMeta::writeByName(std::string type_name, void* instance)
+        Json TypeMeta::WriteByName(std::string type_name, void* instance)
         {
             auto iter = m_class_map.find(type_name);
 
@@ -136,33 +136,33 @@ namespace luka
             return Json();
         }
 
-        std::string TypeMeta::getTypeName() { return m_type_name; }
+        std::string TypeMeta::GetTypeName() { return type_name_; }
 
-        int TypeMeta::getFieldsList(FieldAccessor*& out_list)
+        int TypeMeta::GetFieldsList(FieldAccessor*& out_list)
         {
-            int count = m_fields.size();
+            int count = fields_.size();
             out_list  = new FieldAccessor[count];
             for (int i = 0; i < count; ++i)
             {
-                out_list[i] = m_fields[i];
+                out_list[i] = fields_[i];
             }
             return count;
         }
 
-        int TypeMeta::getMethodsList(MethodAccessor*& out_list)
+        int TypeMeta::GetMethodsList(MethodAccessor*& out_list)
         {
-            int count = m_methods.size();
+            int count = methods_.size();
             out_list  = new MethodAccessor[count];
             for (int i = 0; i < count; ++i)
             {
-                out_list[i] = m_methods[i];
+                out_list[i] = methods_[i];
             }
             return count;
         }
 
-        int TypeMeta::getBaseClassReflectionInstanceList(ReflectionInstance*& out_list, void* instance)
+        int TypeMeta::GetBaseClassReflectionInstanceList(ReflectionInstance*& out_list, void* instance)
         {
-            auto iter = m_class_map.find(m_type_name);
+            auto iter = m_class_map.find(type_name_);
 
             if (iter != m_class_map.end())
             {
@@ -172,22 +172,22 @@ namespace luka
             return 0;
         }
 
-        FieldAccessor TypeMeta::getFieldByName(const char* name)
+        FieldAccessor TypeMeta::GetFieldByName(const char* name)
         {
-            const auto it = std::find_if(m_fields.begin(), m_fields.end(), [&](const auto& i) {
+            const auto it = std::find_if(fields_.begin(), fields_.end(), [&](const auto& i) {
                 return std::strcmp(i.getFieldName(), name) == 0;
             });
-            if (it != m_fields.end())
+            if (it != fields_.end())
                 return *it;
             return FieldAccessor(nullptr);
         }
 
-        MethodAccessor TypeMeta::getMethodByName(const char* name)
+        MethodAccessor TypeMeta::GetMethodByName(const char* name)
         {
-            const auto it = std::find_if(m_methods.begin(), m_methods.end(), [&](const auto& i) {
+            const auto it = std::find_if(methods_.begin(), methods_.end(), [&](const auto& i) {
                 return std::strcmp(i.getMethodName(), name) == 0;
             });
-            if (it != m_methods.end())
+            if (it != methods_.end())
                 return *it;
             return MethodAccessor(nullptr);
         }
@@ -198,15 +198,15 @@ namespace luka
             {
                 return *this;
             }
-            m_fields.clear();
-            m_fields = dest.m_fields;
+            fields_.clear();
+          fields_ = dest.fields_;
 
             
-            m_methods.clear();
-            m_methods = dest.m_methods;
+            methods_.clear();
+          methods_ = dest.methods_;
 
-            m_type_name = dest.m_type_name;
-            m_is_valid  = dest.m_is_valid;
+          type_name_ = dest.type_name_;
+          is_valid_  = dest.is_valid_;
 
             return *this;
         }
@@ -253,7 +253,7 @@ namespace luka
         {
             TypeMeta f_type(m_field_type_name);
             field_type = f_type;
-            return f_type.m_is_valid;
+            return f_type.is_valid_;
         }
 
         const char* FieldAccessor::getFieldName() const { return m_field_name; }

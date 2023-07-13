@@ -9,21 +9,20 @@
 
 MetaParser::MetaParser(std::string json_header_file, std::string header_file,
                        const std::string& generated_path, std::string system_include_path,
-                       std::string module_name, const std::string& show_error, std::string project_root_path)
+                       std::string project_root_path)
     : json_header_file_{std::move(json_header_file)},
       header_file_{std::move(header_file)},
       system_include_path{std::move(system_include_path)},
-      module_name_{std::move(module_name)},
-      project_root_path_{project_root_path} {
+      project_root_path_{std::move(project_root_path)} {
   generated_path_ = Utils::Split(generated_path, ";");
-  show_error_ = show_error != "0";
 
-  generators_.emplace_back(new Generator::SerializerGenerator(
+  generators_.emplace_back(new Generator::ReflectionGenerator{
       generated_path_[0],
-      [this](auto&& ph1) { return GetIncludeFile(std::forward<decltype(ph1)>(ph1)); }));
-  generators_.emplace_back(new Generator::ReflectionGenerator(
+      [this](auto&& ph1) { return GetIncludeFile(std::forward<decltype(ph1)>(ph1)); }});
+
+  generators_.emplace_back(new Generator::SerializerGenerator{
       generated_path_[0],
-      [this](auto&& ph1) { return GetIncludeFile(std::forward<decltype(ph1)>(ph1)); }));
+      [this](auto&& ph1) { return GetIncludeFile(std::forward<decltype(ph1)>(ph1)); }});
 }
 
 MetaParser::~MetaParser() {
@@ -44,20 +43,19 @@ std::string MetaParser::GetIncludeFile(const std::string& name) {
 int MetaParser::Parse() {
   ParseProject();
 
-  int show_error{show_error_ ? 1 : 0};
-  index_ = clang_createIndex(true, show_error);
+  index_ = clang_createIndex(true, 0);
 
   std::string pre_include = "-I";
   std::string sys_include_temp;
   if (!(system_include_path == "*")) {
     sys_include_temp = pre_include + system_include_path;
-    arguments.emplace_back(sys_include_temp.c_str());
+    arguments_.emplace_back(sys_include_temp.c_str());
   }
 
   auto paths{generated_path_};
   for (auto& path : paths) {
     path = pre_include + path;
-    arguments.emplace_back(path.c_str());
+    arguments_.emplace_back(path.c_str());
   }
 
   fs::path header_file(header_file_);
@@ -66,8 +64,8 @@ int MetaParser::Parse() {
   }
 
   translation_unit_ = clang_createTranslationUnitFromSourceFile(index_, header_file_.c_str(),
-                                                                static_cast<int>(arguments.size()),
-                                                                arguments.data(), 0, nullptr);
+                                                                static_cast<int>(arguments_.size()),
+                                                                arguments_.data(), 0, nullptr);
   const Cursor cursor{clang_getTranslationUnitCursor(translation_unit_)};
 
   Namespace temp_namespace;
@@ -127,10 +125,6 @@ void MetaParser::BuildClassAst(const Cursor& cursor, Namespace& current_namespac
     auto kind = child.GetKind();
 
     auto class_ptr = std::make_shared<Class>(child, current_namespace);
-    if (class_ptr->m_name == "Matrix4") {
-      int i = 1;
-    }
-
     // actual definition and a class or struct
     if (child.IsDefinition() && (kind == CXCursor_ClassDecl || kind == CXCursor_StructDecl)) {
 
@@ -156,12 +150,12 @@ void MetaParser::GenerateFiles() {
   std::cout << "schemas module size : " << schema_modules_.size() << std::endl;
   for (auto& schema : schema_modules_) {
     for (auto& generator_iter : generators_) {
-      generator_iter->generate(schema.first, schema.second);
+      generator_iter->Generate(schema.first, schema.second);
     }
   }
 
   for (auto generator_iter : generators_) {
-    generator_iter->finish();
+    generator_iter->Finish();
   }
 }
 

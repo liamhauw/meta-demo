@@ -7,7 +7,7 @@ Method::Method(const Cursor& cursor, const Namespace& current_namespace, Class* 
     TypeInfo(cursor, current_namespace), m_parent(parent), m_name(cursor.GetSpelling())
 {}
 
-bool Method::shouldCompile(void) const { return isAccessible(); }
+bool Method::ShouldCompile(void) const { return isAccessible(); }
 
 bool Method::isAccessible(void) const
 {

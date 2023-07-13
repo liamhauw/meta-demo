@@ -8,70 +8,64 @@ namespace Generator
                                              std::function<std::string(std::string)> get_include_function) :
         GeneratorInterface(source_directory + "/serializer", source_directory, get_include_function)
     {
-        prepareStatus(m_out_path);
+      TemplateManager::GetInstance()->LoadTemplates(generated_path_, "all_serializer.h");
+      TemplateManager::GetInstance()->LoadTemplates(generated_path_, "all_serializer.ipp");
+      TemplateManager::GetInstance()->LoadTemplates(generated_path_, "common_serializer_file");
     }
 
-    void SerializerGenerator::prepareStatus(std::string path)
-    {
-        GeneratorInterface::prepareStatus(path);
-        TemplateManager::getInstance()->loadTemplates(m_root_path, "allSerializer.h");
-        TemplateManager::getInstance()->loadTemplates(m_root_path, "allSerializer.ipp");
-        TemplateManager::getInstance()->loadTemplates(m_root_path, "commonSerializerGenFile");
-        return;
-    }
 
-    std::string SerializerGenerator::processFileName(std::string path)
+    std::string SerializerGenerator::ProcessFileName(std::string path)
     {
         auto relativeDir = fs::path(path).filename().replace_extension("serializer.gen.h").string();
-        return m_out_path + "/" + relativeDir;
+        return reflection_path_ + "/" + relativeDir;
     }
-    int SerializerGenerator::generate(std::string path, SchemaMoudle schema)
+    int SerializerGenerator::Generate(std::string path, SchemaMoudle schema)
     {
-        std::string file_path = processFileName(path);
+        std::string file_path = ProcessFileName(path);
 
         Mustache::data muatache_data;
         Mustache::data include_headfiles(Mustache::data::type::list);
         Mustache::data class_defines(Mustache::data::type::list);
 
         include_headfiles.push_back(
-            Mustache::data("headfile_name", Utils::makeRelativePath(m_root_path, path).string()));
+            Mustache::data("headfile_name", Utils::makeRelativePath(generated_path_, path).string()));
         for (auto class_temp : schema.classes)
         {
             if (!class_temp->shouldCompileFields())
                 continue;
 
             Mustache::data class_def;
-            genClassRenderData(class_temp, class_def);
+          GenClassRenderData(class_temp, class_def);
 
             // deal base class
-            for (int index = 0; index < class_temp->m_base_classes.size(); ++index)
+            for (int index = 0; index < class_temp->base_classes_.size(); ++index)
             {
-                auto include_file = m_get_include_func(class_temp->m_base_classes[index]->name);
+                auto include_file = get_include_func_(class_temp->base_classes_[index]->name);
                 if (!include_file.empty())
                 {
-                    auto include_file_base = processFileName(include_file);
+                    auto include_file_base = ProcessFileName(include_file);
                     if (file_path != include_file_base)
                     {
                         include_headfiles.push_back(Mustache::data(
-                            "headfile_name", Utils::makeRelativePath(m_root_path, include_file_base).string()));
+                            "headfile_name", Utils::makeRelativePath(generated_path_, include_file_base).string()));
                     }
                 }
             }
-            for (auto field : class_temp->m_fields)
+            for (auto field : class_temp->fields_)
             {
-                if (!field->shouldCompile())
+                if (!field->ShouldCompile())
                     continue;
                 // deal vector
-                if (field->m_type.find("std::vector") == 0)
+                if (field->type_.find("std::vector") == 0)
                 {
-                    auto include_file = m_get_include_func(field->m_name);
+                    auto include_file = get_include_func_(field->name_);
                     if (!include_file.empty())
                     {
-                        auto include_file_base = processFileName(include_file);
+                        auto include_file_base = ProcessFileName(include_file);
                         if (file_path != include_file_base)
                         {
                             include_headfiles.push_back(Mustache::data(
-                                "headfile_name", Utils::makeRelativePath(m_root_path, include_file_base).string()));
+                                "headfile_name", Utils::makeRelativePath(generated_path_, include_file_base).string()));
                         }
                     }
                 }
@@ -84,24 +78,24 @@ namespace Generator
         muatache_data.set("class_defines", class_defines);
         muatache_data.set("include_headfiles", include_headfiles);
         std::string render_string =
-            TemplateManager::getInstance()->renderByTemplate("commonSerializerGenFile", muatache_data);
+            TemplateManager::GetInstance()->RenderByTemplate("common_serializer_file", muatache_data);
         Utils::saveFile(render_string, file_path);
 
         m_include_headfiles.push_back(
-            Mustache::data("headfile_name", Utils::makeRelativePath(m_root_path, file_path).string()));
+            Mustache::data("headfile_name", Utils::makeRelativePath(generated_path_, file_path).string()));
         return 0;
     }
 
-    void SerializerGenerator::finish()
+    void SerializerGenerator::Finish()
     {
         Mustache::data mustache_data;
         mustache_data.set("class_defines", m_class_defines);
         mustache_data.set("include_headfiles", m_include_headfiles);
 
-        std::string render_string = TemplateManager::getInstance()->renderByTemplate("allSerializer.h", mustache_data);
-        Utils::saveFile(render_string, m_out_path + "/all_serializer.h");
-        render_string = TemplateManager::getInstance()->renderByTemplate("allSerializer.ipp", mustache_data);
-        Utils::saveFile(render_string, m_out_path + "/all_serializer.ipp");
+        std::string render_string = TemplateManager::GetInstance()->RenderByTemplate("all_serializer.h", mustache_data);
+        Utils::saveFile(render_string, reflection_path_ + "/all_serializer.h");
+        render_string = TemplateManager::GetInstance()->RenderByTemplate("all_serializer.ipp", mustache_data);
+        Utils::saveFile(render_string, reflection_path_ + "/all_serializer.ipp");
     }
 
     SerializerGenerator::~SerializerGenerator() {}

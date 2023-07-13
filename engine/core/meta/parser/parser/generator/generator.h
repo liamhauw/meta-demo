@@ -3,32 +3,40 @@
 
 #include <functional>
 #include <string>
-namespace Generator
-{
-    class GeneratorInterface
-    {
-    public:
-        GeneratorInterface(std::string                             out_path,
-                           std::string                             root_path,
-                           std::function<std::string(std::string)> get_include_func) :
-            m_out_path(out_path),
-            m_root_path(root_path), m_get_include_func(get_include_func)
-        {}
-        virtual int  generate(std::string path, SchemaMoudle schema) = 0;
-        virtual void finish() {};
+#include <filesystem>
+#include <mustache.hpp>
+#include <utility>
 
-        virtual ~GeneratorInterface() {};
+namespace fs = std::filesystem;
+namespace Mustache = kainjow::mustache;
 
-    protected:
-        virtual void prepareStatus(std::string path);
-        virtual void genClassRenderData(std::shared_ptr<Class> class_temp, Mustache::data& class_def);
-        virtual void genClassFieldRenderData(std::shared_ptr<Class> class_temp, Mustache::data& feild_defs);
-        virtual void genClassMethodRenderData(std::shared_ptr<Class> class_temp, Mustache::data& method_defs);
+namespace Generator {
+class GeneratorInterface {
+ public:
+  GeneratorInterface(std::string reflection_file,
+                     std::string generated_path,
+                     std::function<std::string(std::string)> get_include_func) :
+      reflection_path_(std::move(reflection_file)),
+      generated_path_(std::move(generated_path)), get_include_func_(std::move(get_include_func)) {
+    if (!fs::exists(reflection_path_)) {
+      fs::create_directories(reflection_path_);
+    }
+  }
 
-        virtual std::string processFileName(std::string path) = 0;
+  virtual int Generate(std::string path, SchemaMoudle schema) = 0;
+  virtual void Finish() {};
 
-        std::string                             m_out_path {"gen_src"};
-        std::string                             m_root_path;
-        std::function<std::string(std::string)> m_get_include_func;
-    };
+  virtual ~GeneratorInterface() = default;
+
+ protected:
+  virtual void GenClassRenderData(const std::shared_ptr<Class>& class_temp, Mustache::data& class_defs);
+  virtual void GenClassFieldRenderData(const std::shared_ptr<Class>& class_temp, Mustache::data& feild_defs);
+  virtual void GenClassMethodRenderData(const std::shared_ptr<Class>& class_temp, Mustache::data& method_defs);
+
+  virtual std::string ProcessFileName(std::string path) = 0;
+
+  std::string reflection_path_;
+  std::string generated_path_;
+  std::function<std::string(std::string)> get_include_func_;
+};
 } // namespace Generator

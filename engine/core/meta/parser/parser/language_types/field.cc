@@ -5,17 +5,17 @@
 
 Field::Field(const Cursor& cursor, const Namespace& current_namespace, Class* parent) :
     TypeInfo(cursor, current_namespace), m_is_const(cursor.GetType().IsConst()), m_parent(parent),
-    m_name(cursor.GetSpelling()), m_display_name(Utils::getNameWithoutFirstM(m_name)),
-    m_type(Utils::getTypeNameWithoutNamespace(cursor.GetType()))
+    name_(cursor.GetSpelling()), display_name_(Utils::getNameWithoutFirstM(name_)),
+    type_(Utils::getTypeNameWithoutNamespace(cursor.GetType()))
 {
-    Utils::replaceAll(m_type, " ", "");
-    Utils::replaceAll(m_type, "luka::", "");
+    Utils::replaceAll(type_, " ", "");
+    Utils::replaceAll(type_, "luka::", "");
 
     auto ret_string = Utils::getStringWithoutQuot(m_meta_data.getProperty("default"));
     m_default       = ret_string;
 }
 
-bool Field::shouldCompile(void) const { return isAccessible(); }
+bool Field::ShouldCompile(void) const { return isAccessible(); }
 
 bool Field::isAccessible(void) const
 {

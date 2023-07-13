@@ -19,12 +19,12 @@ Class::Class(const Cursor& cursor, const Namespace& current_namespace) :
             case CXCursor_CXXBaseSpecifier: {
                 auto base_class = new BaseClass(child);
 
-                m_base_classes.emplace_back(base_class);
+                base_classes_.emplace_back(base_class);
             }
             break;
             // field
             case CXCursor_FieldDecl:
-                m_fields.emplace_back(new Field(child, current_namespace, this));
+                fields_.emplace_back(new Field(child, current_namespace, this));
                 break;
             // method
             case CXCursor_CXXMethod:
@@ -49,6 +49,6 @@ bool Class::shouldCompileMethods(void) const{
            m_meta_data.getFlag(NativeProperty::WhiteListMethods);
 }
 
-std::string Class::getClassName(void) { return m_name; }
+std::string Class::GetClassName(void) { return m_name; }
 
 bool Class::isAccessible(void) const { return m_enabled; }

@@ -1,10 +1,13 @@
 #pragma once
 
+#include <string>
+#include <clang-c/Index.h>
+
 class Cursor;
 
 class CursorType {
  public:
-  explicit CursorType(const CXType& handle);
+  CursorType(const CXType& handle);
 
   [[nodiscard]] std::string GetDisplayName() const;
 

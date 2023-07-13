@@ -12,7 +12,7 @@ public:
 
     virtual ~Method(void) {}
 
-    bool shouldCompile(void) const;
+    bool ShouldCompile(void) const;
 
 public:
 

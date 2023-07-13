@@ -1,12 +1,13 @@
 #pragma once
 
-#include "cursor_type.h"
+#include "cursor/cursor_type.h"
+#include <clang-c/Index.h>
+#include <string>
+#include <vector>
 
 class Cursor {
  public:
   typedef std::vector<Cursor> List;
-
-  typedef CXCursorVisitor Visitor;
 
   explicit Cursor(const CXCursor& handle);
 

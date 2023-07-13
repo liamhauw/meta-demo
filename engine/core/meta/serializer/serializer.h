@@ -32,7 +32,7 @@ namespace luka
             else
             {
                 instance = static_cast<T*>(
-                    Reflection::TypeMeta::newFromNameAndJson(type_name, json_context["$context"]).m_instance);
+                    Reflection::TypeMeta::NewFromNameAndJson(type_name, json_context["$context"]).m_instance);
             }
             return instance;
         }
@@ -43,7 +43,7 @@ namespace luka
             T*          instance_ptr = static_cast<T*>(instance.operator->());
             std::string type_name    = instance.getTypeName();
             return Json::object {{"$typeName", Json(type_name)},
-                                  {"$context", Reflection::TypeMeta::writeByName(type_name, instance_ptr)}};
+                                  {"$context", Reflection::TypeMeta::WriteByName(type_name, instance_ptr)}};
         }
 
         template<typename T>
