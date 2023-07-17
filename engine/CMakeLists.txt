@@ -100,6 +100,22 @@ configure_file(
         "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/header_file.json.in"
         "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated/header_file.json"
 )
+if (CMAKE_HOST_WIN32)
+  set(sys_include "*") 
+elseif(CMAKE_HOST_APPLE)
+  find_program(XCRUN_EXECUTABLE xcrun)
+  if(NOT XCRUN_EXECUTABLE)
+          message(FATAL_ERROR "xcrun not found!!!")
+  endif()
+
+  execute_process(
+          COMMAND ${XCRUN_EXECUTABLE} --sdk macosx --show-sdk-platform-path
+          OUTPUT_VARIABLE osx_sdk_platform_path_test
+          OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
+  set(sys_include "${osx_sdk_platform_path_test}/../../Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1") 
+  endif()
+
 add_custom_target(
         run_meta_parser ALL
         COMMAND
@@ -107,7 +123,7 @@ add_custom_target(
         "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated/header_file.json"
         "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated/parser_header.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated"
-        "*"
+        ${sys_include}
         "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 add_dependencies(run_meta_parser meta_parser)

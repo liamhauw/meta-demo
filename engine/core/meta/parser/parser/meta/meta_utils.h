@@ -59,4 +59,3 @@ std::string convertNameToUpperCamelCase(const std::string& name, std::string pat
 
 } // namespace Utils
 
-#include "meta_utils.hpp"
