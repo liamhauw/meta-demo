@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <string>
+#include <sstream>
 
 #include "core/meta/generated/serializer/all_serializer.h"
 #include "core/meta/json.h"
@@ -18,7 +19,7 @@ class Asset {
       THROW("fail to open file");
     }
 
-    std::stringstream buffer;
+    std::stringstream buffer{};
     buffer << asset_file.rdbuf();
     std::string asset_json_text{buffer.str()};
 
