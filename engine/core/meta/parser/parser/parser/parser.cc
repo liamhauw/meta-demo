@@ -9,10 +9,11 @@
 
 MetaParser::MetaParser(std::string json_header_file, std::string header_file,
                        const std::string& generated_path,
-                       std::string project_root_path)
+                       std::string project_root_path, std::string sys_include)
     : json_header_file_{std::move(json_header_file)},
       header_file_{std::move(header_file)},
-      project_root_path_{std::move(project_root_path)} {
+      project_root_path_{std::move(project_root_path)},
+      sys_include_{sys_include} {
   generated_path_ = Utils::Split(generated_path, ";");
 
   generators_.emplace_back(new Generator::ReflectionGenerator{
@@ -48,6 +49,11 @@ int MetaParser::Parse() {
 
   std::string pre_include = "-I";
   std::string sys_include_temp;
+
+  if (!(sys_include_ == "n")) {
+    sys_include_temp = pre_include + sys_include_;
+    arguments_.emplace_back((sys_include_temp.c_str()));
+  }
 
   auto paths{generated_path_};
   for (auto& path : paths) {

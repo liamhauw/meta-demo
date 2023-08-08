@@ -10,7 +10,7 @@
 class MetaParser {
  public:
   MetaParser(std::string json_header_file, std::string header_file,
-             const std::string& generated_path, std::string project_root_path);
+             const std::string& generated_path, std::string project_root_path, std::string sys_include);
 
   ~MetaParser();
 
@@ -26,6 +26,7 @@ class MetaParser {
   std::string header_file_;
   std::vector<std::string> generated_path_;
   std::string project_root_path_;
+  std::string sys_include_;
 
   CXIndex index_{nullptr};
   CXTranslationUnit translation_unit_{nullptr};
