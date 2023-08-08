@@ -9,57 +9,18 @@
   <component name="CMakeReloadState">
     <option name="reloaded" value="true" />
   </component>
-  <component name="CMakeRunConfigurationManager">
-    <generated>
-      <config projectName="luka" targetName="update_mappings" />
-      <config projectName="luka" targetName="spdlog" />
-      <config projectName="luka" targetName="tinyobjloader" />
-      <config projectName="luka" targetName="luka_engine" />
-      <config projectName="luka" targetName="json11" />
-      <config projectName="luka" targetName="run_meta_parser" />
-      <config projectName="luka" targetName="meta_parser" />
-      <config projectName="luka" targetName="uninstall" />
-      <config projectName="luka" targetName="glfw" />
-    </generated>
-  </component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1079b826-1b69-4a9f-b7c4-b558abdf6021" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/engine/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/context.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/context/context.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/context.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/context/context.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/log.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/util/log.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/math.cc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/math.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/main.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/main.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/meta/meta_utils.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/meta/meta_utils.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/meta/meta_utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/meta/meta_utils.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/parser/parser.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/parser/parser.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/meta/parser/parser/parser/parser.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/meta/parser/parser/parser/parser.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/time.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/util/time.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/core/time.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/core/util/time.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/engine.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/engine.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/function/input/input.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/input/input.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/function/rendering/vulkan_rhi.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/rendering/vulkan_rhi.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/function/rendering/vulkan_util.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/rendering/vulkan_util.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/function/window/window.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/function/window/window.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/main.cc" beforeDir="false" afterPath="$PROJECT_DIR$/engine/main.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/engine/resource/asset/asset.h" beforeDir="false" afterPath="$PROJECT_DIR$/engine/resource/asset/asset.h" afterDir="false" />
-    </list>
+    <list default="true" id="4f831246-30f0-4df9-bc77-f9e490d73579" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -72,10 +33,9 @@
     <option name="minorVersion" value="2" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": -1
+  "associatedIndex": 5
 }]]></component>
-  <component name="ProjectId" id="2ThkDApd1q9hAQ3tYUst0LrBWzv" />
+  <component name="ProjectId" id="2ThnjGkNEl5M5LA51RtJoKBw7yB" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -86,108 +46,25 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "WebServerToolWindowFactoryState": "false",
-    "cf.advertisement.text.overridden": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Code/luka",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CMakeSettings",
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Code\luka\engine\core\context" />
-      <recent name="C:\Code\luka\engine\core\util" />
-    </key>
-  </component>
-  <component name="RunManager" selected="CMake Application.luka_engine">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="glfw" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="glfw" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="json11" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="json11" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="luka_engine" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="luka_engine" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="luka" RUN_TARGET_NAME="luka_engine">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="meta_parser" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="meta_parser" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="luka" RUN_TARGET_NAME="meta_parser">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="run_meta_parser" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="run_meta_parser" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="spdlog" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="spdlog" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="tinyobjloader" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="tinyobjloader" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="uninstall" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="uninstall" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="update_mappings" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="luka" TARGET_NAME="update_mappings" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <list>
-      <item itemvalue="CMake Application.luka_engine" />
-      <item itemvalue="CMake Application.run_meta_parser" />
-      <item itemvalue="CMake Application.meta_parser" />
-      <item itemvalue="CMake Application.glfw" />
-      <item itemvalue="CMake Application.update_mappings" />
-      <item itemvalue="CMake Application.uninstall" />
-      <item itemvalue="CMake Application.json11" />
-      <item itemvalue="CMake Application.spdlog" />
-      <item itemvalue="CMake Application.tinyobjloader" />
-    </list>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="1079b826-1b69-4a9f-b7c4-b558abdf6021" name="Changes" comment="" />
-      <created>1691502578103</created>
+      <changelist id="4f831246-30f0-4df9-bc77-f9e490d73579" name="Changes" comment="" />
+      <created>1691504314143</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1691502578103</updated>
-      <workItem from="1691502579316" duration="1609000" />
+      <updated>1691504314143</updated>
+      <workItem from="1691504315235" duration="2000" />
     </task>
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="VCPKGProject">
-    <isAutomaticEditVcpkgJson value="false" />
-    <isAutomaticCheckingOnLaunch value="false" />
-    <isAutomaticFoundErrors value="true" />
-    <isAutomaticFoundErrors value="true" />
   </component>
 </project>
