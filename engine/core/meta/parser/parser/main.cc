@@ -3,11 +3,10 @@
 
 int main(int argc, char* argv[]) {
   try {
-    if (argc != 6) {
+    if (argc != 5) {
       throw std::runtime_error{"argument count error"};
     }
-    MetaParser meta_parser{argv[1], argv[2], argv[3],
-                           argv[4], argv[5]};
+    MetaParser meta_parser{argv[1], argv[2], argv[3], argv[4]};
     meta_parser.Parse();
 
   } catch (const std::exception& e) {

@@ -58,5 +58,3 @@ unsigned long formatPathString(const std::string& path_string, std::string& out_
 std::string convertNameToUpperCamelCase(const std::string& name, std::string pat);
 
 } // namespace Utils
-
-#include "meta_utils.hpp"

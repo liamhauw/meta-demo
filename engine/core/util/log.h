@@ -1,8 +1,8 @@
 #pragma once
 
-#include <spdlog/spdlog.h>
-
 #include <stdexcept>
+
+#include "spdlog/spdlog.h"
 
 namespace luka {
 

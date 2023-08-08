@@ -1,6 +1,6 @@
 #include <vulkan/vulkan_raii.hpp>
 
-#include "core/log.h"
+#include "core/util/log.h"
 #include "engine.h"
 
 int main(int, char**) {

@@ -1,7 +1,7 @@
 #include "engine.h"
 
-#include "core/log.h"
-#include "core/time.h"
+#include "core/util/log.h"
+#include "core/util/time.h"
 
 namespace luka {
 

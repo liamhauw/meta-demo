@@ -8,21 +8,22 @@
 #include "language_types/class.h"
 
 MetaParser::MetaParser(std::string json_header_file, std::string header_file,
-                       const std::string& generated_path, std::string system_include_path,
+                       const std::string& generated_path,
                        std::string project_root_path)
     : json_header_file_{std::move(json_header_file)},
       header_file_{std::move(header_file)},
-      system_include_path{std::move(system_include_path)},
       project_root_path_{std::move(project_root_path)} {
   generated_path_ = Utils::Split(generated_path, ";");
 
   generators_.emplace_back(new Generator::ReflectionGenerator{
-      generated_path_[0],
-      [this](auto&& ph1) { return GetIncludeFile(std::forward<decltype(ph1)>(ph1)); }});
+      generated_path_[0], [this](auto&& ph1) {
+        return GetIncludeFile(std::forward<decltype(ph1)>(ph1));
+      }});
 
   generators_.emplace_back(new Generator::SerializerGenerator{
-      generated_path_[0],
-      [this](auto&& ph1) { return GetIncludeFile(std::forward<decltype(ph1)>(ph1)); }});
+      generated_path_[0], [this](auto&& ph1) {
+        return GetIncludeFile(std::forward<decltype(ph1)>(ph1));
+      }});
 }
 
 MetaParser::~MetaParser() {
@@ -47,10 +48,6 @@ int MetaParser::Parse() {
 
   std::string pre_include = "-I";
   std::string sys_include_temp;
-  if (!(system_include_path == "*")) {
-    sys_include_temp = pre_include + system_include_path;
-    arguments_.emplace_back(sys_include_temp.c_str());
-  }
 
   auto paths{generated_path_};
   for (auto& path : paths) {
@@ -63,9 +60,9 @@ int MetaParser::Parse() {
     throw std::runtime_error{header_file.string() + " is not exist"};
   }
 
-  translation_unit_ = clang_createTranslationUnitFromSourceFile(index_, header_file_.c_str(),
-                                                                static_cast<int>(arguments_.size()),
-                                                                arguments_.data(), 0, nullptr);
+  translation_unit_ = clang_createTranslationUnitFromSourceFile(
+      index_, header_file_.c_str(), static_cast<int>(arguments_.size()),
+      arguments_.data(), 0, nullptr);
   const Cursor cursor{clang_getTranslationUnitCursor(translation_unit_)};
 
   Namespace temp_namespace;
@@ -119,15 +116,16 @@ void MetaParser::ParseProject() {
   header_fs.close();
 }
 
-void MetaParser::BuildClassAst(const Cursor& cursor, Namespace& current_namespace) {
+void MetaParser::BuildClassAst(const Cursor& cursor,
+                               Namespace& current_namespace) {
   auto cursor_children{cursor.GetChildren()};
   for (auto& child : cursor_children) {
     auto kind = child.GetKind();
 
     auto class_ptr = std::make_shared<Class>(child, current_namespace);
     // actual definition and a class or struct
-    if (child.IsDefinition() && (kind == CXCursor_ClassDecl || kind == CXCursor_StructDecl)) {
-
+    if (child.IsDefinition() &&
+        (kind == CXCursor_ClassDecl || kind == CXCursor_StructDecl)) {
       if (class_ptr->ShouldCompile()) {
         auto file{class_ptr->GetSourceFile()};
         schema_modules_[file].classes.emplace_back(class_ptr);
@@ -158,5 +156,3 @@ void MetaParser::GenerateFiles() {
     generator_iter->Finish();
   }
 }
-
-

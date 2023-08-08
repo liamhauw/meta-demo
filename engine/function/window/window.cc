@@ -1,6 +1,6 @@
 #include "function/window/window.h"
 
-#include "core/log.h"
+#include "core/util/log.h"
 
 namespace luka {
 

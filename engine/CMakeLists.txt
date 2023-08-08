@@ -10,12 +10,13 @@ configure_file(
 set(
         HEADER_FILE
         # core
-        # meta must be the first, otherwise it won't reflect the previous header, i don't know.
+        # meta must be the first.
         # --------------------------------------------------
         core/meta/reflection/reflection.h
         core/meta/reflection/reflection_register.h
         core/meta/serializer/serializer.h
         # --------------------------------------------------
+        core/context/context.h
         core/math/math.h
         core/math/math_headers.h
         core/math/math_marcos.h
@@ -28,10 +29,8 @@ set(
         core/math/vector3.h
         core/math/vector4.h
         core/math/axis_aligned.h
-        core/context.h
-        core/log.h
-        core/math.h
-        core/time.h
+        core/util/log.h
+        core/util/time.h
         # resource
         resource/asset/asset.h
         resource/config/generated/source_path.h
@@ -57,6 +56,7 @@ set(
 set(
         SOURCE_FILE
         # core
+        core/context/context.cc
         core/meta/reflection/reflection.cc
         core/meta/reflection/reflection_register.cc
         core/meta/serializer/serializer.cc
@@ -68,9 +68,7 @@ set(
         core/math/vector2.cc
         core/math/vector3.cc
         core/math/vector4.cc
-        core/context.cc
-        core/math.cc
-        core/time.cc
+        core/util/time.cc
         # resource
         resource/asset/asset.cc
         resource/config/config.cc
@@ -107,7 +105,6 @@ add_custom_target(
         "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated/header_file.json"
         "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated/parser_header.h"
         "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated"
-        "*"
         "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 add_dependencies(run_meta_parser meta_parser)

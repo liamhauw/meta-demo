@@ -3,9 +3,9 @@
 #include <fstream>
 #include <string>
 
-#include "core/log.h"
 #include "core/meta/generated/serializer/all_serializer.h"
 #include "core/meta/json.h"
+#include "core/util/log.h"
 
 namespace luka {
 

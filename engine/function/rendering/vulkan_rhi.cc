@@ -3,8 +3,7 @@
 #include <iostream>
 #include <set>
 
-#include "core/log.h"
-#include "core/math.h"
+#include "core/util/log.h"
 
 namespace luka {
 
@@ -288,15 +287,15 @@ void VulkanRhi::MakeSwapchain() {
 
   // extent
   if (surface_capabilities.currentExtent.width == std::numeric_limits<uint32_t>::max()) {
-    int width, height;
-    window_->GetFramebufferSize(&width, &height);
-
-    swapchain_data_.extent.width =
-        glm::clamp(static_cast<uint32_t>(width), surface_capabilities.minImageExtent.width,
-                   surface_capabilities.maxImageExtent.width);
-    swapchain_data_.extent.height =
-        glm::clamp(static_cast<uint32_t>(height), surface_capabilities.minImageExtent.height,
-                   surface_capabilities.maxImageExtent.height);
+//    int width, height;
+//    window_->GetFramebufferSize(&width, &height);
+//
+//    swapchain_data_.extent.width =
+//        glm::clamp(static_cast<uint32_t>(width), surface_capabilities.minImageExtent.width,
+//                   surface_capabilities.maxImageExtent.width);
+//    swapchain_data_.extent.height =
+//        glm::clamp(static_cast<uint32_t>(height), surface_capabilities.minImageExtent.height,
+//                   surface_capabilities.maxImageExtent.height);
   } else {
     swapchain_data_.extent = surface_capabilities.currentExtent;
   }

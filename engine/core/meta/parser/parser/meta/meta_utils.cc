@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-
+#include <algorithm>
 
 static int parse_flag = 0;
 namespace Utils {
