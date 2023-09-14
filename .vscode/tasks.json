@@ -1,0 +1,55 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Win32 config",
+			"command": "cmake.exe",
+			"args": [
+				"-S",
+				"${workspaceFolder}",
+				"-B",
+				"${workspaceFolder}/build"
+			],
+		},
+		{
+			"type": "shell",
+			"label": "Win32 build debug",
+			"command": "cmake.exe",
+			"args": [
+				"--build",
+				"${workspaceFolder}/build",
+				"--config",
+				"Debug"
+			],
+		},
+		{
+			"type": "shell",
+			"label": "Win32 build release",
+			"command": "cmake.exe",
+			"args": [
+				"--build",
+				"${workspaceFolder}/build",
+				"--config",
+				"Release"
+			],
+		},
+		{
+			"label": "pre Win32 debug",
+			"dependsOrder": "sequence",
+			"dependsOn" :[
+				"Win32 config",
+				"Win32 build debug"
+			]
+		},
+		{
+			"label": "pre Win32 release",
+			"dependsOrder": "sequence",
+			"dependsOn" :[
+				"Win32 config",
+				"Win32 build release"
+			]
+		}
+
+	]
+}
