@@ -16,3 +16,6 @@
 [submodule "third_party/tiny_gltf"]
 	path = third_party/tiny_gltf
 	url = https://github.com/syoyo/tinygltf.git
+[submodule "third_party/vulkan_headers"]
+	path = third_party/vulkan_headers
+	url = https://github.com/KhronosGroup/Vulkan-Headers.git

@@ -37,7 +37,7 @@
 		{
 			"label": "pre Windows debug",
 			"dependsOrder": "sequence",
-			"dependsOn" :[
+			"dependsOn": [
 				"Windows config",
 				"Windows build debug"
 			]
@@ -45,11 +45,10 @@
 		{
 			"label": "pre Windows release",
 			"dependsOrder": "sequence",
-			"dependsOn" :[
+			"dependsOn": [
 				"Windows config",
 				"Windows build release"
 			]
 		}
-
 	]
 }

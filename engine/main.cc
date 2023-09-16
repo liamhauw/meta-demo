@@ -1,3 +1,11 @@
+/*
+  SPDX short identifier: MIT
+
+  Copyright (C) 2023 Liam Hauw.
+
+  Engine entry.
+*/
+
 #include <vulkan/vulkan_raii.hpp>
 
 #include "core/util/log.h"
