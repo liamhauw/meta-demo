@@ -1,9 +1,9 @@
 /*
   SPDX license identifier: MIT
 
-  Copyright (C) 2023 Liam Hauw.
+  Copyright (C) 2023-present Liam Hauw.
 
-  Log header file
+  Log header file.
 */
 
 #pragma once
@@ -17,7 +17,6 @@ namespace luka {
 #define LOGI(...) spdlog::info(__VA_ARGS__)
 #define LOGW(...) spdlog::warn(__VA_ARGS__)
 #define LOGE(...) spdlog::error(__VA_ARGS__)
-#define LOGD(...) spdlog::debug(__VA_ARGS__)
 
 #define THROW(...)                      \
   LOGE("[{}:{}]:", __FILE__, __LINE__); \
