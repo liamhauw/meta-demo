@@ -18,7 +18,6 @@ Engine::Engine() {
 
   config_ = std::make_shared<Config>();
   asset_ = std::make_shared<Asset>();
-
   world_ = std::make_shared<World>(config_, asset_);
   window_ = std::make_shared<Window>();
   input_ = std::make_shared<Input>(window_);

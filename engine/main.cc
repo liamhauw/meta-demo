@@ -22,7 +22,7 @@ int main(int, char**) {
     LOGE("std::exception: {}", e.what());
     return -1;
   } catch (...) {
-    LOGE("unknown exception.");
+    LOGE("Unknown exception.");
     return -1;
   }
   return 0;
