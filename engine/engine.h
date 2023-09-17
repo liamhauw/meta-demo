@@ -1,3 +1,11 @@
+/*
+  SPDX license identifier: MIT
+
+  Copyright (C) 2023 Liam Hauw.
+
+  Engine header file.
+*/ 
+
 #pragma once
 
 #include <memory>
@@ -16,12 +24,19 @@ class Engine {
   Engine();
   ~Engine();
 
+  Engine(const Engine& engine) = delete;
+  Engine(Engine&& engine) = delete;
+  Engine& operator=(const Engine& engine) = delete;
+  Engine& operator=(Engine&& engine) = delete;
+
   void Run();
 
  private:
+  // Resource
   std::shared_ptr<Config> config_;
   std::shared_ptr<Asset> asset_;
 
+  // Function
   std::shared_ptr<World> world_;
   std::shared_ptr<Window> window_;
   std::shared_ptr<Input> input_;

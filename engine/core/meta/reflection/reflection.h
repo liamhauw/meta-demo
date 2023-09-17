@@ -102,7 +102,7 @@ class TypeMeta {
   FieldAccessor GetFieldByName(const char* name);
   MethodAccessor GetMethodByName(const char* name);
 
-  [[nodiscard]] bool IsValid() const { return is_valid_; }
+  bool IsValid() const { return is_valid_; }
 
   TypeMeta& operator=(const TypeMeta& dest);
 

@@ -10,7 +10,7 @@ struct QueueFamliy {
   std::optional<uint32_t> compute_index;
   std::optional<uint32_t> present_index;
 
-  [[nodiscard]] bool IsComplete() const {
+  bool IsComplete() const {
     return graphics_index.has_value() && compute_index.has_value() && present_index.has_value();
   }
 };

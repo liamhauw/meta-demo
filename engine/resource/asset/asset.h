@@ -1,3 +1,11 @@
+/*
+  SPDX license identifier: MIT
+
+  Copyright (C) 2023 Liam Hauw.
+
+  Asset header file.
+*/
+
 #pragma once
 
 #include <fstream>
@@ -16,7 +24,7 @@ class Asset {
   void LoadAsset(const std::string& asset_file_path, AssetType& asset) const {
     std::ifstream asset_file{asset_file_path};
     if (!asset_file) {
-      THROW("fail to open file");
+      THROW("Fail to open file");
     }
 
     std::stringstream buffer{};
@@ -26,7 +34,7 @@ class Asset {
     std::string error;
     auto&& asset_json{Json::parse(asset_json_text, error)};
     if (!error.empty()) {
-      THROW("fail to parse json file");
+      THROW("Fail to parse json file");
     }
 
     Serializer::read(asset_json, asset);

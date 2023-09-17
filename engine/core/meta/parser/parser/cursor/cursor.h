@@ -11,13 +11,13 @@ class Cursor {
 
   explicit Cursor(const CXCursor& handle);
 
-  [[nodiscard]] CXCursorKind GetKind() const;
-  [[nodiscard]] std::string GetSpelling() const;
-  [[nodiscard]] std::string GetDisplayName() const;
-  [[nodiscard]] std::string GetSourceFile() const;
-  [[nodiscard]] bool IsDefinition() const;
-  [[nodiscard]] CursorType GetType() const;
-  [[nodiscard]] List GetChildren() const;
+  CXCursorKind GetKind() const;
+  std::string GetSpelling() const;
+  std::string GetDisplayName() const;
+  std::string GetSourceFile() const;
+  bool IsDefinition() const;
+  CursorType GetType() const;
+  List GetChildren() const;
 
  private:
   CXCursor cx_cursor_;

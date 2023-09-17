@@ -9,19 +9,19 @@ class CursorType {
  public:
   CursorType(const CXType& handle);
 
-  [[nodiscard]] std::string GetDisplayName() const;
+  std::string GetDisplayName() const;
 
-  [[nodiscard]] int GetArgumentCount() const;
+  int GetArgumentCount() const;
 
-  [[nodiscard]] CursorType GetArgument(unsigned index) const;
+  CursorType GetArgument(unsigned index) const;
 
-  [[nodiscard]] CursorType GetCanonicalType() const;
+  CursorType GetCanonicalType() const;
 
-  [[nodiscard]] Cursor GetDeclaration() const;
+  Cursor GetDeclaration() const;
 
-  [[nodiscard]] CXTypeKind GetKind() const;
+  CXTypeKind GetKind() const;
 
-  [[nodiscard]] bool IsConst() const;
+  bool IsConst() const;
 
  private:
   CXType handle_;

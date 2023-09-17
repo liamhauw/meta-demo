@@ -24,7 +24,7 @@ class Window {
   bool Tick(double delta_time);
 
   void SetShouldClose();
-  [[nodiscard]] bool FocusMode() const;
+  bool FocusMode() const;
   void SetFocusMode(bool mode);
 
   static std::vector<const char*> GetRequiredInstanceExtension();

@@ -1,3 +1,11 @@
+/*
+  SPDX license identifier: MIT
+
+  Copyright (C) 2023 Liam Hauw.
+
+  Engine source file.
+*/
+
 #include "engine.h"
 
 #include "core/util/log.h"
@@ -6,7 +14,7 @@
 namespace luka {
 
 Engine::Engine() {
-  LOGI("engine initialize");
+  LOGI("Engine initialize");
 
   config_ = std::make_shared<Config>();
   asset_ = std::make_shared<Asset>();
@@ -18,10 +26,10 @@ Engine::Engine() {
 }
 
 void Engine::Run() {
-  LOGI("engine run");
+  LOGI("Engine run");
 
   Time time;
-  double delta_time;
+  double delta_time{0.0};
   while (true) {
     delta_time = time.Tick().GetDeltaTime();
     world_->Tick(delta_time);
@@ -31,6 +39,6 @@ void Engine::Run() {
   }
 }
 
-Engine::~Engine() { LOGI("engine terminate"); }
+Engine::~Engine() { LOGI("Engine terminate"); }
 
 }  // namespace luka

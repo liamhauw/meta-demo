@@ -1,3 +1,11 @@
+/*
+  SPDX license identifier: MIT
+
+  Copyright (C) 2023 Liam Hauw.
+
+  Time source file.
+*/
+
 #include "core/util/time.h"
 
 namespace luka {

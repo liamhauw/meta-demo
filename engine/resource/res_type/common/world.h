@@ -1,6 +1,12 @@
+/*
+  SPDX license identifier: MIT
 
-#ifndef LUKA_WORLD_H
-#define LUKA_WORLD_H
+  Copyright (C) 2023 Liam Hauw.
+
+  World header file.
+*/
+
+#pragma once
 
 #include <string>
 #include <vector>
@@ -26,6 +32,3 @@ CLASS(WorldRes, Fields) {
 
 }
 
-
-
-#endif  // LUKA_WORLD_H

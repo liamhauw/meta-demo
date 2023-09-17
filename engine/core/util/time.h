@@ -1,3 +1,11 @@
+/*
+  SPDX license identifier: MIT
+
+  Copyright (C) 2023 Liam Hauw.
+
+  Time header file.
+*/
+
 #pragma once
 
 #include <chrono>
@@ -7,7 +15,7 @@ namespace luka {
 class Time {
  public:
   const Time& Tick();
-  [[nodiscard]] double GetDeltaTime() const;
+  double GetDeltaTime() const;
 
  private:
   double delta_time_{0.0};

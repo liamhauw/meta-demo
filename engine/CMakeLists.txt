@@ -52,9 +52,6 @@ set(
   function/framework/common/object_id_allocator.h
   function/framework/component/component.h
 
-  # editor
-  editor/editor.h
-
   # engine
   engine.h
 )
@@ -94,9 +91,6 @@ set(
   function/framework/common/object_id_allocator.cc
   function/framework/component/component.cc
 
-  # editor
-  editor/editor.cc
-
   # engine
   engine.cc
   main.cc
@@ -116,10 +110,10 @@ elseif(CMAKE_HOST_APPLE)
   find_program(XCRUN_EXECUTABLE xcrun)
   execute_process(
     COMMAND ${XCRUN_EXECUTABLE} --sdk macosx --show-sdk-platform-path
-    OUTPUT_VARIABLE osx_sdk_platform_path
+    OUTPUT_VARIABLE OSX_SDK_PLATFORM_PATH
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
-  set(SYS_INCLUDE "${osx_sdk_platform_path}/../../Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1")
+  set(SYS_INCLUDE "${OSX_SDK_PLATFORM_PATH}/../../Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1")
 endif()
 
 add_custom_target(
