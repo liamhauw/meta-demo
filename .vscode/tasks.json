@@ -3,51 +3,55 @@
 	"tasks": [
 		{
 			"type": "shell",
-			"label": "Windows config",
-			"command": "cmake.exe",
+			"label": "Config Debug",
+			"command": "cmake",
 			"args": [
 				"-S",
 				"${workspaceFolder}",
 				"-B",
-				"${workspaceFolder}/build"
+				"${workspaceFolder}/build",
+				"-G",
+				"Ninja",
+				"-DCMAKE_BUILD_TYPE=Debug"
 			],
 		},
 		{
 			"type": "shell",
-			"label": "Windows build debug",
-			"command": "cmake.exe",
+			"label": "Config Release",
+			"command": "cmake",
 			"args": [
-				"--build",
+				"-S",
+				"${workspaceFolder}",
+				"-B",
 				"${workspaceFolder}/build",
-				"--config",
-				"Debug"
+				"-G",
+				"Ninja",
+				"-DCMAKE_BUILD_TYPE=Release"
 			],
 		},
 		{
 			"type": "shell",
-			"label": "Windows build release",
-			"command": "cmake.exe",
+			"label": "Build",
+			"command": "cmake",
 			"args": [
 				"--build",
 				"${workspaceFolder}/build",
-				"--config",
-				"Release"
 			],
 		},
 		{
-			"label": "pre Windows debug",
+			"label": "Pre Debug",
 			"dependsOrder": "sequence",
 			"dependsOn": [
-				"Windows config",
-				"Windows build debug"
+				"Config Debug",
+				"Build"
 			]
 		},
 		{
-			"label": "pre Windows release",
+			"label": "Pre Release",
 			"dependsOrder": "sequence",
 			"dependsOn": [
-				"Windows config",
-				"Windows build release"
+				"Config Release",
+				"Build"
 			]
 		}
 	]

@@ -1,9 +1,24 @@
-luka game engine
+# Luka engine
 
-```zsh
+## Clone
+```shell
 git clone --recurse-submodules https://github.com/liamhauw/luka.git
 cd luka
-cmake -S . -B build
+```
+
+## Build
+
+```shell
+# Debug
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
 cmake --build build
-./buile/bin/luka_engine
+
+# Release
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+```
+
+## Run
+```shell
+build/engine/luka_engine
 ```

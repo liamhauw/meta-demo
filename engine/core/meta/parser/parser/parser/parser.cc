@@ -151,7 +151,7 @@ void MetaParser::BuildClassAst(const Cursor& cursor,
 }
 
 void MetaParser::GenerateFiles() {
-  std::cout << "schemas module size : " << schema_modules_.size() << std::endl;
+  // std::cout << "schemas module size : " << schema_modules_.size() << std::endl;
   for (auto& schema : schema_modules_) {
     for (auto& generator_iter : generators_) {
       generator_iter->Generate(schema.first, schema.second);

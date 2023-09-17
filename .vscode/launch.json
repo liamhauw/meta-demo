@@ -2,26 +2,26 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Windows debug",
+      "name": "Debug",
       "type": "cppvsdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/engine/Debug/luka_engine.exe",
+      "program": "${workspaceFolder}/build/engine/luka_engine.exe",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
-      "preLaunchTask": "pre Windows debug"
+      "preLaunchTask": "Pre Debug"
     },
     {
       "name": "Windows release",
       "type": "cppvsdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/engine/Release/luka_engine.exe",
+      "program": "${workspaceFolder}/build/engine/luka_engine.exe",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
-      "preLaunchTask": "pre Windows release"
+      "preLaunchTask": "Pre Relase"
     }
   ]
 }

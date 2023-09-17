@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.24)
 project(luka_third_party)
 
+set(CMAKE_WARN_DEPRECATED OFF CACHE BOOL "" FORCE)
+
 # **********************************************************
 # vulkan sdk
 # **********************************************************
@@ -62,13 +64,15 @@ add_subdirectory(tiny_obj_loader)
 # **********************************************************
 add_library(${PROJECT_NAME} INTERFACE)
 target_link_libraries(
-        ${PROJECT_NAME} INTERFACE
-        Vulkan::Vulkan
-        glfw
-        glm
-        json11
-        spdlog_header_only
-        stb_image
-        tinygltf
-        tinyobjloader
+  ${PROJECT_NAME} INTERFACE
+  Vulkan::Vulkan
+  glfw
+  glm
+  json11
+  spdlog_header_only
+  stb_image
+  tinygltf
+  tinyobjloader
 )
+target_compile_options(${PROJECT_NAME} INTERFACE -w)
+set(CMAKE_WARN_DEPRECATED TRUE CACHE BOOL "" FORCE)
