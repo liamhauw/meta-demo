@@ -37,7 +37,7 @@ class Asset {
       THROW("Fail to parse json file");
     }
 
-    Serializer::read(asset_json, asset);
+    Serializer::Read(asset_json, asset);
   }
 };
 

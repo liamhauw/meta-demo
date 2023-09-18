@@ -31,13 +31,13 @@ namespace luka {
 #endif  // __REFLECTION_PARSER__
 
 #define REFLECTION_BODY(class_name)                      \
-  friend class reflection::TypeFieldReflectionOparator:: \
+  friend class reflection::type_field_reflection_oparator:: \
       Type##class_name##Operator;                        \
   friend class Serializer;
 
 #define REFLECTION_TYPE(class_name)       \
   namespace reflection {                  \
-  namespace TypeFieldReflectionOparator { \
+  namespace type_field_reflection_oparator { \
   class Type##class_name##Operator;       \
   }                                       \
   };

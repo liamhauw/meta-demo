@@ -1,0 +1,19 @@
+{
+  "C_Cpp.codeAnalysis.clangTidy.checks.disabled": [
+    "cppcoreguidelines-avoid-non-const-global-variables",
+    "cppcoreguidelines-macro-usage",
+    "cppcoreguidelines-pro-type-reinterpret-cast",
+    "cppcoreguidelines-special-member-functions",
+    "cppcoreguidelines-c-copy-assignment-signature",
+    "cppcoreguidelines-owning-memory",
+    "cppcoreguidelines-narrowing-conversions",
+    "cppcoreguidelines-pro-bounds-pointer-arithmetic",
+    "cppcoreguidelines-avoid-magic-numbers"
+],
+  "C_Cpp.codeAnalysis.exclude": {
+    "build": true,
+    "third_party": true,
+    "engine/core/meta/generated": true,
+    "engine/core/meta/parser": true
+  },
+}
