@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <json11.hpp>
+#include "json11/json11.hpp"
 
 namespace luka {
 
