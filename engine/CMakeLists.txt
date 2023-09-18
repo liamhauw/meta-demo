@@ -16,21 +16,8 @@ set(
   core/meta/reflection/reflection.h
   core/meta/reflection/reflection_register.h
   core/meta/serializer/serializer.h
-
   # --------------------------------------------------
   core/context/context.h
-  core/math/math.h
-  core/math/math_headers.h
-  core/math/math_marcos.h
-  core/math/matrix3.h
-  core/math/matrix4.h
-  core/math/quaternion.h
-  core/math/random.h
-  core/math/transform.h
-  core/math/vector2.h
-  core/math/vector3.h
-  core/math/vector4.h
-  core/math/axis_aligned.h
   core/util/log.h
   core/util/time.h
 
@@ -60,18 +47,13 @@ set(
   SOURCE_FILE
 
   # core
-  core/context/context.cc
+  # meta must be the first.
+  # --------------------------------------------------
   core/meta/reflection/reflection.cc
   core/meta/reflection/reflection_register.cc
   core/meta/serializer/serializer.cc
-  core/math/axis_aligned.cc
-  core/math/math.cc
-  core/math/matrix3.cc
-  core/math/matrix4.cc
-  core/math/quaternion.cc
-  core/math/vector2.cc
-  core/math/vector3.cc
-  core/math/vector4.cc
+  # --------------------------------------------------
+  core/context/context.cc
   core/util/time.cc
 
   # resource
