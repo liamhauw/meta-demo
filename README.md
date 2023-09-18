@@ -1,15 +1,15 @@
 # Luka engine
 
+## Platform
+- Windows
+- macOS
+
 ## Prerequisites
 - CMake
 - Ninja
 - MSVC/Clang/GCC
 - Vulkan SDK
 - VSCode (optional)
-
-## Platform
-- Windows
-- macOS
 
 ## Clone
 ```shell
