@@ -7,13 +7,13 @@
 
 namespace luka {
 
-namespace Reflection {
+namespace reflection {
 
 void TypeMetaRegister::MetaRegister(){
   {{#sourefile_names}}TypeWrappersRegister::{{sourefile_name_upper_camel_case}}();
   {{/sourefile_names}}
 }
 
-}  // namespace Reflection
+}  // namespace reflection
 
 }  // namespace luka

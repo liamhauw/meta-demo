@@ -33,28 +33,28 @@ class Serializer {
       instance = new T;
       read(json_context["$context"], *instance);
     } else {
-      instance = static_cast<T*>(Reflection::TypeMeta::NewFromNameAndJson(
+      instance = static_cast<T*>(reflection::TypeMeta::NewFromNameAndJson(
                                      type_name, json_context["$context"])
-                                     .m_instance);
+                                     .instance_);
     }
     return instance;
   }
 
   template <typename T>
-  static Json write(const Reflection::ReflectionPtr<T>& instance) {
+  static Json write(const reflection::ReflectionPtr<T>& instance) {
     T* instance_ptr = static_cast<T*>(instance.operator->());
-    std::string type_name = instance.getTypeName();
+    std::string type_name = instance.GetTypeName();
     return Json::object{{"$typeName", Json(type_name)},
-                        {"$context", Reflection::TypeMeta::WriteByName(
+                        {"$context", reflection::TypeMeta::WriteByName(
                                          type_name, instance_ptr)}};
   }
 
   template <typename T>
   static T*& read(const Json& json_context,
-                  Reflection::ReflectionPtr<T>& instance) {
+                  reflection::ReflectionPtr<T>& instance) {
     std::string type_name = json_context["$typeName"].string_value();
-    instance.setTypeName(type_name);
-    return readPointer(json_context, instance.getPtrReference());
+    instance.SetTypeName(type_name);
+    return readPointer(json_context, instance.GetPtrReference());
   }
 
   template <typename T>

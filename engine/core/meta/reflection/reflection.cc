@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2023-present Liam Hauw.
 
-  SPDX license identifier: MIT.   
+  SPDX license identifier: MIT.
 
   Reflection source file.
 */
@@ -12,7 +12,7 @@
 #include <map>
 
 namespace luka {
-namespace Reflection {
+namespace reflection {
 const char* k_unknown_type = "UnknownType";
 const char* k_unknown = "Unknown";
 
@@ -163,7 +163,7 @@ int TypeMeta::GetBaseClassReflectionInstanceList(ReflectionInstance*& out_list,
 FieldAccessor TypeMeta::GetFieldByName(const char* name) {
   const auto it = std::find_if(
       fields_.begin(), fields_.end(),
-      [&](const auto& i) { return std::strcmp(i.getFieldName(), name) == 0; });
+      [&](const auto& i) { return std::strcmp(i.GetFieldName(), name) == 0; });
   if (it != fields_.end()) return *it;
   return FieldAccessor(nullptr);
 }
@@ -171,7 +171,7 @@ FieldAccessor TypeMeta::GetFieldByName(const char* name) {
 MethodAccessor TypeMeta::GetMethodByName(const char* name) {
   const auto it = std::find_if(
       methods_.begin(), methods_.end(),
-      [&](const auto& i) { return std::strcmp(i.getMethodName(), name) == 0; });
+      [&](const auto& i) { return std::strcmp(i.GetMethodName(), name) == 0; });
   if (it != methods_.end()) return *it;
   return MethodAccessor(nullptr);
 }
@@ -192,135 +192,135 @@ TypeMeta& TypeMeta::operator=(const TypeMeta& dest) {
   return *this;
 }
 FieldAccessor::FieldAccessor() {
-  m_field_type_name = k_unknown_type;
-  m_field_name = k_unknown;
-  m_functions = nullptr;
+  field_type_name_ = k_unknown_type;
+  field_name_ = k_unknown;
+  functions_ = nullptr;
 }
 
 FieldAccessor::FieldAccessor(FieldFunctionTuple* functions)
-    : m_functions(functions) {
-  m_field_type_name = k_unknown_type;
-  m_field_name = k_unknown;
-  if (m_functions == nullptr) {
+    : functions_(functions) {
+  field_type_name_ = k_unknown_type;
+  field_name_ = k_unknown;
+  if (functions_ == nullptr) {
     return;
   }
 
-  m_field_type_name = (std::get<4>(*m_functions))();
-  m_field_name = (std::get<3>(*m_functions))();
+  field_type_name_ = (std::get<4>(*functions_))();
+  field_name_ = (std::get<3>(*functions_))();
 }
 
-void* FieldAccessor::get(void* instance) {
+void* FieldAccessor::Get(void* instance) {
   // todo: should check validation
-  return static_cast<void*>((std::get<1>(*m_functions))(instance));
+  return static_cast<void*>((std::get<1>(*functions_))(instance));
 }
 
-void FieldAccessor::set(void* instance, void* value) {
+void FieldAccessor::Set(void* instance, void* value) {
   // todo: should check validation
-  (std::get<0>(*m_functions))(instance, value);
+  (std::get<0>(*functions_))(instance, value);
 }
 
-TypeMeta FieldAccessor::getOwnerTypeMeta() {
+TypeMeta FieldAccessor::GetOwnerTypeMeta() {
   // todo: should check validation
-  TypeMeta f_type((std::get<2>(*m_functions))());
+  TypeMeta f_type((std::get<2>(*functions_))());
   return f_type;
 }
 
-bool FieldAccessor::getTypeMeta(TypeMeta& field_type) {
-  TypeMeta f_type(m_field_type_name);
+bool FieldAccessor::GetTypeMeta(TypeMeta& field_type) {
+  TypeMeta f_type(field_type_name_);
   field_type = f_type;
   return f_type.is_valid_;
 }
 
-const char* FieldAccessor::getFieldName() const { return m_field_name; }
-const char* FieldAccessor::getFieldTypeName() { return m_field_type_name; }
+const char* FieldAccessor::GetFieldName() const { return field_name_; }
+const char* FieldAccessor::GetFieldTypeName() { return field_type_name_; }
 
-bool FieldAccessor::isArrayType() {
+bool FieldAccessor::IsArrayType() {
   // todo: should check validation
-  return (std::get<5>(*m_functions))();
+  return (std::get<5>(*functions_))();
 }
 
 FieldAccessor& FieldAccessor::operator=(const FieldAccessor& dest) {
   if (this == &dest) {
     return *this;
   }
-  m_functions = dest.m_functions;
-  m_field_name = dest.m_field_name;
-  m_field_type_name = dest.m_field_type_name;
+  functions_ = dest.functions_;
+  field_name_ = dest.field_name_;
+  field_type_name_ = dest.field_type_name_;
   return *this;
 }
 
 MethodAccessor::MethodAccessor() {
-  m_method_name = k_unknown;
-  m_functions = nullptr;
+  method_name_ = k_unknown;
+  functions_ = nullptr;
 }
 
 MethodAccessor::MethodAccessor(MethodFunctionTuple* functions)
-    : m_functions(functions) {
-  m_method_name = k_unknown;
-  if (m_functions == nullptr) {
+    : functions_(functions) {
+  method_name_ = k_unknown;
+  if (functions_ == nullptr) {
     return;
   }
 
-  m_method_name = (std::get<0>(*m_functions))();
+  method_name_ = (std::get<0>(*functions_))();
 }
-const char* MethodAccessor::getMethodName() const {
-  return (std::get<0>(*m_functions))();
+const char* MethodAccessor::GetMethodName() const {
+  return (std::get<0>(*functions_))();
 }
 MethodAccessor& MethodAccessor::operator=(const MethodAccessor& dest) {
   if (this == &dest) {
     return *this;
   }
-  m_functions = dest.m_functions;
-  m_method_name = dest.m_method_name;
+  functions_ = dest.functions_;
+  method_name_ = dest.method_name_;
   return *this;
 }
-void MethodAccessor::invoke(void* instance) {
-  (std::get<1>(*m_functions))(instance);
+void MethodAccessor::Invoke(void* instance) {
+  (std::get<1>(*functions_))(instance);
 }
 ArrayAccessor::ArrayAccessor()
-    : m_func(nullptr),
-      m_array_type_name("UnKnownType"),
-      m_element_type_name("UnKnownType") {}
+    : func_(nullptr),
+      array_type_name_("UnKnownType"),
+      element_type_name_("UnKnownType") {}
 
 ArrayAccessor::ArrayAccessor(ArrayFunctionTuple* array_func)
-    : m_func(array_func) {
-  m_array_type_name = k_unknown_type;
-  m_element_type_name = k_unknown_type;
-  if (m_func == nullptr) {
+    : func_(array_func) {
+  array_type_name_ = k_unknown_type;
+  element_type_name_ = k_unknown_type;
+  if (func_ == nullptr) {
     return;
   }
 
-  m_array_type_name = std::get<3>(*m_func)();
-  m_element_type_name = std::get<4>(*m_func)();
+  array_type_name_ = std::get<3>(*func_)();
+  element_type_name_ = std::get<4>(*func_)();
 }
-const char* ArrayAccessor::getArrayTypeName() { return m_array_type_name; }
-const char* ArrayAccessor::getElementTypeName() { return m_element_type_name; }
-void ArrayAccessor::set(int index, void* instance, void* element_value) {
+const char* ArrayAccessor::GetArrayTypeName() { return array_type_name_; }
+const char* ArrayAccessor::getElementTypeName() { return element_type_name_; }
+void ArrayAccessor::Set(int index, void* instance, void* element_value) {
   // todo: should check validation
-  size_t count = getSize(instance);
+  size_t count = GetSize(instance);
   // todo: should check validation(index < count)
-  std::get<0> (*m_func)(index, instance, element_value);
+  std::get<0> (*func_)(index, instance, element_value);
 }
 
-void* ArrayAccessor::get(int index, void* instance) {
+void* ArrayAccessor::Get(int index, void* instance) {
   // todo: should check validation
-  size_t count = getSize(instance);
+  size_t count = GetSize(instance);
   // todo: should check validation(index < count)
-  return std::get<1>(*m_func)(index, instance);
+  return std::get<1>(*func_)(index, instance);
 }
 
-int ArrayAccessor::getSize(void* instance) {
+int ArrayAccessor::GetSize(void* instance) {
   // todo: should check validation
-  return std::get<2>(*m_func)(instance);
+  return std::get<2>(*func_)(instance);
 }
 
 ArrayAccessor& ArrayAccessor::operator=(ArrayAccessor& dest) {
   if (this == &dest) {
     return *this;
   }
-  m_func = dest.m_func;
-  m_array_type_name = dest.m_array_type_name;
-  m_element_type_name = dest.m_element_type_name;
+  func_ = dest.func_;
+  array_type_name_ = dest.array_type_name_;
+  element_type_name_ = dest.element_type_name_;
   return *this;
 }
 
@@ -328,8 +328,8 @@ ReflectionInstance& ReflectionInstance::operator=(ReflectionInstance& dest) {
   if (this == &dest) {
     return *this;
   }
-  m_instance = dest.m_instance;
-  m_meta = dest.m_meta;
+  instance_ = dest.instance_;
+  meta_ = dest.meta_;
 
   return *this;
 }
@@ -338,10 +338,10 @@ ReflectionInstance& ReflectionInstance::operator=(ReflectionInstance&& dest) {
   if (this == &dest) {
     return *this;
   }
-  m_instance = dest.m_instance;
-  m_meta = dest.m_meta;
+  instance_ = dest.instance_;
+  meta_ = dest.meta_;
 
   return *this;
 }
-}  // namespace Reflection
+}  // namespace reflection
 }  // namespace luka

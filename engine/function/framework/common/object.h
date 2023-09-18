@@ -19,7 +19,7 @@ class GObject : public std::enable_shared_from_this<GObject> {
   std::string name_;
   std::string definition_url_;
 
-  std::vector<Reflection::ReflectionPtr<Component>> components_;
+  std::vector<reflection::ReflectionPtr<Component>> components_;
 };
 
 }  // namespace luka

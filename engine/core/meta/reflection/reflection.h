@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2023-present Liam Hauw.
 
-  SPDX license identifier: MIT.   
+  SPDX license identifier: MIT.
 
   Reflection header file.
 */
@@ -24,8 +24,6 @@ namespace luka {
   class __attribute__((annotate(#__VA_ARGS__))) class_name
 #define STRUCT(struct_name, ...) \
   struct __attribute__((annotate(#__VA_ARGS__))) struct_name
-// #define CLASS(class_name,...) class __attribute__((annotate(#__VA_ARGS__)))
-// class_name:public Reflection::object
 #else
 #define META(...)
 #define CLASS(class_name, ...) class class_name
@@ -33,12 +31,12 @@ namespace luka {
 #endif  // __REFLECTION_PARSER__
 
 #define REFLECTION_BODY(class_name)                      \
-  friend class Reflection::TypeFieldReflectionOparator:: \
+  friend class reflection::TypeFieldReflectionOparator:: \
       Type##class_name##Operator;                        \
   friend class Serializer;
 
 #define REFLECTION_TYPE(class_name)       \
-  namespace Reflection {                  \
+  namespace reflection {                  \
   namespace TypeFieldReflectionOparator { \
   class Type##class_name##Operator;       \
   }                                       \
@@ -54,13 +52,15 @@ namespace luka {
   TypeMetaRegisterInterface::RegisterToArrayMap(name, value);
 #define UNREGISTER_ALL TypeMetaRegisterinterface::UnregisterAll();
 
-namespace Reflection {
+namespace reflection {
+
 class TypeMeta;
 class FieldAccessor;
 class MethodAccessor;
 class ArrayAccessor;
 class ReflectionInstance;
-}  // namespace Reflection
+
+}  // namespace reflection
 
 typedef std::function<void(void*, void*)> SetFuncion;
 typedef std::function<void*(void*)> GetFuncion;
@@ -70,10 +70,9 @@ typedef std::function<void*(int, void*)> GetArrayFunc;
 typedef std::function<int(void*)> GetSizeFunc;
 typedef std::function<bool()> GetBoolFunc;
 typedef std::function<void(void*)> InvokeFunction;
-
 typedef std::function<void*(const Json&)> ConstructorWithJson;
 typedef std::function<Json(void*)> WriteJsonByName;
-typedef std::function<int(Reflection::ReflectionInstance*&, void*)>
+typedef std::function<int(reflection::ReflectionInstance*&, void*)>
     GetBaseClassReflectionInstanceListFunc;
 
 typedef std::tuple<SetFuncion, GetFuncion, GetNameFuncion, GetNameFuncion,
@@ -87,12 +86,11 @@ typedef std::tuple<SetArrayFunc, GetArrayFunc, GetSizeFunc, GetNameFuncion,
                    GetNameFuncion>
     ArrayFunctionTuple;
 
-namespace Reflection {
+namespace reflection {
 class TypeMetaRegisterInterface {
  public:
   static void RegisterToClassMap(const char* name, ClassFunctionTuple* value);
   static void RegisterToFieldMap(const char* name, FieldFunctionTuple* value);
-
   static void RegisterToMethodMap(const char* name, MethodFunctionTuple* value);
   static void RegisterToArrayMap(const char* name, ArrayFunctionTuple* value);
 
@@ -100,164 +98,136 @@ class TypeMetaRegisterInterface {
 };
 
 class TypeMeta {
-  friend class FieldAccessor;
-  friend class ArrayAccessor;
-  friend class TypeMetaRegisterInterface;
-
  public:
   TypeMeta();
-
   static TypeMeta NewMetaFromName(std::string type_name);
-
   static bool NewArrayAccessorFromName(std::string array_type_name,
                                        ArrayAccessor& accessor);
   static ReflectionInstance NewFromNameAndJson(std::string type_name,
                                                const Json& json_context);
   static Json WriteByName(std::string type_name, void* instance);
-
   std::string GetTypeName();
-
   int GetFieldsList(FieldAccessor*& out_list);
   int GetMethodsList(MethodAccessor*& out_list);
-
   int GetBaseClassReflectionInstanceList(ReflectionInstance*& out_list,
                                          void* instance);
-
   FieldAccessor GetFieldByName(const char* name);
   MethodAccessor GetMethodByName(const char* name);
-
   bool IsValid() const { return is_valid_; }
-
   TypeMeta& operator=(const TypeMeta& dest);
 
  private:
+  friend class FieldAccessor;
+  friend class ArrayAccessor;
+  friend class TypeMetaRegisterInterface;
+
   explicit TypeMeta(std::string type_name);
 
- private:
   std::vector<FieldAccessor, std::allocator<FieldAccessor>> fields_;
   std::vector<MethodAccessor, std::allocator<MethodAccessor>> methods_;
   std::string type_name_;
-
   bool is_valid_;
 };
 
 class FieldAccessor {
-  friend class TypeMeta;
-
  public:
   FieldAccessor();
-
-  void* get(void* instance);
-  void set(void* instance, void* value);
-
-  TypeMeta getOwnerTypeMeta();
-
-  bool getTypeMeta(TypeMeta& field_type);
-  const char* getFieldName() const;
-  const char* getFieldTypeName();
-  bool isArrayType();
-
+  void* Get(void* instance);
+  void Set(void* instance, void* value);
+  TypeMeta GetOwnerTypeMeta();
+  bool GetTypeMeta(TypeMeta& field_type);
+  const char* GetFieldName() const;
+  const char* GetFieldTypeName();
+  bool IsArrayType();
   FieldAccessor& operator=(const FieldAccessor& dest);
 
  private:
-  FieldAccessor(FieldFunctionTuple* functions);
-
- private:
-  FieldFunctionTuple* m_functions;
-  const char* m_field_name;
-  const char* m_field_type_name;
-};
-class MethodAccessor {
   friend class TypeMeta;
 
+  FieldAccessor(FieldFunctionTuple* functions);
+
+  FieldFunctionTuple* functions_;
+  const char* field_name_;
+  const char* field_type_name_;
+};
+
+class MethodAccessor {
  public:
   MethodAccessor();
-
-  void invoke(void* instance);
-
-  const char* getMethodName() const;
-
+  void Invoke(void* instance);
+  const char* GetMethodName() const;
   MethodAccessor& operator=(const MethodAccessor& dest);
 
  private:
-  MethodAccessor(MethodFunctionTuple* functions);
-
- private:
-  MethodFunctionTuple* m_functions;
-  const char* m_method_name;
-};
-/**
- *  Function reflection is not implemented, so use this as an std::vector
- * accessor
- */
-class ArrayAccessor {
   friend class TypeMeta;
 
+  MethodAccessor(MethodFunctionTuple* functions);
+
+  MethodFunctionTuple* functions_;
+  const char* method_name_;
+};
+
+class ArrayAccessor {
  public:
   ArrayAccessor();
-  const char* getArrayTypeName();
+  const char* GetArrayTypeName();
   const char* getElementTypeName();
-  void set(int index, void* instance, void* element_value);
-
-  void* get(int index, void* instance);
-  int getSize(void* instance);
+  void Set(int index, void* instance, void* element_value);
+  void* Get(int index, void* instance);
+  int GetSize(void* instance);
 
   ArrayAccessor& operator=(ArrayAccessor& dest);
 
  private:
+  friend class TypeMeta;
+
   ArrayAccessor(ArrayFunctionTuple* array_func);
 
- private:
-  ArrayFunctionTuple* m_func;
-  const char* m_array_type_name;
-  const char* m_element_type_name;
+  ArrayFunctionTuple* func_;
+  const char* array_type_name_;
+  const char* element_type_name_;
 };
 
 class ReflectionInstance {
  public:
   ReflectionInstance(TypeMeta meta, void* instance)
-      : m_meta(meta), m_instance(instance) {}
-  ReflectionInstance() : m_meta(), m_instance(nullptr) {}
-
+      : meta_(meta), instance_(instance) {}
+  ReflectionInstance() : meta_(), instance_(nullptr) {}
   ReflectionInstance& operator=(ReflectionInstance& dest);
-
   ReflectionInstance& operator=(ReflectionInstance&& dest);
 
  public:
-  TypeMeta m_meta;
-  void* m_instance;
+  TypeMeta meta_;
+  void* instance_;
 };
 
 template <typename T>
 class ReflectionPtr {
-  template <typename U>
-  friend class ReflectionPtr;
-
  public:
   ReflectionPtr(std::string type_name, T* instance)
-      : m_type_name(type_name), m_instance(instance) {}
-  ReflectionPtr() : m_type_name(), m_instance(nullptr) {}
+      : type_name_(type_name), instance_(instance) {}
+  ReflectionPtr() : type_name_(), instance_(nullptr) {}
 
   ReflectionPtr(const ReflectionPtr& dest)
-      : m_type_name(dest.m_type_name), m_instance(dest.m_instance) {}
+      : type_name_(dest.type_name_), instance_(dest.instance_) {}
 
-  template<typename U /*, typename = typename std::enable_if<std::is_safely_castable<T*, U*>::value>::type */>
+  template <typename U>
   ReflectionPtr<T>& operator=(const ReflectionPtr<U>& dest) {
     if (this == static_cast<void*>(&dest)) {
       return *this;
     }
-    m_type_name = dest.m_type_name;
-    m_instance = static_cast<T*>(dest.m_instance);
+    type_name_ = dest.type_name_;
+    instance_ = static_cast<T*>(dest.instance_);
     return *this;
   }
 
-  template<typename U /*, typename = typename std::enable_if<std::is_safely_castable<T*, U*>::value>::type*/>
+  template <typename U>
   ReflectionPtr<T>& operator=(ReflectionPtr<U>&& dest) {
     if (this == static_cast<void*>(&dest)) {
       return *this;
     }
-    m_type_name = dest.m_type_name;
-    m_instance = static_cast<T*>(dest.m_instance);
+    type_name_ = dest.type_name_;
+    instance_ = static_cast<T*>(dest.instance_);
     return *this;
   }
 
@@ -265,8 +235,8 @@ class ReflectionPtr {
     if (this == &dest) {
       return *this;
     }
-    m_type_name = dest.m_type_name;
-    m_instance = dest.m_instance;
+    type_name_ = dest.type_name_;
+    instance_ = dest.instance_;
     return *this;
   }
 
@@ -274,69 +244,71 @@ class ReflectionPtr {
     if (this == &dest) {
       return *this;
     }
-    m_type_name = dest.m_type_name;
-    m_instance = dest.m_instance;
+    type_name_ = dest.type_name_;
+    instance_ = dest.instance_;
     return *this;
   }
 
-  std::string getTypeName() const { return m_type_name; }
+  std::string GetTypeName() const { return type_name_; }
 
-  void setTypeName(std::string name) { m_type_name = name; }
+  void SetTypeName(std::string name) { type_name_ = name; }
 
-  bool operator==(const T* ptr) const { return (m_instance == ptr); }
+  bool operator==(const T* ptr) const { return (instance_ == ptr); }
 
-  bool operator!=(const T* ptr) const { return (m_instance != ptr); }
+  bool operator!=(const T* ptr) const { return (instance_ != ptr); }
 
   bool operator==(const ReflectionPtr<T>& rhs_ptr) const {
-    return (m_instance == rhs_ptr.m_instance);
+    return (instance_ == rhs_ptr.instance_);
   }
 
   bool operator!=(const ReflectionPtr<T>& rhs_ptr) const {
-    return (m_instance != rhs_ptr.m_instance);
+    return (instance_ != rhs_ptr.instance_);
   }
 
   template <typename T1>
   explicit operator T1*() {
-    return static_cast<T1*>(m_instance);
+    return static_cast<T1*>(instance_);
   }
 
   template <typename T1>
   operator ReflectionPtr<T1>() {
-    return ReflectionPtr<T1>(m_type_name, (T1*)(m_instance));
+    return ReflectionPtr<T1>(type_name_, (T1*)(instance_));
   }
 
   template <typename T1>
   explicit operator const T1*() const {
-    return static_cast<T1*>(m_instance);
+    return static_cast<T1*>(instance_);
   }
 
   template <typename T1>
   operator const ReflectionPtr<T1>() const {
-    return ReflectionPtr<T1>(m_type_name, (T1*)(m_instance));
+    return ReflectionPtr<T1>(type_name_, (T1*)(instance_));
   }
 
-  T* operator->() { return m_instance; }
+  T* operator->() { return instance_; }
 
-  T* operator->() const { return m_instance; }
+  T* operator->() const { return instance_; }
 
-  T& operator*() { return *(m_instance); }
+  T& operator*() { return *(instance_); }
 
-  T* getPtr() { return m_instance; }
+  T* getPtr() { return instance_; }
 
-  T* getPtr() const { return m_instance; }
+  T* getPtr() const { return instance_; }
 
-  const T& operator*() const { return *(static_cast<const T*>(m_instance)); }
+  const T& operator*() const { return *(static_cast<const T*>(instance_)); }
 
-  T*& getPtrReference() { return m_instance; }
+  T*& GetPtrReference() { return instance_; }
 
-  operator bool() const { return (m_instance != nullptr); }
+  operator bool() const { return (instance_ != nullptr); }
 
  private:
-  std::string m_type_name{""};
-  typedef T m_type;
-  T* m_instance{nullptr};
+  template <typename U>
+  friend class ReflectionPtr;
+
+  std::string type_name_{""};
+  T* instance_{nullptr};
 };
 
-}  // namespace Reflection
+}  // namespace reflection
 
 }  // namespace luka

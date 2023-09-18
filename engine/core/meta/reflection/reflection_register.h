@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2023-present Liam Hauw.
 
-  SPDX license identifier: MIT.   
+  SPDX license identifier: MIT.
 
   Reflection register header file.
 */
@@ -10,7 +10,7 @@
 
 namespace luka {
 
-namespace Reflection {
+namespace reflection {
 
 class TypeMetaRegister {
  public:
@@ -18,6 +18,6 @@ class TypeMetaRegister {
   static void MetaUnregister();
 };
 
-}  // namespace Reflection
+}  // namespace reflection
 
 }  // namespace luka
