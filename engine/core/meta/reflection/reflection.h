@@ -176,7 +176,7 @@ class ArrayAccessor {
   void* Get(int index, void* instance);
   int GetSize(void* instance);
 
-  ArrayAccessor& operator=(ArrayAccessor& dest);
+  ArrayAccessor& operator=(const ArrayAccessor& dest);
 
  private:
   friend class TypeMeta;
@@ -193,7 +193,7 @@ class ReflectionInstance {
   ReflectionInstance(TypeMeta meta, void* instance)
       : meta_(meta), instance_(instance) {}
   ReflectionInstance() : meta_(), instance_(nullptr) {}
-  ReflectionInstance& operator=(ReflectionInstance& dest);
+  ReflectionInstance& operator=(const ReflectionInstance& dest);
   ReflectionInstance& operator=(ReflectionInstance&& dest);
 
  public:

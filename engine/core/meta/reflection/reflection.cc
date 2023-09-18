@@ -132,7 +132,7 @@ Json TypeMeta::WriteByName(std::string type_name, void* instance) {
 std::string TypeMeta::GetTypeName() { return type_name_; }
 
 int TypeMeta::GetFieldsList(FieldAccessor*& out_list) {
-  int count = fields_.size();
+  int count = static_cast<int>(fields_.size());
   out_list = new FieldAccessor[count];
   for (int i = 0; i < count; ++i) {
     out_list[i] = fields_[i];
@@ -141,7 +141,7 @@ int TypeMeta::GetFieldsList(FieldAccessor*& out_list) {
 }
 
 int TypeMeta::GetMethodsList(MethodAccessor*& out_list) {
-  int count = methods_.size();
+  int count = static_cast<int>(methods_.size());
   out_list = new MethodAccessor[count];
   for (int i = 0; i < count; ++i) {
     out_list[i] = methods_[i];
@@ -297,7 +297,7 @@ int ArrayAccessor::GetSize(void* instance) {
   return std::get<2>(*func_)(instance);
 }
 
-ArrayAccessor& ArrayAccessor::operator=(ArrayAccessor& dest) {
+ArrayAccessor& ArrayAccessor::operator=(const ArrayAccessor& dest) {
   if (this == &dest) {
     return *this;
   }
@@ -307,7 +307,7 @@ ArrayAccessor& ArrayAccessor::operator=(ArrayAccessor& dest) {
   return *this;
 }
 
-ReflectionInstance& ReflectionInstance::operator=(ReflectionInstance& dest) {
+ReflectionInstance& ReflectionInstance::operator=(const ReflectionInstance& dest) {
   if (this == &dest) {
     return *this;
   }
