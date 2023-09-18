@@ -7,7 +7,7 @@ BaseClass::BaseClass(const Cursor& cursor) : name(Utils::getTypeNameWithoutNames
 Class::Class(const Cursor& cursor, const Namespace& current_namespace) :
     TypeInfo(cursor, current_namespace), m_name(cursor.GetDisplayName()),
     m_qualified_name(Utils::getTypeNameWithoutNamespace(cursor.GetType())),
-    display_name_(Utils::getNameWithoutFirstM(m_qualified_name))
+    display_name_(Utils::getNameWithoutLast(m_qualified_name))
 {
     Utils::replaceAll(m_name, " ", "");
     Utils::replaceAll(m_name, "luka::", "");

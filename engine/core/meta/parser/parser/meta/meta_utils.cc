@@ -138,6 +138,14 @@ std::string getNameWithoutFirstM(std::string& name) {
   return result;
 }
 
+std::string getNameWithoutLast(std::string& name) {
+  std::string result = name;
+  if (name.size() > 2 && name[name.size() - 1] == '_') {
+    result = name.substr(0, name.size() - 1);
+  }
+  return result;
+}
+
 std::string getNameWithoutContainer(std::string name) {
 
   size_t left = name.find_first_of('<') + 1;

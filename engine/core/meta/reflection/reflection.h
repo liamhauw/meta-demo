@@ -291,9 +291,9 @@ class ReflectionPtr {
 
   T& operator*() { return *(instance_); }
 
-  T* getPtr() { return instance_; }
+  T* GetPtr() { return instance_; }
 
-  T* getPtr() const { return instance_; }
+  T* GetPtr() const { return instance_; }
 
   const T& operator*() const { return *(static_cast<const T*>(instance_)); }
 

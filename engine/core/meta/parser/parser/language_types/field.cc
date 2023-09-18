@@ -5,7 +5,7 @@
 
 Field::Field(const Cursor& cursor, const Namespace& current_namespace, Class* parent) :
     TypeInfo(cursor, current_namespace), m_is_const(cursor.GetType().IsConst()), m_parent(parent),
-    name_(cursor.GetSpelling()), display_name_(Utils::getNameWithoutFirstM(name_)),
+    name_(cursor.GetSpelling()), display_name_(Utils::getNameWithoutLast(name_)),
     type_(Utils::getTypeNameWithoutNamespace(cursor.GetType()))
 {
     Utils::replaceAll(type_, " ", "");

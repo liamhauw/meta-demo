@@ -31,6 +31,8 @@ std::string GetFileName(std::string path);
 
 std::string getNameWithoutFirstM(std::string& name);
 
+std::string getNameWithoutLast(std::string& name);
+
 std::string getTypeNameWithoutNamespace(const CursorType& type);
 
 std::string getNameWithoutContainer(std::string name);
