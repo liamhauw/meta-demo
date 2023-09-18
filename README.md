@@ -5,6 +5,7 @@
 - macOS
 
 ## Prerequisites
+- Git
 - CMake
 - Ninja
 - MSVC/Clang/GCC
