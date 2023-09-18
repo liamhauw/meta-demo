@@ -10,6 +10,5 @@
   "C_Cpp.codeAnalysis.exclude": {
     "build": true,
     "third_party": true,
-    "engine/core/meta": true,
   },
 }
