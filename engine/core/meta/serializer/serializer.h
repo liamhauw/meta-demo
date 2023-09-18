@@ -1,5 +1,5 @@
 #pragma once
-#include "core/meta/json.h"
+#include "core/json/json.h"
 #include "core/meta/reflection/reflection.h"
 
 #include <cassert>

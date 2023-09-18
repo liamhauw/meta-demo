@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "core/meta/json.h"
+#include "core/json/json.h"
 #include "core/meta/reflection/reflection.h"
 #include "core/meta/reflection/reflection_register.h"
 #include "core/meta/serializer/serializer.h"
