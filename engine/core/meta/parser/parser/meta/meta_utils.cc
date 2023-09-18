@@ -88,6 +88,11 @@ fs::path makeRelativePath(const fs::path& from, const fs::path& to) {
     ++iter_to;
   }
 
+  std::string path_str = final_path.string();
+  std::replace(path_str.begin(), path_str.end(), '\\', '/');
+    
+  final_path = fs::path(path_str);
+
   return final_path;
 }
 
