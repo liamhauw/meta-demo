@@ -23,7 +23,7 @@ public:
     return ret_instance;
   }
   static Json WriteByName(void* instance){
-    return Serializer::Write(*({{class_name}}*)instance);
+    return Serializer::Write(*(static_cast<{{class_name}}*>(instance)));
   }
 
   static int Get{{class_name}}BaseClassReflectionInstanceList(ReflectionInstance* &out_list, void* instance){

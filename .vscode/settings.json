@@ -5,7 +5,9 @@
     "cppcoreguidelines-pro-type-reinterpret-cast",
     "cppcoreguidelines-special-member-functions",
     "cppcoreguidelines-pro-bounds-pointer-arithmetic",
-    "misc-non-private-member-variables-in-classes"
+    "misc-non-private-member-variables-in-classes",
+    "cppcoreguidelines-avoid-magic-numbers",
+    "cppcoreguidelines-owning-memory"
 ],
   "C_Cpp.codeAnalysis.exclude": {
     "build": true,
