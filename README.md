@@ -1,5 +1,12 @@
 # Luka engine
 
+## Prerequisites
+- CMake
+- Ninja
+- MSVC/Clang/GCC
+- Vulkan SDK
+- VSCode (optional)
+
 ## Clone
 ```shell
 git clone --recurse-submodules https://github.com/liamhauw/luka.git
