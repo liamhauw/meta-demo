@@ -1,7 +1,7 @@
 /*
-  SPDX license identifier: MIT
-
   Copyright (C) 2023-present Liam Hauw.
+
+  SPDX license identifier: MIT.   
 
   Config header file.
 */
