@@ -83,7 +83,7 @@ add_subdirectory(core/meta/parser)
 file(REMOVE_RECURSE "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated")
 configure_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/parser/header_file.json.in"
-  "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated/header_file.json"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../build/engine/core/meta/parser/header_file.json"
 )
 
 if(CMAKE_HOST_WIN32)
@@ -102,8 +102,8 @@ add_custom_target(
   run_meta_parser ALL
   COMMAND
   meta_parser
-  "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated/header_file.json"
-  "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated/parser_header.h"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../build/engine/core/meta/parser/header_file.json"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../build/engine/core/meta/parser/parser_header.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated"
   "${CMAKE_CURRENT_SOURCE_DIR}"
   ${SYS_INCLUDE}
