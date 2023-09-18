@@ -7,6 +7,10 @@
 - Vulkan SDK
 - VSCode (optional)
 
+## Platform
+- Windows
+- macOS
+
 ## Clone
 ```shell
 git clone --recurse-submodules https://github.com/liamhauw/luka.git
