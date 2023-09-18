@@ -4,14 +4,12 @@
     "cppcoreguidelines-macro-usage",
     "cppcoreguidelines-pro-type-reinterpret-cast",
     "cppcoreguidelines-special-member-functions",
-    "cppcoreguidelines-owning-memory",
     "cppcoreguidelines-pro-bounds-pointer-arithmetic",
-    "cppcoreguidelines-avoid-magic-numbers"
+    "misc-non-private-member-variables-in-classes"
 ],
   "C_Cpp.codeAnalysis.exclude": {
     "build": true,
     "third_party": true,
-    "engine/core/meta/generated": true,
-    "engine/core/meta/parser": true
+    "engine/core/meta": true,
   },
 }

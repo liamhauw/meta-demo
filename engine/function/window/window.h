@@ -10,9 +10,12 @@
 
 namespace luka {
 
+constexpr int kDefaultWidth{1280};
+constexpr int kDefaultHeight{720};
+
 struct WindowCreateInfo {
-  int width{1280};
-  int height{720};
+  int width{kDefaultWidth};
+  int height{kDefaultHeight};
   std::string title{"luka"};
 };
 
@@ -21,6 +24,11 @@ class Window {
   explicit Window(const WindowCreateInfo& window_create_info = {});
   ~Window();
 
+  Window(const Window& window) = default;
+  Window(Window&& window) = default;
+  Window& operator=(const Window& window) = default;
+  Window& operator=(Window&& window) = default;
+ 
   bool Tick(double delta_time);
 
   void SetShouldClose();

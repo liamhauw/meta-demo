@@ -4,7 +4,9 @@
 
 namespace luka {
 
-unsigned g_control_command{0xFFFFFFFF};
+constexpr unsigned kDefaultControlCommand{0xFFFFFFFF};
+
+unsigned g_control_command{kDefaultControlCommand};
 
 Input::Input(const std::shared_ptr<Window>& window) : window_{window} {
   window_->RegisterOnKeyFunc([this](auto&& ph1, auto&& ph2, auto&& ph3, auto&& ph4) {
