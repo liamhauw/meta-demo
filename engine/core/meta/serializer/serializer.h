@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2023-present Liam Hauw.
 
-  SPDX license identifier: MIT.   
+  SPDX license identifier: MIT.
 
   Serializer header file.
 */
@@ -13,6 +13,7 @@
 #include "core/meta/reflection/reflection.h"
 
 namespace luka {
+
 template <typename...>
 inline constexpr bool always_false = false;
 

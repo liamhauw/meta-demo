@@ -50,7 +50,7 @@ namespace luka {
   TypeMetaRegisterInterface::RegisterToClassMap(name, value);
 #define REGISTER_ARRAY_TO_MAP(name, value) \
   TypeMetaRegisterInterface::RegisterToArrayMap(name, value);
-#define UNREGISTER_ALL TypeMetaRegisterinterface::UnregisterAll();
+#define UNREGISTER_ALL TypeMetaRegisterInterface::UnregisterAll();
 
 namespace reflection {
 

@@ -16,6 +16,6 @@
 
 namespace luka::reflection {
 void TypeMetaRegister::MetaUnregister() {
-  TypeMetaRegisterInterface::UnregisterAll();
+  UNREGISTER_ALL;
 }
 }  // namespace luka::reflection
