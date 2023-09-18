@@ -74,5 +74,4 @@ target_link_libraries(
   tinygltf
   tinyobjloader
 )
-target_compile_options(${PROJECT_NAME} INTERFACE -w)
 set(CMAKE_WARN_DEPRECATED TRUE CACHE BOOL "" FORCE)

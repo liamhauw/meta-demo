@@ -82,7 +82,7 @@ add_subdirectory(core/meta/parser)
 
 file(REMOVE_RECURSE "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated")
 configure_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/header_file.json.in"
+  "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/parser/header_file.json.in"
   "${CMAKE_CURRENT_SOURCE_DIR}/core/meta/generated/header_file.json"
 )
 

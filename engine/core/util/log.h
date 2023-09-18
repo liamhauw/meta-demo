@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include <stdexcept>
+#include <spdlog/spdlog.h>
 
-#include "spdlog/spdlog.h"
+#include <stdexcept>
 
 namespace luka {
 
