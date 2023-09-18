@@ -14,8 +14,8 @@ namespace Reflection {
 
 class TypeMetaRegister {
  public:
-  static void metaRegister();
-  static void metaUnregister();
+  static void MetaRegister();
+  static void MetaUnregister();
 };
 
 }  // namespace Reflection

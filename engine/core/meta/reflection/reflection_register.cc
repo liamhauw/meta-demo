@@ -15,7 +15,7 @@
 #include "core/meta/serializer/serializer.h"
 
 namespace luka::Reflection {
-void TypeMetaRegister::metaUnregister() {
+void TypeMetaRegister::MetaUnregister() {
   TypeMetaRegisterInterface::UnregisterAll();
 }
 }  // namespace luka::Reflection

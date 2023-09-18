@@ -21,13 +21,13 @@ CLASS(WorldRes, Fields) {
 
  public:
   // world name
-  std::string m_name;
+  std::string name_;
 
   // all level urls for this world
-   std::vector<std::string> m_level_urls;
+   std::vector<std::string> level_urls_;
 
   // the default level for this world, which should be first loading level
-  std::string m_default_level_url;
+  std::string default_level_url_;
 };
 
 }

@@ -5,11 +5,15 @@
 #include "core/meta/generated/{{headfile_name}}"
 {{/include_headfiles}}
 
-namespace luka{
-namespace Reflection{
-    void TypeMetaRegister::metaRegister(){
-        {{#sourefile_names}}TypeWrappersRegister::{{sourefile_name_upper_camel_case}}();
-        {{/sourefile_names}}
-    }
+namespace luka {
+
+namespace Reflection {
+
+void TypeMetaRegister::MetaRegister(){
+  {{#sourefile_names}}TypeWrappersRegister::{{sourefile_name_upper_camel_case}}();
+  {{/sourefile_names}}
 }
-}
+
+}  // namespace Reflection
+
+}  // namespace luka
