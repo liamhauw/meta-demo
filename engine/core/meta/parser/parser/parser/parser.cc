@@ -7,9 +7,9 @@
 #include "generator/serializer_generator.h"
 #include "language_types/class.h"
 
-MetaParser::MetaParser(std::string json_header_file, std::string header_file,
-                       const std::string& generated_path,
-                       std::string project_root_path, std::string sys_include)
+Parser::Parser(std::string json_header_file, std::string header_file,
+               const std::string& generated_path, std::string project_root_path,
+               std::string sys_include)
     : json_header_file_{std::move(json_header_file)},
       header_file_{std::move(header_file)},
       project_root_path_{std::move(project_root_path)},
@@ -27,7 +27,7 @@ MetaParser::MetaParser(std::string json_header_file, std::string header_file,
       }});
 }
 
-MetaParser::~MetaParser() {
+Parser::~Parser() {
   for (auto item : generators_) {
     delete item;
   }
@@ -37,12 +37,12 @@ MetaParser::~MetaParser() {
   if (index_) clang_disposeIndex(index_);
 }
 
-std::string MetaParser::GetIncludeFile(const std::string& name) {
+std::string Parser::GetIncludeFile(const std::string& name) {
   auto iter{type_table_.find(name)};
   return iter == type_table_.end() ? std::string{} : iter->second;
 }
 
-int MetaParser::Parse() {
+int Parser::Parse() {
   ParseProject();
 
   index_ = clang_createIndex(true, 0);
@@ -82,7 +82,7 @@ int MetaParser::Parse() {
   return 0;
 }
 
-void MetaParser::ParseProject() {
+void Parser::ParseProject() {
   std::fstream json_header_fs(json_header_file_, std::ios::in);
   if (json_header_fs.fail()) {
     throw std::runtime_error{"fail to open " + json_header_file_};
@@ -122,8 +122,7 @@ void MetaParser::ParseProject() {
   header_fs.close();
 }
 
-void MetaParser::BuildClassAst(const Cursor& cursor,
-                               Namespace& current_namespace) {
+void Parser::BuildClassAst(const Cursor& cursor, Namespace& current_namespace) {
   auto cursor_children{cursor.GetChildren()};
   for (auto& child : cursor_children) {
     auto kind = child.GetKind();
@@ -150,8 +149,9 @@ void MetaParser::BuildClassAst(const Cursor& cursor,
   }
 }
 
-void MetaParser::GenerateFiles() {
-  // std::cout << "schemas module size : " << schema_modules_.size() << std::endl;
+void Parser::GenerateFiles() {
+  // std::cout << "schemas module size : " << schema_modules_.size() <<
+  // std::endl;
   for (auto& schema : schema_modules_) {
     for (auto& generator_iter : generators_) {
       generator_iter->Generate(schema.first, schema.second);

@@ -17,7 +17,7 @@ class Class : public TypeInfo
     // to access m_qualifiedName
     friend class Field;
     friend class Method;
-    friend class MetaParser;
+    friend class Parser;
 
 public:
     Class(const Cursor& cursor, const Namespace& current_namespace);
