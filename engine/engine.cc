@@ -11,10 +11,14 @@
 #include "core/util/log.h"
 #include "core/util/time.h"
 
+#include "core/meta/reflection/reflection_register.h"
+
 namespace luka {
 
 Engine::Engine() {
   LOGI("Engine initialize");
+
+  reflection::TypeMetaRegister::MetaRegister();
 
   config_ = std::make_shared<Config>();
   asset_ = std::make_shared<Asset>();
