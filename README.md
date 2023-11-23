@@ -1,4 +1,4 @@
-# Luka engine
+# meta demo
 
 ## Platform
 - Windows
@@ -14,7 +14,7 @@
 
 ## Clone
 ```shell
-git clone --recurse-submodules https://github.com/liamhauw/luka.git
+git clone --recurse-submodules https://github.com/liamhauw/meta-demo.git
 cd luka
 ```
 
